@@ -493,6 +493,8 @@
     }
     /* Landscape: full width */
     /* Orientation classes set by JS on .vs-player */
+    .vs-player.v-landscape video { width: 100%; height: auto; max-height: 100%; }
+    .vs-player.v-portrait video { height: 100%; width: auto; max-width: 100%; }
     .vs-stage .vs-label {
       position: absolute;
       bottom: 12px;
@@ -1128,7 +1130,7 @@
     </div>
 
     <!-- Video Spotlight: 分类播放器 -->
-    <div class="video-spotlight fade-up">
+    <div class="video-spotlight">
       <div class="video-spotlight-title">🎁 蛙田美育 · 课堂集锦</div>
       <!-- Category bar -->
       <div class="vs-cat-bar" id="vsCatBar"></div>
@@ -1138,7 +1140,7 @@
         <!-- Single player -->
         <div class="vs-player active" id="vsPlayer">
           <div class="vs-glow" id="vsGlow"></div>
-          <video id="vsVideo" playsinline webkit-playsinline></video>
+          <video id="vsVideo" muted autoplay playsinline webkit-playsinline preload="auto"></video>
           <div class="vs-label" id="vsCatName"></div>
         </div>
       </div>
@@ -1897,7 +1899,7 @@ const mb=document.getElementById('vsMuteBtn'),ba=document.getElementById('vsBadg
 const pf=document.getElementById('vsProgressFill'),pr=document.getElementById('vsProgress');
 const te=document.getElementById('vsTime');
 const catBar=document.getElementById('vsCatBar'),catName=document.getElementById('vsCatName');
-let isP=false,isMuted=true,currentCat='all',queue=[],qi=0,loading=false;
+let isP=false,isMuted=true,currentCat='all',queue=[],qi=0;
 const themes=[
   {bg:'linear-gradient(135deg,#0d9488,#0f766e)',accent:'#0d9488',emoji:'🎬'},
   {bg:'linear-gradient(135deg,#7c3aed,#6d28d9)',accent:'#7c3aed',emoji:'🎥'},
@@ -1917,8 +1919,6 @@ function buildQueue(cat){
 }
 
 function playVideo(videoObj){
-  if(loading) return;
-  loading=true;
   const file=videoObj.file,l=isLandscape(file);
   const src='images/蛙田美育/'+file;
   setTheme(Math.floor(Math.random()*themes.length));
@@ -1929,21 +1929,40 @@ function playVideo(videoObj){
   vp.classList.remove('v-landscape','v-portrait');
   vp.classList.add(l?'v-landscape':'v-portrait');
 
-  // Fade out
+  // Fade out, swap src, wait for canplay, fade in
   vp.classList.remove('active');
-
   setTimeout(()=>{
-    v.src=src;v.load();v.muted=isMuted;
-    // Wait for data then play
-    const ready=()=>{
-      vp.classList.add('active');
-      v.play().catch(()=>{}).then(()=>{isP=true;pb.textContent='⏸';});
-      v.oncanplay=null;v.onloadeddata=null;
-      loading=false;
+    // Complete reset: clear source, flush, then set new source
+    v.pause();
+    v.removeAttribute('src');
+    v.load();
+    // After flush, set new source and wait for it to be ready
+    const swapSrc=()=>{
+      v.src=src;
+      v.load();
+      v.muted=isMuted;
+      // Show "loading" label
+      catName.textContent='⏳ '+videoObj.label;
+      // Safety fallback: force play after 5s if canplay never fires
+      const safetyTimer=setTimeout(()=>{
+        vp.classList.add('active');
+        v.play().then(()=>{isP=true;pb.textContent='⏸';catName.textContent=videoObj.label;}).catch(()=>{catName.textContent=videoObj.label;});
+      },5000);
+      v.oncanplay=()=>{
+        clearTimeout(safetyTimer);
+        vp.classList.add('active');
+        catName.textContent=videoObj.label;
+        v.play().then(()=>{isP=true;pb.textContent='⏸';}).catch(()=>{});
+        v.oncanplay=null;v.onerror=null;
+      };
+      v.onerror=()=>{
+        clearTimeout(safetyTimer);
+        catName.textContent='❌ '+videoObj.label;
+        vp.classList.add('active');
+        setTimeout(()=>{pick();},2000);
+      };
     };
-    v.oncanplay=ready;
-    v.onloadeddata=ready;
-    setTimeout(ready,2000); // safety fallback
+    requestAnimationFrame(swapSrc);
   },350);
 }
 
@@ -1976,7 +1995,7 @@ function initCats(){
 }
 
 // Event listeners
-pb.onclick=()=>{if(!isP&&!loading){switchCat(currentCat);return;}if(isP){v.pause();pb.textContent='▶';isP=false;}else{v.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
+pb.onclick=()=>{if(!isP){switchCat(currentCat);return;}if(isP){v.pause();pb.textContent='▶';isP=false;}else{v.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
 sb.onclick=()=>{pick();};
 mb.onclick=()=>{isMuted=!isMuted;v.muted=isMuted;mb.textContent=isMuted?'🔇':'🔊';mb.classList.toggle('unmuted',!isMuted);};
 v.ontimeupdate=()=>{if(!v.duration)return;pf.style.width=((v.currentTime/v.duration)*100)+'%';te.textContent=fmt(v.currentTime)+' / '+fmt(v.duration);};

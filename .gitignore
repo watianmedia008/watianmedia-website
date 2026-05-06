@@ -1,5 +1,1 @@
-# Media files (large - will be added later)
-images/
-*.mp3
-*.mp4
-*.png
+# no longer ignoring media files
