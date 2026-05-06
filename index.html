@@ -143,6 +143,22 @@
     .nav-cta::after { display: none !important; }
     .nav-cta:hover { background: var(--primary-dark) !important; color: white !important; }
 
+    /* Language toggle */
+    .lang-toggle {
+      background: rgba(13,148,136,0.1);
+      border: 1px solid rgba(13,148,136,0.2);
+      color: var(--primary-dark);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+    }
+    .lang-toggle:hover { background: rgba(13,148,136,0.2); }
+
     .nav-toggle {
       display: none;
       flex-direction: column;
@@ -755,6 +771,7 @@
     <li><a href="#tech">科技</a></li>
     <li><a href="#about">品牌</a></li>
     <li><a href="#hero" class="nav-cta">联系我们</a></li>
+    <li><button class="lang-toggle" id="langToggle">EN</button></li>
   </ul>
 </nav>
 
@@ -771,8 +788,8 @@
       美育 · 音乐 · 商城 · 乐器 · 科技
     </p>
     <div class="hero-ctas fade-up visible">
-      <a href="#meiyu" class="btn-primary">探索蛙田</a>
-      <a href="#about" class="btn-secondary">了解我们</a>
+      <a href="#meiyu" class="btn-primary" id="heroExplore">探索蛙田</a>
+      <a href="#about" class="btn-secondary" id="heroAbout">了解我们</a>
     </div>
     <div class="scroll-indicator">
       <span>向下探索</span>
@@ -1661,6 +1678,109 @@ e.style.display='flex';vL.style.display='block';vP.style.display='block';
 
 // Observe section headers
 document.querySelectorAll('.section-header').forEach(el => observer.observe(el));
+
+// ===== 中英文切换 =====
+const i18nMap = {
+  navMeiyu:['美育','Arts'],
+  navMusic:['音乐','Music'],
+  navMall:['商城','Shop'],
+  navInstrument:['乐器','Instruments'],
+  navTech:['科技','Tech'],
+  navAbout:['品牌','Brand'],
+  navContact:['联系我们','Contact'],
+  heroExplore:['探索蛙田','Explore Watian'],
+  heroAbout:['了解我们','About Us'],
+  sectionMeiyu:['蛙田美育','Watian Arts'],
+  sectionMusic:['蛙田音乐','Watian Music'],
+  sectionMall:['蛙田商城','Watian Mall'],
+  sectionInstrument:['蛙田乐器','Watian Instruments'],
+  sectionTech:['蛙田科技','Watian Tech'],
+  musicCard1:['原创音乐制作','Original Production'],
+  musicCard2:['原创作品分享','Original Works'],
+  musicCard3:['录音棚体验','Studio Experience'],
+  techCard1:['AI 老师系统','AI Teacher System'],
+  techCard2:['智慧课堂','Smart Classroom'],
+  techCard3:['数字解决方案','Digital Solutions'],
+  instrumentCard1:['键盘乐器','Keyboards'],
+  instrumentCard2:['吉他/贝斯','Guitars / Bass'],
+  instrumentCard3:['音箱/效果器','Amps / Effects'],
+  mallLink:['前往小程序选购 →','Visit Mini Program →'],
+  videoHint:['点 🎲 开盒','Click 🎲 to Open'],
+};
+let currentLang='zh';
+
+function toggleLang(){
+  currentLang=currentLang==='zh'?'en':'zh';
+  const btn=document.getElementById('langToggle');
+  btn.textContent=currentLang==='zh'?'EN':'中';
+  document.documentElement.lang=currentLang==='zh'?'zh-CN':'en';
+  
+  // Nav links
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    const key=a.getAttribute('href').slice(1);
+    const k='nav'+key.charAt(0).toUpperCase()+key.slice(1);
+    if(i18nMap[k]) a.textContent=i18nMap[k][currentLang==='zh'?0:1];
+  });
+  // Hero
+  const h1=document.querySelector('#hero h1');
+  if(h1) h1.textContent=currentLang==='zh'?'以文化为田 耕耘美好':'Cultivate Beauty<br>Through Culture';
+  const heroP=document.querySelector('#hero .hero-badge');
+  if(heroP) heroP.textContent=currentLang==='zh'?'上海蛙田文化传媒有限公司':'Shanghai Watian Media';
+  document.getElementById('heroExplore').textContent=currentLang==='zh'?'探索蛙田':'Explore Watian';
+  document.getElementById('heroAbout').textContent=currentLang==='zh'?'了解我们':'About Us';
+  // Section tags — match both zh and en
+  document.querySelectorAll('.section-tag').forEach(el=>{
+    const txt=el.textContent.trim();
+    for(const[k,v]of Object.entries(i18nMap)){
+      if(v[0]===txt||v[1]===txt){
+        el.textContent=v[currentLang==='zh'?0:1];
+        break;
+      }
+    }
+  });
+  // Card titles
+  document.querySelectorAll('.card h3').forEach(el=>{
+    const txt=el.textContent.trim();
+    for(const[k,v]of Object.entries(i18nMap)){
+      if(v[0]===txt||v[1]===txt){
+        el.textContent=v[currentLang==='zh'?0:1];
+        break;
+      }
+    }
+  });
+  // Section titles (h2)
+  const zhTitles={'以美育人，向美而生':'Nurture Through Beauty','创作 · 分享 · 共鸣':'Create · Share · Resonate','精选好物，品质生活':'Curated Goods, Quality Life','匠心之音，品质之选':'Artisan Sound, Quality Choice','科技赋能，智慧未来':'Tech Empowered, Smart Future'};
+  document.querySelectorAll('.section-title').forEach(el=>{
+    const txt=el.textContent.trim();
+    if(currentLang==='en'&&zhTitles[txt]) el.textContent=zhTitles[txt];
+    else if(currentLang==='zh'){for(const[k,v]of Object.entries(zhTitles)){if(v===txt){el.textContent=k;break;}}}
+  });
+  // Section descriptions (p.section-desc)
+  const zhDescs={
+    '让每个孩子在艺术中发现自我，用美育滋养心灵，陪伴成长。':'Let every child discover themselves through art. Nurture the soul with aesthetic education.',
+    '蛙田音乐致力于原创音乐创作与分享。每一首歌，都是一个故事；每一个音符，都是心之所向。':'Watian Music is dedicated to original music — every song tells a story, every note comes from the heart.',
+    '蛙田精选文化好物、艺术用品、音乐器材，让高品质触手可及。':'Curated cultural goods, art supplies, and musical instruments. Quality life, within reach.',
+    '精选国内外优质乐器，提供专业售后与教学支持，让音乐之路更加顺畅。':'Premium instruments from around the world, with professional after-sales support.',
+    '用前沿科技为文化教育注入新活力，打造智慧化教学与管理解决方案。':'Injecting cutting-edge tech into cultural education. Smart teaching and management solutions.'
+  };
+  document.querySelectorAll('.section-desc').forEach(el=>{
+    const txt=el.textContent.trim();
+    if(currentLang==='en'&&zhDescs[txt]) el.textContent=zhDescs[txt];
+    else if(currentLang==='zh'){for(const[k,v]of Object.entries(zhDescs)){if(v===txt){el.textContent=k;break;}}}
+  });
+  // Card descriptions
+  document.querySelectorAll('.card p').forEach(el=>{
+    const txt=el.textContent.trim();
+    if(currentLang==='en'){
+      if(txt.includes('专业音乐创作')) el.textContent='Professional music creation and production — from songwriting to recording.';
+      else if(txt.includes('汇聚蛙田音乐人')) el.textContent='A collection of original works from Watian musicians. Every song has a story.';
+      else if(txt.includes('专业录音设备')) el.textContent='Professional recording studio. Your sound presented at the highest quality.';
+      else if(txt.includes('大语言模型')) el.textContent='AI-powered teaching assistant for personalized learning experiences.';
+      else if(txt.includes('多媒体互动')) el.textContent='Interactive multimedia equipment and digital resources for smart classrooms.';
+      else if(txt.includes('一站式数字化')) el.textContent='One-stop digital transformation — from enrollment management to evaluation.';
+    }
+  });
+}
 </script>
 </body>
 </html>
