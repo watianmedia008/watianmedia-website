@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>蛙田文化 | 上海蛙田文化传媒有限公司</title>
+  <meta name="description" content="蛙田文化 — 美育·音乐·商城·乐器·科技">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      color: #1c1917;
+      background: #fafaf9;
+      overflow-x: hidden;
+    }
+
+    /* ===== COLORS ===== */
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #14b8a6;
+      --warm: #d97706;
+      --warm-light: #fbbf24;
+      --bg-warm: #fafaf9;
+      --bg-dark: #1c1917;
+      --text: #1c1917;
+      --text-muted: #78716c;
+      --text-light: #e7e5e4;
+      --border: #e7e5e4;
+
+      --section-meiyu: #e11d48;
+      --section-music: #7c3aed;
+      --section-mall: #d97706;
+      --section-instrument: #6366f1;
+      --section-tech: #0891b2;
+    }
+
+    /* ===== P5 CANVAS ===== */
+    #p5-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 250, 249, 0.85);
+      backdrop-filter: blur(20px) saturate(1.5);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-brand .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: 700;
+    }
+    .nav-brand span {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.2s;
+      position: relative;
+      padding: 4px 0;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--primary); font-weight: 500; }
+    .nav-links a.active::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--primary);
+      color: white !important;
+      padding: 8px 20px !important;
+      border-radius: 8px;
+      font-weight: 500 !important;
+      transition: all 0.2s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--primary-dark) !important; color: white !important; }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ===== SECTIONS ===== */
+    section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 2rem;
+    }
+    .section-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 68px;
+    }
+    #hero .section-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(13, 148, 136, 0.1);
+      border: 1px solid rgba(13, 148, 136, 0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 500;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      color: var(--bg-dark);
+      line-height: 1.2;
+      letter-spacing: 2px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--primary), var(--warm));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-primary, .btn-secondary {
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+
+    .scroll-indicator {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+      animation: float 2s ease-in-out infinite;
+    }
+    .scroll-indicator .arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid var(--text-muted);
+      border-bottom: 2px solid var(--text-muted);
+      transform: rotate(45deg);
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* ===== DIVISION SECTIONS ===== */
+    .division-section {
+      position: relative;
+    }
+    .division-section:nth-child(even) {
+      background: rgba(13, 148, 136, 0.03);
+    }
+    .section-header {
+      margin-bottom: 3rem;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 4px;
+      background: rgba(13, 148, 136, 0.08);
+      color: var(--primary);
+    }
+    .section-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--bg-dark);
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .section-desc.full { max-width: 100%; }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.4s;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+    }
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 1.25rem;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* Section-specific card icon colors */
+    .meiyu .card-icon { background: rgba(225, 29, 72, 0.1); color: var(--section-meiyu); }
+    .music .card-icon { background: rgba(124, 58, 237, 0.1); color: var(--section-music); }
+    .mall .card-icon { background: rgba(217, 119, 6, 0.1); color: var(--section-mall); }
+    .instrument .card-icon { background: rgba(99, 102, 241, 0.1); color: var(--section-instrument); }
+    .tech .card-icon { background: rgba(8, 145, 178, 0.1); color: var(--section-tech); }
+
+    /* Tag colors */
+    .meiyu .section-tag { background: rgba(225, 29, 72, 0.08); color: var(--section-meiyu); }
+    .music .section-tag { background: rgba(124, 58, 237, 0.08); color: var(--section-music); }
+    .mall .section-tag { background: rgba(217, 119, 6, 0.08); color: var(--section-mall); }
+    .instrument .section-tag { background: rgba(99, 102, 241, 0.08); color: var(--section-instrument); }
+    .tech .section-tag { background: rgba(8, 145, 178, 0.08); color: var(--section-tech); }
+
+    /* Showcase area */
+    .showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      align-items: center;
+    }
+    .showcase-text { opacity: 0; transform: translateX(-20px); transition: all 0.6s; }
+    .showcase-text.visible { opacity: 1; transform: translateX(0); }
+    .showcase-visual { opacity: 0; transform: translateX(20px); transition: all 0.6s 0.2s; }
+    .showcase-visual.visible { opacity: 1; transform: translateX(0); }
+    .showcase-visual .visual-box {
+      background: linear-gradient(135deg, rgba(13, 148, 136, 0.05), rgba(13, 148, 136, 0.02));
+      border: 1px solid rgba(13, 148, 136, 0.1);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .showcase-visual .visual-icon { font-size: 64px; margin-bottom: 1rem; }
+    .showcase-visual .visual-label { font-size: 14px; color: var(--text-muted); font-weight: 300; letter-spacing: 2px; }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+    .feature-list li {
+      padding: 8px 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 300;
+    }
+    .feature-list li::before {
+      content: '✦';
+      color: var(--primary);
+      font-size: 12px;
+    }
+
+    /* ===== VIDEO SPOTLIGHT ===== */
+    .video-spotlight {
+      margin-top: 3rem;
+    }
+    .video-spotlight-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    /* Player stage: holds both landscape + portrait */
+    .vs-stage {
+      position: relative;
+      background: #1c1917;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      min-height: 500px;
+      height: 75vh;
+      max-height: 700px;
+    }
+    .vs-stage .vs-player {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #1a1a2e, #0a0a0a);
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .vs-stage .vs-player.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    .vs-stage .vs-player .vs-glow {
+      position: absolute;
+      inset: -80px;
+      opacity: 0.12;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+      transition: background 1s ease;
+    }
+    .vs-stage .vs-player video {
+      display: block;
+      background: transparent;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }
+    /* Landscape: full width */
+    .vs-landscape video {
+      width: 100%;
+      height: 100%;
+    }
+    /* Portrait: centered narrow */
+    .vs-portrait video {
+      height: 90%;
+      width: auto;
+    }
+    .vs-stage .vs-label {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.5);
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+      padding: 2px 10px;
+      border-radius: 6px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Gradient overlay that changes color */
+    .vs-glow {
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      transition: background 0.8s;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Controls bar */
+    .vs-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(28,25,23,0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-radius: 0 0 20px 20px;
+    }
+    .vs-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .vs-btn:hover { background: rgba(255,255,255,0.18); transform: scale(1.05); }
+    .vs-btn-play {
+      width: 42px; height: 42px;
+      font-size: 16px;
+    }
+    .vs-btn-shuffle {
+      background: rgba(13,148,136,0.2);
+      color: #0d9488;
+    }
+    .vs-btn-shuffle:hover { background: rgba(13,148,136,0.35); }
+
+    .vs-progress {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+    .vs-progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.2s linear;
+      background: #0d9488;
+    }
+    .vs-time {
+      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      min-width: 72px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .vs-info {
+      display: flex;
+      align-items: center;
+    }
+    .vs-badge {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background 0.8s;
+    }
+
+    /* Next-up overlay (shared, absolute over stage) */
+    .vs-next-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 40px 20px 16px;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+    }
+    .vs-next-overlay.show { opacity: 1; }
+
+    /* Empty state */
+    .vs-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+      text-align: center;
+      color: rgba(255,255,255,0.15);
+      font-size: 64px;
+      min-height: 300px;
+    }
+    .vs-hint {
+      font-size: 14px;
+      color: rgba(255,255,255,0.2);
+      margin-top: 12px;
+      letter-spacing: 2px;
+    }
+    @media (max-width: 600px) {
+      .vs-stage { height: 55vh; min-height: 300px; max-height: 450px; }
+      .vs-controls { padding: 10px 12px; gap: 8px; }
+      .vs-btn { width: 32px; height: 32px; font-size: 12px; }
+      .vs-btn-play { width: 38px; height: 38px; }
+      .vs-time { font-size: 11px; min-width: 60px; }
+      .vs-empty { padding: 50px 20px; font-size: 48px; min-height: 200px; }
+      .vs-portrait video { height: 85%; }
+    }
+
+    /* ===== ABOUT ===== */
+    #about {
+      background: var(--bg-dark);
+      color: var(--text-light);
+    }
+    #about .section-title { color: white; }
+    #about .section-desc { color: rgba(255,255,255,0.6); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-light), var(--warm-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      position: relative;
+      z-index: 1;
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 3rem 2rem 1.5rem;
+      color: var(--text-light);
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer-brand .logo-icon { margin-bottom: 1rem; }
+    .footer-brand p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 300px; }
+    .footer-col h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 1rem; color: white; }
+    .footer-col a {
+      display: block;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--primary-light); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+      .nav-links {
+        position: fixed;
+        top: 68px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(250, 250, 249, 0.98);
+        backdrop-filter: blur(20px);
+        padding: 1.5rem;
+        gap: 1rem;
+        transform: translateY(-120%);
+        transition: transform 0.3s;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { transform: translateY(0); }
+      .nav-toggle { display: flex; }
+      section { padding: 80px 1rem; }
+      .showcase { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .card-grid { grid-template-columns: 1fr; }
+      .nav-brand span { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== P5 BACKGROUND ===== -->
+<div id="p5-bg"></div>
+
+<!-- ===== NAV ===== -->
+<nav id="navbar">
+  <a href="#hero" class="nav-brand">
+    <img src="蛙田文化logo.svg" alt="蛙田文化" style="height:36px;width:auto;">
+    <span>蛙田文化</span>
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#meiyu">美育</a></li>
+    <li><a href="#music">音乐</a></li>
+    <li><a href="#mall">商城</a></li>
+    <li><a href="#instrument">乐器</a></li>
+    <li><a href="#tech">科技</a></li>
+    <li><a href="#about">品牌</a></li>
+    <li><a href="#hero" class="nav-cta">联系我们</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="section-content">
+    <div class="hero-badge fade-up visible">上海蛙田文化传媒有限公司</div>
+    <h1 class="hero-title fade-up visible">
+      以文化为田<br>
+      <span class="highlight">耕耘美好</span>
+    </h1>
+    <p class="hero-sub fade-up visible">
+      从一间琴房出发，走向一座生态。<br class="hide-mobile">
+      美育 · 音乐 · 商城 · 乐器 · 科技
+    </p>
+    <div class="hero-ctas fade-up visible">
+      <a href="#meiyu" class="btn-primary">探索蛙田</a>
+      <a href="#about" class="btn-secondary">了解我们</a>
+    </div>
+    <div class="scroll-indicator">
+      <span>向下探索</span>
+      <div class="arrow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 蛙田美育 ===== -->
+<section id="meiyu" class="division-section meiyu">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag">蛙田美育</div>
+      <h2 class="section-title">以美育人，向美而生</h2>
+      <p class="section-desc">让每个孩子在艺术中发现自我，用美育滋养心灵，陪伴成长。</p>
+    </div>
+    <div class="showcase">
+      <div class="showcase-text">
+        <p style="font-size:1.05rem;color:var(--text-muted);line-height:1.8;font-weight:300;">
+          蛙田美育专注于 3-15 岁儿童艺术素养培育，涵盖绘画、书法、手工、综合艺术等多元课程。
+        </p>
+        <ul class="feature-list">
+          <li>创意绘画 — 激发想象力与表达力</li>
+          <li>硬笔/软笔书法 — 传承汉字之美</li>
+          <li>综合材料艺术 — 动手创造无限可能</li>
+          <li>艺术素养课 — 名家名作赏析</li>
+        </ul>
+      </div>
+      <div class="showcase-visual">
+        <div class="visual-box">
+          <div class="visual-icon">🎨</div>
+          <div class="visual-label">艺术 · 创造 · 成长</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Spotlight: 盲盒体验 -->
+    <div class="video-spotlight fade-up">
+      <div class="video-spotlight-title">🎁 培训视频盲盒</div>
+      <div class="vs-stage" id="vsStage">
+        <!-- Empty state -->
+        <div class="vs-empty" id="vsEmpty">🎁<div class="vs-hint">点 🎲 开盒</div></div>
+        <!-- Landscape player -->
+        <div class="vs-player vs-landscape" id="vsLandscape">
+          <div class="vs-glow" id="vsGlowL"></div>
+          <video id="vsVideoL" playsinline></video>
+          <div class="vs-label"></div>
+        </div>
+        <!-- Portrait player -->
+        <div class="vs-player vs-portrait" id="vsPortrait">
+          <div class="vs-glow" id="vsGlowP"></div>
+          <video id="vsVideoP" playsinline></video>
+          <div class="vs-label"></div>
+        </div>
+        <!-- Next-up overlay -->
+        <div class="vs-next-overlay" id="vsNextOverlay">
+          <div id="vsNextText">加载中...</div>
+        </div>
+      </div>
+      <!-- Shared controls -->
+      <div class="vs-controls">
+        <div class="vs-info">
+          <div class="vs-badge" id="vsBadge" style="background:#0d9488;">🎬</div>
+        </div>
+        <button class="vs-btn vs-btn-shuffle" id="vsShuffleBtn" title="开盒">🎲</button>
+        <button class="vs-btn vs-btn-play" id="vsPlayBtn">▶</button>
+        <div class="vs-progress" id="vsProgress">
+          <div class="vs-progress-fill" id="vsProgressFill" style="width:0%"></div>
+        </div>
+        <span class="vs-time" id="vsTime">0:00 / 0:00</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 蛙田音乐 ===== -->
+<section id="music" class="division-section music">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag">蛙田音乐</div>
+      <h2 class="section-title">创作 · 分享 · 共鸣</h2>
+      <p class="section-desc">蛙田音乐致力于原创音乐创作与分享。每一首歌，都是一个故事；每一个音符，都是心之所向。</p>
+    </div>
+
+    <!-- Custom Music Player -->
+    <div class="music-player fade-up" style="background:linear-gradient(135deg,#2e1065,#4c1d95);border-radius:20px;padding:2rem;margin-bottom:2.5rem;position:relative;overflow:hidden;">
+      <!-- Visualizer canvas -->
+      <canvas id="visualizer" style="position:absolute;bottom:0;left:0;width:100%;height:120px;opacity:0.3;pointer-events:none;"></canvas>
+      
+      <div style="position:relative;z-index:1;">
+        <!-- Album art + info -->
+        <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+          <div style="width:80px;height:80px;background:linear-gradient(135deg,#a78bfa,#7c3aed);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;box-shadow:0 8px 32px rgba(124,58,237,0.3);">🎵</div>
+          <div style="flex:1;min-width:150px;">
+            <div id="songTitle" style="color:white;font-size:1.2rem;font-weight:600;margin-bottom:4px;">豌豆公主</div>
+            <div id="songArtist" style="color:rgba(255,255,255,0.5);font-size:0.85rem;">蛙田文化 · 原创作品</div>
+          </div>
+        </div>
+
+        <!-- Custom Controls -->
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button id="prevBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;padding:4px;transition:all 0.2s;">⏮</button>
+            <button id="playBtn" style="width:48px;height:48px;border-radius:50%;border:none;background:white;color:#4c1d95;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.2);">▶</button>
+            <button id="nextBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;padding:4px;transition:all 0.2s;">⏭</button>
+          
+          <div style="flex:1;min-width:120px;display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span id="currentTime" style="color:rgba(255,255,255,0.5);font-size:0.75rem;font-variant-numeric:tabular-nums;min-width:36px;">0:00</span>
+              <div id="progressBar" style="flex:1;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;cursor:pointer;position:relative;">
+                <div id="progressFill" style="width:0%;height:100%;background:linear-gradient(90deg,#a78bfa,#7c3aed);border-radius:2px;transition:width 0.1s linear;"></div>
+              </div>
+              <span id="totalTime" style="color:rgba(255,255,255,0.5);font-size:0.75rem;font-variant-numeric:tabular-nums;min-width:36px;">0:00</span>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button id="volumeBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:16px;cursor:pointer;padding:4px;">🔊</button>
+            <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.7" style="width:60px;accent-color:#a78bfa;">
+          </div>
+        </div>
+
+        <!-- Playlist -->
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div class="playlist-item" data-index="0" style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;background:rgba(167,139,250,0.15);cursor:pointer;transition:all 0.2s;">
+              <span style="font-size:14px;">🎵</span>
+              <span style="flex:1;color:white;font-size:0.85rem;font-weight:500;">豌豆公主</span>
+              <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">蛙田文化 · 原创</span>
+              <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;" class="playing-indicator">▶ 播放中</span>
+            </div>
+            <div class="playlist-item" data-index="1" style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;cursor:pointer;transition:all 0.2s;opacity:0.7;">
+              <span style="font-size:14px;">🎶</span>
+              <span style="flex:1;color:white;font-size:0.85rem;font-weight:500;">蛙田之路</span>
+              <span style="color:rgba(255,255,255,0.4);font-size:0.7rem;">蛙田文化 · 原创</span>
+              <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;" class="playing-indicator" style="display:none;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Music creation features -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🎼</div>
+        <h3>原创音乐制作</h3>
+        <p>蛙田音乐提供专业的音乐创作与制作服务，从词曲创作到编曲录音，让每一个灵感都成为动人的旋律。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📀</div>
+        <h3>原创作品分享</h3>
+        <p>汇聚蛙田音乐人的原创作品，每一首歌背后都有一个值得倾听的故事。用音乐连接彼此，让创作被听见。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎙️</div>
+        <h3>录音棚体验</h3>
+        <p>配备专业录音设备，提供歌手、乐手、乐队的录音与混音服务，将你的声音以最高品质呈现。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== CUSTOM MUSIC PLAYER (with Playlist) =====
+(function() {
+  // ===== PLAYLIST =====
+  const playlist = [
+    { title: '豌豆公主', artist: '蛙田文化 · 原创', file: '豌豆公主.mp3', icon: '🎵' },
+    { title: '蛙田之路', artist: '蛙田文化 · 原创', file: '蛙田之路.mp3', icon: '🎶' },
+  ];
+
+  let currentIndex = 0;
+  const audio = new Audio(playlist[0].file);
+  audio.preload = 'metadata';
+
+  // DOM elements
+  const playBtn = document.getElementById('playBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const progressFill = document.getElementById('progressFill');
+  const progressBar = document.getElementById('progressBar');
+  const currentTimeEl = document.getElementById('currentTime');
+  const totalTimeEl = document.getElementById('totalTime');
+  const volumeBtn = document.getElementById('volumeBtn');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const songTitle = document.getElementById('songTitle');
+  const songArtist = document.getElementById('songArtist');
+  const playlistItems = document.querySelectorAll('.playlist-item');
+
+  let isPlaying = false;
+  let isSeeking = false;
+
+  function formatTime(s) {
+    if (isNaN(s) || s < 0) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  function loadSong(index) {
+    currentIndex = index;
+    const song = playlist[index];
+    audio.src = song.file;
+    audio.load();
+    songTitle.textContent = song.title;
+    songArtist.textContent = song.artist;
+    progressFill.style.width = '0%';
+    currentTimeEl.textContent = '0:00';
+    totalTimeEl.textContent = '0:00';
+
+    // Update playlist UI
+    playlistItems.forEach((item, i) => {
+      const indicator = item.querySelector('.playing-indicator');
+      if (i === index) {
+        item.style.background = 'rgba(167,139,250,0.15)';
+        item.style.opacity = '1';
+        indicator.textContent = '▶ 播放中';
+        indicator.style.color = 'rgba(255,255,255,0.4)';
+      } else {
+        item.style.background = 'transparent';
+        item.style.opacity = '0.7';
+        indicator.textContent = '';
+      }
+    });
+
+    if (isPlaying) {
+      audio.play().catch(() => {});
+    }
+  }
+
+  function playPause() {
+    if (isPlaying) {
+      audio.pause();
+      playBtn.textContent = '▶';
+    } else {
+      audio.play().catch(() => {});
+      playBtn.textContent = '⏸';
+    }
+    isPlaying = !isPlaying;
+  }
+
+  function nextSong() {
+    const next = (currentIndex + 1) % playlist.length;
+    loadSong(next);
+    if (isPlaying) audio.play().catch(() => {});
+  }
+
+  function prevSong() {
+    // If more than 3s into the song, restart; otherwise go to prev
+    if (audio.currentTime > 3) {
+      audio.currentTime = 0;
+    } else {
+      const prev = (currentIndex - 1 + playlist.length) % playlist.length;
+      loadSong(prev);
+      if (isPlaying) audio.play().catch(() => {});
+    }
+  }
+
+  // ===== Event Listeners =====
+  audio.addEventListener('loadedmetadata', () => {
+    totalTimeEl.textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!isSeeking && audio.duration) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progressFill.style.width = pct + '%';
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    // Auto play next
+    nextSong();
+  });
+
+  playBtn.addEventListener('click', playPause);
+
+  prevBtn.addEventListener('click', prevSong);
+
+  nextBtn.addEventListener('click', nextSong);
+
+  // Playlist click
+  playlistItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.index);
+      if (idx !== currentIndex) {
+        loadSong(idx);
+        audio.play().catch(() => {});
+        playBtn.textContent = '⏸';
+        isPlaying = true;
+      }
+    });
+  });
+
+  // Progress bar click
+  progressBar.addEventListener('click', (e) => {
+    if (!audio.duration) return;
+    const rect = progressBar.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    audio.currentTime = pct * audio.duration;
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); playPause(); }
+    if (e.key === 'ArrowRight') nextSong();
+    if (e.key === 'ArrowLeft') prevSong();
+  });
+
+  // Volume
+  volumeSlider.addEventListener('input', () => {
+    audio.volume = parseFloat(volumeSlider.value);
+    volumeBtn.textContent = audio.volume === 0 ? '🔇' : audio.volume < 0.5 ? '🔉' : '🔊';
+  });
+
+  volumeBtn.addEventListener('click', () => {
+    if (audio.volume > 0) {
+      audio._prevVolume = audio.volume;
+      audio.volume = 0;
+      volumeSlider.value = 0;
+      volumeBtn.textContent = '🔇';
+    } else {
+      audio.volume = audio._prevVolume || 0.7;
+      volumeSlider.value = audio.volume;
+      volumeBtn.textContent = audio.volume < 0.5 ? '🔉' : '🔊';
+    }
+  });
+
+  // ===== Audio Visualizer =====
+  const canvas = document.getElementById('visualizer');
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+    let analyser, dataArray, audioCtx, source;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * 2;
+      canvas.height = 120 * 2;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = '120px';
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function setupAnalyser() {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        source = audioCtx.createMediaElementSource(audio);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        draw();
+      } catch(e) { /* visualizer fallback silent */ }
+    }
+
+    function draw() {
+      requestAnimationFrame(draw);
+      if (!analyser || !dataArray) return;
+      analyser.getByteFrequencyData(dataArray);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const barCount = 64;
+      const step = Math.floor(dataArray.length / barCount);
+      const barW = (canvas.width / barCount) * 0.7;
+      const gap = (canvas.width / barCount) * 0.3;
+
+      for (let i = 0; i < barCount; i++) {
+        const val = dataArray[i * step] / 255;
+        const h = val * canvas.height * 0.9;
+        const x = i * (barW + gap) + gap / 2;
+        const y = canvas.height - h;
+
+        const gradient = ctx.createLinearGradient(x, y, x, canvas.height);
+        gradient.addColorStop(0, 'rgba(167,139,250,0.6)');
+        gradient.addColorStop(0.5, 'rgba(124,58,237,0.4)');
+        gradient.addColorStop(1, 'rgba(124,58,237,0.1)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barW, h, [2, 2, 0, 0]);
+        ctx.fill();
+      }
+    }
+
+    // Setup analyser on first play
+    const origPlay = audio.play.bind(audio);
+    audio.play = function() {
+      if (!audioCtx) setupAnalyser();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      return origPlay();
+    };
+  }
+})();
+</script>
+
+<!-- ===== 蛙田商城 ===== -->
+<section id="mall" class="division-section mall">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag">蛙田商城</div>
+      <h2 class="section-title">精选好物，品质生活</h2>
+      <p class="section-desc">蛙田精选文化好物、艺术用品、音乐器材，让高品质触手可及。</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <h3>美术用品</h3>
+        <p>精选优质画材、颜料、画布，满足从入门到专业的一切美术创作需求。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <h3>文化好物</h3>
+        <p>蛙田原创文创产品、艺术书籍、音乐专辑，让文化的温度走进生活。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎁</div>
+        <h3>精品周边</h3>
+        <p>蛙田品牌周边、限量联名款、季节限定礼盒，送礼自用两相宜。</p>
+        <a href="https://www.watianmedia.com" onclick="alert('请在微信内打开此链接访问蛙田文化小程序');return false;" style="display:inline-block;margin-top:0.75rem;font-size:0.85rem;color:var(--primary);text-decoration:none;font-weight:500;border-bottom:1px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderBottomColor='var(--primary)'" onmouseout="this.style.borderBottomColor='transparent'">前往小程序选购 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 蛙田乐器 ===== -->
+<section id="instrument" class="division-section instrument">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag">蛙田乐器</div>
+      <h2 class="section-title">匠心之音，品质之选</h2>
+      <p class="section-desc">精选国内外优质乐器，提供专业售后与教学支持，让音乐之路更加顺畅。</p>
+    </div>
+    <div class="showcase">
+      <div class="showcase-text">
+        <p style="font-size:1.05rem;color:var(--text-muted);line-height:1.8;font-weight:300;">
+          蛙田乐器与艾鸽商贸深度合作，代理经销 Nord、ESP、LAG、Dunlop、Ernie Ball、Ashdown 等国际一线乐器品牌，提供专业乐器销售、租赁与售后服务。
+        </p>
+        <ul class="feature-list">
+          <li>Nord 电钢琴/合成器 — 专业舞台首选</li>
+          <li>ESP / E-II 电吉他 — 日系精工品质</li>
+          <li>LAG 民谣/古典吉他 — 法式匠心之作</li>
+          <li>Dunlop / MXR 效果器 — 全球吉他手信赖</li>
+          <li>Ashdown 贝斯音箱 — 英伦低音传奇</li>
+          <li>Ernie Ball 琴弦 — 全球销量领先</li>
+        </ul>
+      </div>
+      <div class="showcase-visual">
+        <div class="visual-box" style="padding:1rem;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <img src="images/蛙田乐器/nord-piano.jpg" alt="Nord 电钢琴" style="width:100%;border-radius:8px;aspect-ratio:1;object-fit:cover;">
+            <img src="images/蛙田乐器/esp-eii.jpg" alt="ESP E-II 吉他" style="width:100%;border-radius:8px;aspect-ratio:1;object-fit:cover;">
+            <img src="images/蛙田乐器/lag-acoustic.jpg" alt="LAG 吉他" style="width:100%;border-radius:8px;aspect-ratio:1;object-fit:cover;">
+            <img src="images/蛙田乐器/nord-stage.jpg" alt="Nord Stage" style="width:100%;border-radius:8px;aspect-ratio:1;object-fit:cover;">
+          </div>
+          <div class="visual-label" style="margin-top:8px;font-size:12px;">艾鸽商贸 · 正品授权</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-grid" style="margin-top:2rem;">
+      <div class="card">
+        <div class="card-icon">🎹</div>
+        <h3>键盘乐器</h3>
+        <p>Nord 电钢琴、合成器、管风琴 — 瑞典传奇舞台键盘，专业乐手的终极之选。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎸</div>
+        <h3>吉他/贝斯</h3>
+        <p>ESP / E-II、LAG 吉他、Ernie Ball 琴弦，从入门到专业级别一应俱全。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔊</div>
+        <h3>音箱/效果器</h3>
+        <p>Ashdown 贝斯音箱、Dunlop / MXR 效果器，塑造你独一无二的音色。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 蛙田科技 ===== -->
+<section id="tech" class="division-section tech">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag">蛙田科技</div>
+      <h2 class="section-title">科技赋能，智慧未来</h2>
+      <p class="section-desc">用前沿科技为文化教育注入新活力，打造智慧化教学与管理解决方案。</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>AI 老师系统</h3>
+        <p>人工智能赋能教学，个性化学习路径推荐，让每个孩子都有专属的学习伙伴。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <h3>智慧课堂</h3>
+        <p>线上线下融合教学平台，家校互动、课程预约、学习报告一站式管理。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💡</div>
+        <h3>数字解决方案</h3>
+        <p>为教培机构提供数字化升级方案，从小程序开发到运营系统定制化服务。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag" style="background:rgba(255,255,255,0.08);color:var(--primary-light);">品牌故事</div>
+      <h2 class="section-title">从一间琴房，到一座生态</h2>
+      <p class="section-desc full" style="max-width:100%;">
+        2014年，上海郊区，一间教室，一位父亲开始了音乐教育的创业之路。十年后，这座生态从何而来？
+      </p>
+    </div>
+
+    <div class="about-story" style="display:flex;flex-direction:column;gap:1.5rem;">
+      <!-- Timeline items -->
+      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
+        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🏠</div>
+        <div>
+          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">一间教室的起点</h3>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
+            很多琴行的老板本身就是老师，但我偏偏什么都不是——我只是一位想给自己孩子找好老师的家长。郊区师资匮乏，身边恰好认识专业的乐器老师，既然要教自己的孩子，不如就办个琴行吧。于是，从一间教室、一个门外汉开始，一头扎进了这个行业。
+          </p>
+        </div>
+      </div>
+
+      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
+        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🚗</div>
+        <div>
+          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">每周的车程</h3>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
+            郊区请老师不容易，市区的老师不愿意跑那么远。每周开着车去市区接送老师，一周又一周。选老师只有一个标准：<strong style="color:var(--primary-light);font-weight:500;">这个老师，愿不愿意教我自己的孩子。</strong>与其说是在经营琴行，不如说是在以一个家长最挑剔的眼光，为所有孩子挑选最好的老师。
+          </p>
+        </div>
+      </div>
+
+      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
+        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🥁</div>
+        <div>
+          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">从一个鼓班开始</h3>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
+            最初只有一个架子鼓小班。几个孩子坐在鼓凳上，小小的手握着鼓棒，敲出来的声音可能并不整齐，但那种认真和兴奋，是后来一切故事的起点。慢慢地，一个班变成了多个班。架子鼓之外，又有了吉他、键盘、DJ。孩子们不只是想学一件乐器，他们想玩在一起，想组乐队。
+          </p>
+        </div>
+      </div>
+
+      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
+        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🎸</div>
+        <div>
+          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">三支儿童乐队</h3>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
+            雏鹰乐队、粉刷匠乐队、蓝色糖果乐队。每一支乐队背后，都是孩子们无数个下午的排练、磨合、争吵和和解。舞台上的三分钟光鲜，是排练室里三个月的汗水。后来有些孩子去了外地上学，渐渐离开了，但音乐梦没有断。<strong style="color:var(--primary-light);font-weight:500;">今天的新雏鹰乐队，就是从那些离开的孩子手中，接过来的接力棒。</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
+        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🌱</div>
+        <div>
+          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">从参与者到创造者</h3>
+          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
+            一开始只是参加别人的音乐节。后来开始自己办音乐节——租场地、调音响、排流程、现场执行，每一步都是从零摸索。再后来，有了自己的比赛、自己的考级体系。<strong style="color:var(--primary-light);font-weight:500;">从参与者，变成了创造者。</strong>这个转变不是一天完成的，是十年一点一滴积累的结果。
+          </p>
+        </div>
+      </div>
+
+      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.06);border:1px solid rgba(13,148,136,0.2);border-radius:16px;padding:1.5rem 2rem;">
+        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🌿</div>
+        <div>
+          <h3 style="color:var(--primary-light);font-size:1.1rem;margin-bottom:0.5rem;">一座生态</h3>
+          <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.8;font-weight:300;">
+            今天，当你打开蛙田文化的约课小程序，你会看到一个完整的文化教育生态圈。但这个生态圈的起点，不过是2014年那一间教室、一辆每周往返的车、一个父亲想给自己的孩子找好老师的朴素愿望。<br><br>
+            <strong style="color:white;font-size:1.05rem;">蛙田文化，不是一家琴行的故事，是一个家长用十年时间，为所有热爱音乐的孩子，搭建的一座桥。</strong><br><br>
+            从一间琴房出发，走向一座生态。每一步，都是因为当初的那个选择——<br>
+            <span style="color:var(--primary-light);font-size:1rem;font-weight:500;">用最好的老师，教我们自己的孩子。</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="蛙田文化logo.svg" alt="蛙田文化" style="height:32px;width:auto;margin-bottom:1rem;display:block;">
+      <p>蛙田文化 — 以文化为田，耕耘美好。上海蛙田文化传媒有限公司。</p>
+    </div>
+    <div class="footer-col">
+      <h4>业务板块</h4>
+      <a href="#meiyu">蛙田美育</a>
+      <a href="#music">蛙田音乐</a>
+      <a href="#mall">蛙田商城</a>
+      <a href="#instrument">蛙田乐器</a>
+      <a href="#tech">蛙田科技</a>
+    </div>
+    <div class="footer-col">
+      <h4>关于</h4>
+      <a href="#about">品牌故事</a>
+      <a href="#">加入我们</a>
+      <a href="#">合作伙伴</a>
+    </div>
+    <div class="footer-col">
+      <h4>联系</h4>
+      <a href="#">上海市 · 蛙田文化</a>
+      <a href="#">service@watianmedia.com</a>
+      <a href="#">微信公众号</a>
+      <a href="#" onclick="alert('请在微信内打开访问蛙田文化小程序');return false;" style="color:var(--primary-light);">蛙田小程序 →</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 上海蛙田文化传媒有限公司 All Rights Reserved.
+  </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script>
+// ===== P5.JS BACKGROUND =====
+let particles = [];
+let currentHue = 170; // teal start
+let targetHue = 170;
+let currentSat = 50;
+let targetSat = 50;
+let currentBright = 80;
+let targetBright = 80;
+
+// Section colors (HSB)
+const sectionColors = {
+  hero:    { h: 170, s: 55, b: 75 },
+  meiyu:   { h: 348, s: 85, b: 70 }, // rose
+  music:   { h: 265, s: 75, b: 75 }, // purple
+  mall:    { h: 38,  s: 85, b: 75 }, // amber
+  inst:    { h: 238, s: 70, b: 75 }, // indigo
+  tech:    { h: 188, s: 85, b: 70 }, // cyan
+  about:   { h: 170, s: 30, b: 30 }, // dark teal
+};
+
+function getSectionColor(scrollY, viewH) {
+  const docH = document.documentElement.scrollHeight - viewH;
+  const progress = scrollY / docH;
+  // Map sections by their scroll positions
+  const sections = [
+    { id: 'hero', start: 0, end: 0.12, color: sectionColors.hero },
+    { id: 'meiyu', start: 0.12, end: 0.28, color: sectionColors.meiyu },
+    { id: 'music', start: 0.28, end: 0.42, color: sectionColors.music },
+    { id: 'mall', start: 0.42, end: 0.56, color: sectionColors.mall },
+    { id: 'inst', start: 0.56, end: 0.70, color: sectionColors.inst },
+    { id: 'tech', start: 0.70, end: 0.84, color: sectionColors.tech },
+    { id: 'about', start: 0.84, end: 1.0, color: sectionColors.about },
+  ];
+
+  for (let i = 0; i < sections.length; i++) {
+    const seg = sections[i];
+    if (progress >= seg.start && progress < seg.end) {
+      const t = (progress - seg.start) / (seg.end - seg.start);
+      // Check if we need to blend with next section
+      if (t > 0.7 && i < sections.length - 1) {
+        const next = sections[i + 1];
+        const blend = (t - 0.7) / 0.3;
+        return {
+          h: lerp(seg.color.h, next.color.h, blend),
+          s: lerp(seg.color.s, next.color.s, blend),
+          b: lerp(seg.color.b, next.color.b, blend),
+        };
+      }
+      return seg.color;
+    }
+  }
+  return sectionColors.hero;
+}
+
+function setup() {
+  const canvas = createCanvas(windowWidth, windowHeight);
+  canvas.parent('p5-bg');
+  colorMode(HSB, 360, 100, 100, 100);
+  noStroke();
+
+  // Initialize particles
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: random(width),
+      y: random(height),
+      vx: random(-0.3, 0.3),
+      vy: random(-0.3, 0.3),
+      size: random(2, 6),
+      hueOffset: random(-30, 30),
+      life: random(100, 200),
+      maxLife: random(100, 200),
+    });
+  }
+}
+
+function draw() {
+  const scrollY = window.scrollY || window.pageYOffset;
+  const viewH = windowHeight;
+  const col = getSectionColor(scrollY, viewH);
+
+  // Smooth transition
+  currentHue = lerp(currentHue, col.h, 0.03);
+  currentSat = lerp(currentSat, col.s, 0.03);
+  currentBright = lerp(currentBright, col.b, 0.03);
+
+  // Clear with very low opacity trail
+  background(currentHue, currentSat * 0.15, currentBright * 0.95, 0.04);
+
+  // Update and draw particles
+  for (let p of particles) {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+
+    // Wrap around edges
+    if (p.x < -20) p.x = width + 20;
+    if (p.x > width + 20) p.x = -20;
+    if (p.y < -20) p.y = height + 20;
+    if (p.y > height + 20) p.y = -20;
+
+    // Reset life
+    if (p.life <= 0) {
+      p.x = random(width);
+      p.y = random(height);
+      p.life = p.maxLife;
+      p.vx = random(-0.4, 0.4);
+      p.vy = random(-0.4, 0.4);
+    }
+
+    // Draw particle
+    const alpha = map(p.life, 0, p.maxLife, 0, 0.5);
+    const hue = (currentHue + p.hueOffset + 360) % 360;
+    fill(hue, currentSat * 0.6, currentBright, alpha);
+    const s = p.size * (0.8 + 0.4 * sin(frameCount * 0.02 + p.x));
+    ellipse(p.x, p.y, s, s);
+
+    // Draw connections
+    stroke(hue, currentSat * 0.3, currentBright * 0.8, alpha * 0.15);
+    strokeWeight(0.3);
+    for (let j = 0; j < particles.length; j++) {
+      const other = particles[j];
+      const d = dist(p.x, p.y, other.x, other.y);
+      if (d < 120 && d > 0) {
+        const lineAlpha = map(d, 0, 120, 0.08, 0) * alpha;
+        stroke(hue, currentSat * 0.2, currentBright * 0.7, lineAlpha);
+        line(p.x, p.y, other.x, other.y);
+      }
+    }
+    noStroke();
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+// ===== NAV SCROLL EFFECT =====
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ===== MOBILE NAV TOGGLE =====
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navToggle.classList.remove('active');
+    navLinks.classList.remove('open');
+  });
+});
+
+// ===== INTERSECTION OBSERVER FOR CARDS =====
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+// Observe cards
+document.querySelectorAll('.card').forEach(el => observer.observe(el));
+// Observe showcase elements
+document.querySelectorAll('.showcase-text, .showcase-visual').forEach(el => observer.observe(el));
+// Observe fade-up elements in about
+document.querySelectorAll('#about .fade-up, #about .about-grid').forEach(el => observer.observe(el));
+// Observe music player
+document.querySelectorAll('.music-player').forEach(el => observer.observe(el));
+// Observe video spotlight
+document.querySelectorAll('.video-spotlight').forEach(el => observer.observe(el));
+
+// ===== VIDEO SPOTLIGHT — 双播放器盲盒 =====
+const Lfiles=['0eb9528ffdcf494dba85d798c3eabe3a.mp4','13b54d099a3512c2e3827eaedb90e346.mp4','285a2d8617d315e8c283c3633d31094b.mp4','3a7ff11f8a5b63d20d05b08896239315.mp4','3e2a30bd541c224a579981ac464ae00c.mp4','51342146fe5a1e97bd26058e9277af57.mp4','5ff8c3395cfc894ab37fe3d0534921a9.mp4','734f22f844dc6ac1266cba097602df92.mp4','b51556424e3c0ddbaa36726245fb4bdc.mp4','b706064076cf41cbc9920d6967e8d3c9.mp4','cfc0c7dc981b825a9d5d9a0dadeb7fb4.mp4','de751ff05e1bbd2280b9a1c4b1e7a546.mp4','e1e6e4f02b490f15a3fa1c564c399fa4.mp4','ec0345dbfcd8e0f5f35c4a7c5c761e1c.mp4','皮影戏.mp4'];
+const Pfiles=['11c9a44f830985a63360d204b768deb1.mp4','22e7e0a7190b9cc8c3d3da81e9263369.mp4','3f6d6bbdf1773b3078a2f248cc72738f.mp4','5a3a23629a2208d5f4a3d35556afa17d.mp4','69909f6b97ffea335f6e3ec21da7e20f.mp4','98527bba0fb607fab2af36351f632f4e.mp4','a308c5b65c7e1dd74bf9989c8fb24a99.mp4'];
+const themes=[
+  {bg:'linear-gradient(135deg,#0d9488,#0f766e)',accent:'#0d9488',emoji:'🎬'},
+  {bg:'linear-gradient(135deg,#7c3aed,#6d28d9)',accent:'#7c3aed',emoji:'🎥'},
+  {bg:'linear-gradient(135deg,#e11d48,#be123c)',accent:'#e11d48',emoji:'📽'},
+  {bg:'linear-gradient(135deg,#d97706,#b45309)',accent:'#d97706',emoji:'🎞'},
+  {bg:'linear-gradient(135deg,#0ea5e9,#0284c7)',accent:'#0ea5e9',emoji:'📹'},
+  {bg:'linear-gradient(135deg,#d946ef,#c026d3)',accent:'#d946ef',emoji:'🎯'},
+];
+// DOM refs
+const vL=document.getElementById('vsVideoL'),vP=document.getElementById('vsVideoP');
+const pL=document.getElementById('vsLandscape'),pP=document.getElementById('vsPortrait');
+const gL=document.getElementById('vsGlowL'),gP=document.getElementById('vsGlowP');
+const e=document.getElementById('vsEmpty'),pb=document.getElementById('vsPlayBtn');
+const sb=document.getElementById('vsShuffleBtn'),ba=document.getElementById('vsBadge');
+const pf=document.getElementById('vsProgressFill'),pr=document.getElementById('vsProgress');
+const te=document.getElementById('vsTime'),no=document.getElementById('vsNextOverlay');
+const nt=document.getElementById('vsNextText');
+let activePlayer=null,isP=false,ci=-1;
+
+function fmt(s){if(!s||isNaN(s))return'0:00';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function setTheme(ti){const t=themes[ti];gL.style.background=t.bg;gP.style.background=t.bg;ba.textContent=t.emoji;ba.style.background=t.accent;pf.style.background=t.accent;}
+
+function load(file,isL){
+  const playerA=pL,playerB=pP,videoA=vL,videoB=vP;
+  const src='images/蛙田美育/'+file;
+  setTheme(Math.floor(Math.random()*themes.length));
+  e.style.display='none';pf.style.width='0%';te.textContent='0:00 / 0:00';
+
+  const nxt=isL?{video:videoA,player:playerA}:{video:videoB,player:playerB};
+
+  if(playerA.classList.contains('active')||playerB.classList.contains('active')){
+    playerA.classList.remove('active');playerB.classList.remove('active');
+    videoA.pause();videoB.pause();
+    no.classList.add('show');
+    nt.textContent='✨ 切换中...';
+    setTimeout(()=>{
+      videoA.removeAttribute('src');videoA.load();
+      videoB.removeAttribute('src');videoB.load();
+      nxt.video.src=src;
+      nxt.video.load();
+      requestAnimationFrame(()=>{
+        nxt.player.classList.add('active');
+        no.classList.remove('show');
+        nxt.video.play().catch(()=>{}).then(()=>{
+          isP=true;pb.textContent='⏸';
+        });
+        activePlayer=nxt.video;
+      });
+    }, 550);
+  } else {
+    nxt.video.src=src;
+    nxt.video.load();
+    requestAnimationFrame(()=>{
+      nxt.player.classList.add('active');
+      nxt.video.play().catch(()=>{}).then(()=>{
+        isP=true;pb.textContent='⏸';
+      });
+      activePlayer=nxt.video;
+    });
+  }
+}
+
+function pick(){
+  let isL=Math.random()<0.68; // 68% landscape
+  let list=isL?Lfiles:Pfiles;
+  let idx=Math.floor(Math.random()*list.length);
+  load(list[idx],isL);
+}
+
+// Event listeners
+pb.onclick=()=>{if(!activePlayer){pick();return;}if(isP){activePlayer.pause();pb.textContent='▶';isP=false;}else{activePlayer.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
+sb.onclick=()=>{pick();};
+const timeHandler=()=>{if(!activePlayer||!activePlayer.duration)return;pf.style.width=((activePlayer.currentTime/activePlayer.duration)*100)+'%';te.textContent=fmt(activePlayer.currentTime)+' / '+fmt(activePlayer.duration);};
+vL.ontimeupdate=timeHandler;vP.ontimeupdate=timeHandler;
+const endHandler=()=>{setTimeout(pick,300);};
+vL.onended=endHandler;vP.onended=endHandler;
+pr.onclick=(e)=>{if(!activePlayer||!activePlayer.duration)return;const r=pr.getBoundingClientRect();activePlayer.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*activePlayer.duration;};
+e.style.display='flex';vL.style.display='block';vP.style.display='block';
+
+// Observe section headers
+document.querySelectorAll('.section-header').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
