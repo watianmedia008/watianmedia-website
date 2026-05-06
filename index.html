@@ -1876,6 +1876,10 @@ const allVideos = [
   {file:'科创课（二）.mp4',cat:'stem',label:'科创课（二）'},
   // 🎤
   {file:'口语班.mp4',cat:'other',label:'口语班'},
+  // 🔥 健身
+  {file:'燃脂操（一）.mp4',cat:'fitness',label:'燃脂操（一）'},
+  {file:'燃脂操（二）.mp4',cat:'fitness',label:'燃脂操（二）'},
+  {file:'燃脂操（三）.mp4',cat:'fitness',label:'燃脂操（三）'},
 ];
 
 const categories = [
@@ -1884,10 +1888,11 @@ const categories = [
   {id:'tea',emoji:'🍵',name:'茶艺',desc:'茶文化'},
   {id:'calligraphy',emoji:'✍️',name:'书法',desc:'笔墨'},
   {id:'stem',emoji:'🧪',name:'科创',desc:'科技创作'},
+  {id:'fitness',emoji:'🔥',name:'健身',desc:'燃脂操'},
 ];
 
 function isLandscape(file) {
-  const p = file.match(/^(宋式点茶|儿童乐高搭建|口语班|科创课（一）|茶艺课)/);
+  const p = file.match(/^(宋式点茶|儿童乐高搭建|口语班|科创课（一）|茶艺课|燃脂操)/);
   return !p;
 }
 
