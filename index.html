@@ -143,21 +143,18 @@
     .nav-cta::after { display: none !important; }
     .nav-cta:hover { background: var(--primary-dark) !important; color: white !important; }
 
-    /* Language toggle */
-    .lang-toggle {
-      background: rgba(13,148,136,0.1);
-      border: 1px solid rgba(13,148,136,0.2);
-      color: var(--primary-dark);
-      padding: 4px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      transition: all 0.2s;
-      font-family: inherit;
-      letter-spacing: 0.5px;
+    /* Bilingual: English sub-text below Chinese */
+    .en-sub {
+      display: block;
+      font-size: 0.55em;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+      opacity: 0.75;
     }
-    .lang-toggle:hover { background: rgba(13,148,136,0.2); }
+    .hero-title .en-sub { color: rgba(255,255,255,0.5); }
+    .section-title .en-sub { font-size: 0.45em; }
 
     .nav-toggle {
       display: none;
@@ -468,7 +465,7 @@
       background: radial-gradient(ellipse at center, #1a1a2e, #0a0a0a);
       opacity: 0;
       transform: scale(0.92);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
       pointer-events: none;
     }
     .vs-stage .vs-player.active {
@@ -495,15 +492,7 @@
       z-index: 1;
     }
     /* Landscape: full width */
-    .vs-landscape video {
-      width: 100%;
-      height: 100%;
-    }
-    /* Portrait: centered narrow */
-    .vs-portrait video {
-      height: 90%;
-      width: auto;
-    }
+    /* Orientation classes set by JS on .vs-player */
     .vs-stage .vs-label {
       position: absolute;
       bottom: 12px;
@@ -562,6 +551,22 @@
       color: #0d9488;
     }
     .vs-btn-shuffle:hover { background: rgba(13,148,136,0.35); }
+    .vs-btn-mute {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .vs-btn-mute:hover { background: rgba(255,255,255,0.15); color: white; }
+    .vs-btn-mute.unmuted { color: var(--primary-light); border-color: rgba(13,148,136,0.3); background: rgba(13,148,136,0.12); }
 
     .vs-progress {
       flex: 1;
@@ -615,6 +620,50 @@
     }
     .vs-next-overlay.show { opacity: 1; }
 
+    /* Category bar */
+    .vs-cat-bar {
+      display: flex;
+      gap: 6px;
+      padding: 0 0 12px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      flex-wrap: nowrap;
+    }
+    .vs-cat-bar::-webkit-scrollbar { display: none; }
+    .vs-cat {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .vs-cat:hover {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+    }
+    .vs-cat.active {
+      background: rgba(13,148,136,0.2);
+      border-color: rgba(13,148,136,0.4);
+      color: var(--primary-light);
+    }
+    .cat-emoji { font-size: 14px; }
+    .cat-count {
+      font-size: 10px;
+      opacity: 0.5;
+      margin-left: 2px;
+    }
+    .vs-cat.active .cat-count { opacity: 0.8; }
+
     /* Empty state */
     .vs-empty {
       display: flex;
@@ -640,32 +689,230 @@
       .vs-btn-play { width: 38px; height: 38px; }
       .vs-time { font-size: 11px; min-width: 60px; }
       .vs-empty { padding: 50px 20px; font-size: 48px; min-height: 200px; }
-      .vs-portrait video { height: 85%; }
+      .vs-player video { max-height: 80vh; }
     }
 
-    /* ===== ABOUT ===== */
+    /* ===== STORY BOOK ===== */
     #about {
       background: var(--bg-dark);
       color: var(--text-light);
     }
     #about .section-title { color: white; }
     #about .section-desc { color: rgba(255,255,255,0.6); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-      margin-top: 2.5rem;
+
+    .book-container {
+      position: relative;
+      margin: 3rem auto 0;
+      max-width: 900px;
+      perspective: 2000px;
     }
-    .stat-item { text-align: center; }
-    .stat-num {
-      font-size: 2.5rem;
+    .book-spread {
+      position: relative;
+      display: flex;
+      min-height: 420px;
+      background: linear-gradient(150deg, #f8f4e8 0%, #f0ead6 100%);
+      border-radius: 4px 12px 12px 4px;
+      box-shadow:
+        0 4px 24px rgba(0,0,0,0.3),
+        0 1px 4px rgba(0,0,0,0.15),
+        inset 0 0 80px rgba(139,90,43,0.06);
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+    /* Gutter / spine */
+    .book-gutter {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, transparent 5%, rgba(0,0,0,0.08) 20%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.08) 80%, transparent 95%);
+      z-index: 2;
+    }
+    .book-page {
+      flex: 1;
+      padding: 2.5rem 2.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 380px;
+      position: relative;
+    }
+    .book-page.left {
+      padding-right: 3rem;
+      background: linear-gradient(90deg, #f8f4e8 0%, #f5efe0 100%);
+    }
+    .book-page.right {
+      padding-left: 3rem;
+      background: linear-gradient(90deg, #f5efe0 0%, #f0ead6 100%);
+    }
+    /* Page curl decoration */
+    .book-page:last-child::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+      pointer-events: none;
+    }
+    /* Book page content */
+    .book-page .page-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+    .book-page .page-num {
+      font-size: 0.75rem;
+      color: rgba(0,0,0,0.2);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+    }
+    .book-page h3 {
+      font-family: 'Noto Serif SC', Georgia, serif;
+      font-size: 1.2rem;
+      color: #2d2a24;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .book-page p {
+      font-size: 0.88rem;
+      line-height: 1.9;
+      color: #5a5245;
+      font-weight: 300;
+    }
+    .book-page p strong {
+      color: #0d9488;
+      font-weight: 500;
+    }
+    /* Credo page - opening */
+    .book-credo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100%;
+    }
+    .book-credo .credo-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .book-credo blockquote {
+      font-family: 'Noto Serif SC', Georgia, serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: #2d2a24;
+      line-height: 1.9;
+      font-weight: 400;
+      font-style: italic;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    .book-credo .credo-year {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: rgba(0,0,0,0.25);
+      letter-spacing: 0.15em;
+      font-family: Georgia, serif;
+    }
+    /* Title page */
+    .book-title-page {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .book-title-page .tiny-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(0,0,0,0.25);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+    .book-title-page h1 {
+      font-family: 'Noto Serif SC', Georgia, serif;
+      font-size: 1.8rem;
+      color: #2d2a24;
       font-weight: 700;
-      background: linear-gradient(135deg, var(--primary-light), var(--warm-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      line-height: 1.3;
     }
-    .stat-label { font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+    .book-title-page .sub {
+      font-size: 0.95rem;
+      color: rgba(0,0,0,0.35);
+      margin-top: 0.8rem;
+      font-family: Georgia, serif;
+      font-style: italic;
+    }
+    /* Book nav */
+    .book-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .book-nav button {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .book-nav button:hover {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border-color: rgba(255,255,255,0.2);
+    }
+    .book-nav button:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+    .book-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .book-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      transition: all 0.3s;
+    }
+    .book-dot.active {
+      background: var(--primary-light);
+      width: 9px;
+      height: 9px;
+    }
+    .book-page-info {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+      font-family: Georgia, serif;
+    }
+
+    /* Turn animation */
+    .book-spread.turning {
+      animation: bookTurn 0.5s ease-in-out;
+    }
+    @keyframes bookTurn {
+      0% { transform: rotateY(0deg) scaleX(1); }
+      50% { transform: rotateY(-3deg) scaleX(0.97); }
+      100% { transform: rotateY(0deg) scaleX(1); }
+    }
 
     /* ===== FOOTER ===== */
     footer {
@@ -747,6 +994,61 @@
       .card-grid { grid-template-columns: 1fr; }
       .nav-brand span { font-size: 15px; }
     }
+
+    /* ===== MOBILE BOOK (stack pages) ===== */
+    @media (max-width: 700px) {
+      #about .section-content { padding: 0; }
+      .book-spread { flex-direction: column; min-height: auto; }
+      .book-gutter { display: none; }
+      .book-page {
+        padding: 1.8rem 1.5rem !important;
+        min-height: auto;
+      }
+      .book-page.left {
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+        border-radius: 4px 4px 0 0;
+      }
+      .book-page.right {
+        border-radius: 0 0 4px 4px;
+      }
+      .book-page h3 { font-size: 1.05rem; }
+      .book-page p { font-size: 0.82rem; line-height: 1.75; }
+      .book-title-page h1 { font-size: 1.3rem; }
+      .book-credo blockquote { font-size: 1rem; }
+      .book-nav { flex-wrap: wrap; gap: 0.6rem; padding: 0 0.5rem; }
+      .book-nav button { font-size: 0.78rem; padding: 0.4rem 0.8rem; }
+      .section-header { padding: 0 0.5rem 0.5rem; }
+      .section-header .section-desc { font-size: 0.82rem; }
+    }
+
+    /* ===== MOBILE VIDEO PLAYER ===== */
+    @media (max-width: 600px) {
+      .video-spotlight-title { font-size: 1rem; }
+      .vs-cat { padding: 5px 10px; font-size: 11px; gap: 3px; }
+      .vs-cat-bar { gap: 4px; padding: 0 0 8px 0; }
+      .vs-stage { height: 50vh; min-height: 280px; max-height: 400px; }
+      .vs-controls { padding: 8px 10px; gap: 6px; flex-wrap: wrap; }
+      .vs-btn { width: 28px; height: 28px; font-size: 11px; }
+      .vs-btn-play { width: 34px; height: 34px; font-size: 14px; }
+      .vs-time { font-size: 10px; min-width: 50px; }
+      .vs-empty { padding: 40px 15px; font-size: 36px; min-height: 180px; }
+      .vs-label { font-size: 11px; bottom: 8px; left: 10px; padding: 3px 8px; }
+    }
+
+    /* ===== MOBILE GENERAL ===== */
+    @media (max-width: 480px) {
+      .hero-title { font-size: 1.8rem !important; }
+      .hero-badge { font-size: 0.7rem; padding: 4px 12px; }
+      .hero-sub { font-size: 0.85rem; }
+      .section-title { font-size: 1.3rem; }
+      .section-desc { font-size: 0.82rem; }
+      section { padding: 60px 0.8rem !important; }
+      .card { padding: 1.2rem; }
+      .card h3 { font-size: 1rem; }
+      .card p { font-size: 0.82rem; }
+      .showcase-text p { font-size: 0.85rem; }
+      .footer-grid { gap: 1.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -771,7 +1073,6 @@
     <li><a href="#tech">科技</a></li>
     <li><a href="#about">品牌</a></li>
     <li><a href="#hero" class="nav-cta">联系我们</a></li>
-    <li><button class="lang-toggle" id="langToggle">EN</button></li>
   </ul>
 </nav>
 
@@ -826,27 +1127,19 @@
       </div>
     </div>
 
-    <!-- Video Spotlight: 盲盒体验 -->
+    <!-- Video Spotlight: 分类播放器 -->
     <div class="video-spotlight fade-up">
-      <div class="video-spotlight-title">🎁 培训视频盲盒</div>
+      <div class="video-spotlight-title">🎁 蛙田美育 · 课堂集锦</div>
+      <!-- Category bar -->
+      <div class="vs-cat-bar" id="vsCatBar"></div>
       <div class="vs-stage" id="vsStage">
         <!-- Empty state -->
         <div class="vs-empty" id="vsEmpty">🎁<div class="vs-hint">点 🎲 开盒</div></div>
-        <!-- Landscape player -->
-        <div class="vs-player vs-landscape" id="vsLandscape">
-          <div class="vs-glow" id="vsGlowL"></div>
-          <video id="vsVideoL" playsinline></video>
-          <div class="vs-label"></div>
-        </div>
-        <!-- Portrait player -->
-        <div class="vs-player vs-portrait" id="vsPortrait">
-          <div class="vs-glow" id="vsGlowP"></div>
-          <video id="vsVideoP" playsinline></video>
-          <div class="vs-label"></div>
-        </div>
-        <!-- Next-up overlay -->
-        <div class="vs-next-overlay" id="vsNextOverlay">
-          <div id="vsNextText">加载中...</div>
+        <!-- Single player -->
+        <div class="vs-player active" id="vsPlayer">
+          <div class="vs-glow" id="vsGlow"></div>
+          <video id="vsVideo" playsinline webkit-playsinline></video>
+          <div class="vs-label" id="vsCatName"></div>
         </div>
       </div>
       <!-- Shared controls -->
@@ -856,6 +1149,7 @@
         </div>
         <button class="vs-btn vs-btn-shuffle" id="vsShuffleBtn" title="开盒">🎲</button>
         <button class="vs-btn vs-btn-play" id="vsPlayBtn">▶</button>
+        <button class="vs-btn vs-btn-mute" id="vsMuteBtn" title="静音">🔇</button>
         <div class="vs-progress" id="vsProgress">
           <div class="vs-progress-fill" id="vsProgressFill" style="width:0%"></div>
         </div>
@@ -907,7 +1201,7 @@
           </div>
 
           <div style="display:flex;align-items:center;gap:8px;">
-            <button id="volumeBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:16px;cursor:pointer;padding:4px;">🔊</button>
+            <button id="volumeBtn" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);font-size:15px;cursor:pointer;padding:4px 10px;border-radius:6px;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">🔊</button>
             <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.7" style="width:60px;accent-color:#a78bfa;">
           </div>
         </div>
@@ -1102,24 +1396,24 @@
     if (e.key === 'ArrowLeft') prevSong();
   });
 
-  // Volume
-  volumeSlider.addEventListener('input', () => {
-    audio.volume = parseFloat(volumeSlider.value);
-    volumeBtn.textContent = audio.volume === 0 ? '🔇' : audio.volume < 0.5 ? '🔉' : '🔊';
-  });
+  // Volume (controls both audio.muted + Web Audio gainNode)
+  if (volumeBtn && volumeSlider) {
+    volumeBtn.onclick = () => {
+      audio.muted = !audio.muted;
+      if (audioGainNode) audioGainNode.gain.value = audio.muted ? 0 : 1;
+      volumeBtn.textContent = audio.muted ? '🔇' : audio.volume < 0.5 ? '🔉' : '🔊';
+      volumeSlider.value = audio.muted ? 0 : audio.volume;
+    };
+    volumeSlider.oninput = () => {
+      const v = parseFloat(volumeSlider.value);
+      audio.volume = v;
+      if (audioGainNode) audioGainNode.gain.value = v === 0 ? 0 : 1;
+      if (v === 0) { audio.muted = true; volumeBtn.textContent = '🔇'; }
+      else { audio.muted = false; volumeBtn.textContent = v < 0.5 ? '🔉' : '🔊'; }
+    };
+  }
 
-  volumeBtn.addEventListener('click', () => {
-    if (audio.volume > 0) {
-      audio._prevVolume = audio.volume;
-      audio.volume = 0;
-      volumeSlider.value = 0;
-      volumeBtn.textContent = '🔇';
-    } else {
-      audio.volume = audio._prevVolume || 0.7;
-      volumeSlider.value = audio.volume;
-      volumeBtn.textContent = audio.volume < 0.5 ? '🔉' : '🔊';
-    }
-  });
+  let audioGainNode = null;  // Web Audio gain control (set by visualizer)
 
   // ===== Audio Visualizer =====
   const canvas = document.getElementById('visualizer');
@@ -1143,8 +1437,11 @@
         source = audioCtx.createMediaElementSource(audio);
         analyser = audioCtx.createAnalyser();
         analyser.fftSize = 256;
+        audioGainNode = audioCtx.createGain();
+        audioGainNode.gain.value = 1;
         source.connect(analyser);
-        analyser.connect(audioCtx.destination);
+        analyser.connect(audioGainNode);
+        audioGainNode.connect(audioCtx.destination);
         dataArray = new Uint8Array(analyser.frequencyBinCount);
         draw();
       } catch(e) { /* visualizer fallback silent */ }
@@ -1301,80 +1598,40 @@
   </div>
 </section>
 
-<!-- ===== ABOUT ===== -->
+<!-- ===== STORY BOOK ===== -->
 <section id="about">
   <div class="section-content">
     <div class="section-header fade-up">
       <div class="section-tag" style="background:rgba(255,255,255,0.08);color:var(--primary-light);">品牌故事</div>
       <h2 class="section-title">从一间琴房，到一座生态</h2>
       <p class="section-desc full" style="max-width:100%;">
-        2014年，上海郊区，一间教室，一位父亲开始了音乐教育的创业之路。十年后，这座生态从何而来？
+        2014年，上海郊区，一间教室，一对父母开始了音乐教育的创业之路。十年后，这座生态从何而来？
       </p>
     </div>
 
-    <div class="about-story" style="display:flex;flex-direction:column;gap:1.5rem;">
-      <!-- Timeline items -->
-      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
-        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🏠</div>
-        <div>
-          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">一间教室的起点</h3>
-          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
-            很多琴行的老板本身就是老师，但我偏偏什么都不是——我只是一位想给自己孩子找好老师的家长。郊区师资匮乏，身边恰好认识专业的乐器老师，既然要教自己的孩子，不如就办个琴行吧。于是，从一间教室、一个门外汉开始，一头扎进了这个行业。
-          </p>
+    <div class="book-container">
+      <div class="book-spread" id="bookSpread">
+        <!-- Left page -->
+        <div class="book-page left">
+          <div class="book-title-page" id="bookLeft">
+            <!-- Dynamic content rendered by JS -->
+          </div>
+        </div>
+        <!-- Gutter -->
+        <div class="book-gutter"></div>
+        <!-- Right page -->
+        <div class="book-page right">
+          <div class="book-title-page" id="bookRight">
+            <!-- Dynamic content rendered by JS -->
+          </div>
         </div>
       </div>
 
-      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
-        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🚗</div>
-        <div>
-          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">每周的车程</h3>
-          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
-            郊区请老师不容易，市区的老师不愿意跑那么远。每周开着车去市区接送老师，一周又一周。选老师只有一个标准：<strong style="color:var(--primary-light);font-weight:500;">这个老师，愿不愿意教我自己的孩子。</strong>与其说是在经营琴行，不如说是在以一个家长最挑剔的眼光，为所有孩子挑选最好的老师。
-          </p>
-        </div>
-      </div>
-
-      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
-        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🥁</div>
-        <div>
-          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">从一个鼓班开始</h3>
-          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
-            最初只有一个架子鼓小班。几个孩子坐在鼓凳上，小小的手握着鼓棒，敲出来的声音可能并不整齐，但那种认真和兴奋，是后来一切故事的起点。慢慢地，一个班变成了多个班。架子鼓之外，又有了吉他、键盘、DJ。孩子们不只是想学一件乐器，他们想玩在一起，想组乐队。
-          </p>
-        </div>
-      </div>
-
-      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
-        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🎸</div>
-        <div>
-          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">三支儿童乐队</h3>
-          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
-            雏鹰乐队、粉刷匠乐队、蓝色糖果乐队。每一支乐队背后，都是孩子们无数个下午的排练、磨合、争吵和和解。舞台上的三分钟光鲜，是排练室里三个月的汗水。后来有些孩子去了外地上学，渐渐离开了，但音乐梦没有断。<strong style="color:var(--primary-light);font-weight:500;">今天的新雏鹰乐队，就是从那些离开的孩子手中，接过来的接力棒。</strong>
-          </p>
-        </div>
-      </div>
-
-      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.5rem 2rem;">
-        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🌱</div>
-        <div>
-          <h3 style="color:white;font-size:1.1rem;margin-bottom:0.5rem;">从参与者到创造者</h3>
-          <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.8;font-weight:300;">
-            一开始只是参加别人的音乐节。后来开始自己办音乐节——租场地、调音响、排流程、现场执行，每一步都是从零摸索。再后来，有了自己的比赛、自己的考级体系。<strong style="color:var(--primary-light);font-weight:500;">从参与者，变成了创造者。</strong>这个转变不是一天完成的，是十年一点一滴积累的结果。
-          </p>
-        </div>
-      </div>
-
-      <div class="story-item fade-up" style="display:flex;gap:1.5rem;align-items:flex-start;background:rgba(255,255,255,0.06);border:1px solid rgba(13,148,136,0.2);border-radius:16px;padding:1.5rem 2rem;">
-        <div style="font-size:2rem;flex-shrink:0;width:48px;text-align:center;">🌿</div>
-        <div>
-          <h3 style="color:var(--primary-light);font-size:1.1rem;margin-bottom:0.5rem;">一座生态</h3>
-          <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.8;font-weight:300;">
-            今天，当你打开蛙田文化的约课小程序，你会看到一个完整的文化教育生态圈。但这个生态圈的起点，不过是2014年那一间教室、一辆每周往返的车、一个父亲想给自己的孩子找好老师的朴素愿望。<br><br>
-            <strong style="color:white;font-size:1.05rem;">蛙田文化，不是一家琴行的故事，是一个家长用十年时间，为所有热爱音乐的孩子，搭建的一座桥。</strong><br><br>
-            从一间琴房出发，走向一座生态。每一步，都是因为当初的那个选择——<br>
-            <span style="color:var(--primary-light);font-size:1rem;font-weight:500;">用最好的老师，教我们自己的孩子。</span>
-          </p>
-        </div>
+      <div class="book-nav">
+        <button id="bookPrev">◀ 上一页</button>
+        <div class="book-dots" id="bookDots"></div>
+        <span class="book-page-info" id="bookPageInfo">1 / 4</span>
+        <button id="bookNext">下一页 ▶</button>
       </div>
     </div>
   </div>
@@ -1594,9 +1851,53 @@ document.querySelectorAll('.music-player').forEach(el => observer.observe(el));
 // Observe video spotlight
 document.querySelectorAll('.video-spotlight').forEach(el => observer.observe(el));
 
-// ===== VIDEO SPOTLIGHT — 双播放器盲盒 =====
-const Lfiles=['0eb9528ffdcf494dba85d798c3eabe3a.mp4','13b54d099a3512c2e3827eaedb90e346.mp4','285a2d8617d315e8c283c3633d31094b.mp4','3a7ff11f8a5b63d20d05b08896239315.mp4','3e2a30bd541c224a579981ac464ae00c.mp4','51342146fe5a1e97bd26058e9277af57.mp4','5ff8c3395cfc894ab37fe3d0534921a9.mp4','734f22f844dc6ac1266cba097602df92.mp4','b51556424e3c0ddbaa36726245fb4bdc.mp4','b706064076cf41cbc9920d6967e8d3c9.mp4','cfc0c7dc981b825a9d5d9a0dadeb7fb4.mp4','de751ff05e1bbd2280b9a1c4b1e7a546.mp4','e1e6e4f02b490f15a3fa1c564c399fa4.mp4','ec0345dbfcd8e0f5f35c4a7c5c761e1c.mp4','皮影戏.mp4'];
-const Pfiles=['11c9a44f830985a63360d204b768deb1.mp4','22e7e0a7190b9cc8c3d3da81e9263369.mp4','3f6d6bbdf1773b3078a2f248cc72738f.mp4','5a3a23629a2208d5f4a3d35556afa17d.mp4','69909f6b97ffea335f6e3ec21da7e20f.mp4','98527bba0fb607fab2af36351f632f4e.mp4','a308c5b65c7e1dd74bf9989c8fb24a99.mp4'];
+// ===== VIDEO SPOTLIGHT — 分类播放器 =====
+const allVideos = [
+  // 🏮 非遗
+  {file:'中药香囊.mp4',cat:'heritage',label:'中药香囊'},
+  {file:'皮影戏.mp4',cat:'heritage',label:'皮影戏'},
+  {file:'非遗宋锦包（一）.mp4',cat:'heritage',label:'宋锦包（一）'},
+  {file:'非遗宋锦包（二）.mp4',cat:'heritage',label:'宋锦包（二）'},
+  {file:'非遗宋锦挂饰（一）.mp4',cat:'heritage',label:'宋锦挂饰（一）'},
+  {file:'非遗宋锦挂饰（二）.mp4',cat:'heritage',label:'宋锦挂饰（二）'},
+  {file:'宣乐延时服务.mp4',cat:'heritage',label:'宣乐延时服务'},
+  // 🍵 茶艺
+  {file:'宋式点茶.mp4',cat:'tea',label:'宋式点茶'},
+  {file:'海派点茶.mp4',cat:'tea',label:'海派点茶'},
+  {file:'茶艺课.mp4',cat:'tea',label:'茶艺课'},
+  // ✍️ 书法
+  {file:'硬笔书法.mp4',cat:'calligraphy',label:'硬笔书法'},
+  {file:'软笔书法.mp4',cat:'calligraphy',label:'软笔书法'},
+  // 🧪 科创
+  {file:'儿童乐高搭建.mp4',cat:'stem',label:'乐高搭建'},
+  {file:'科创课（一）.mp4',cat:'stem',label:'科创课（一）'},
+  {file:'科创课（二）.mp4',cat:'stem',label:'科创课（二）'},
+  // 🎤
+  {file:'口语班.mp4',cat:'other',label:'口语班'},
+];
+
+const categories = [
+  {id:'all',emoji:'🎲',name:'全部',desc:'随机开盒'},
+  {id:'heritage',emoji:'🏮',name:'非遗',desc:'传统手艺'},
+  {id:'tea',emoji:'🍵',name:'茶艺',desc:'茶文化'},
+  {id:'calligraphy',emoji:'✍️',name:'书法',desc:'笔墨'},
+  {id:'stem',emoji:'🧪',name:'科创',desc:'科技创作'},
+];
+
+function isLandscape(file) {
+  const p = file.match(/^(宋式点茶|儿童乐高搭建|口语班|科创课（一）|茶艺课)/);
+  return !p;
+}
+
+// DOM refs
+const v=document.getElementById('vsVideo'),vp=document.getElementById('vsPlayer');
+const vg=document.getElementById('vsGlow'),e=document.getElementById('vsEmpty');
+const pb=document.getElementById('vsPlayBtn'),sb=document.getElementById('vsShuffleBtn');
+const mb=document.getElementById('vsMuteBtn'),ba=document.getElementById('vsBadge');
+const pf=document.getElementById('vsProgressFill'),pr=document.getElementById('vsProgress');
+const te=document.getElementById('vsTime');
+const catBar=document.getElementById('vsCatBar'),catName=document.getElementById('vsCatName');
+let isP=false,isMuted=true,currentCat='all',queue=[],qi=0,loading=false;
 const themes=[
   {bg:'linear-gradient(135deg,#0d9488,#0f766e)',accent:'#0d9488',emoji:'🎬'},
   {bg:'linear-gradient(135deg,#7c3aed,#6d28d9)',accent:'#7c3aed',emoji:'🎥'},
@@ -1605,182 +1906,213 @@ const themes=[
   {bg:'linear-gradient(135deg,#0ea5e9,#0284c7)',accent:'#0ea5e9',emoji:'📹'},
   {bg:'linear-gradient(135deg,#d946ef,#c026d3)',accent:'#d946ef',emoji:'🎯'},
 ];
-// DOM refs
-const vL=document.getElementById('vsVideoL'),vP=document.getElementById('vsVideoP');
-const pL=document.getElementById('vsLandscape'),pP=document.getElementById('vsPortrait');
-const gL=document.getElementById('vsGlowL'),gP=document.getElementById('vsGlowP');
-const e=document.getElementById('vsEmpty'),pb=document.getElementById('vsPlayBtn');
-const sb=document.getElementById('vsShuffleBtn'),ba=document.getElementById('vsBadge');
-const pf=document.getElementById('vsProgressFill'),pr=document.getElementById('vsProgress');
-const te=document.getElementById('vsTime'),no=document.getElementById('vsNextOverlay');
-const nt=document.getElementById('vsNextText');
-let activePlayer=null,isP=false,ci=-1;
 
 function fmt(s){if(!s||isNaN(s))return'0:00';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
-function setTheme(ti){const t=themes[ti];gL.style.background=t.bg;gP.style.background=t.bg;ba.textContent=t.emoji;ba.style.background=t.accent;pf.style.background=t.accent;}
+function setTheme(ti){const t=themes[ti];vg.style.background=t.bg;ba.textContent=t.emoji;ba.style.background=t.accent;pf.style.background=t.accent;}
 
-function load(file,isL){
-  const playerA=pL,playerB=pP,videoA=vL,videoB=vP;
+function buildQueue(cat){
+  if(cat==='all'){queue=[...allVideos];for(let i=queue.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[queue[i],queue[j]]=[queue[j],queue[i]];}}
+  else queue=allVideos.filter(v=>v.cat===cat);
+  qi=0;
+}
+
+function playVideo(videoObj){
+  if(loading) return;
+  loading=true;
+  const file=videoObj.file,l=isLandscape(file);
   const src='images/蛙田美育/'+file;
   setTheme(Math.floor(Math.random()*themes.length));
   e.style.display='none';pf.style.width='0%';te.textContent='0:00 / 0:00';
+  catName.textContent=videoObj.label;
 
-  const nxt=isL?{video:videoA,player:playerA}:{video:videoB,player:playerB};
+  // Set orientation class
+  vp.classList.remove('v-landscape','v-portrait');
+  vp.classList.add(l?'v-landscape':'v-portrait');
 
-  if(playerA.classList.contains('active')||playerB.classList.contains('active')){
-    playerA.classList.remove('active');playerB.classList.remove('active');
-    videoA.pause();videoB.pause();
-    no.classList.add('show');
-    nt.textContent='✨ 切换中...';
-    setTimeout(()=>{
-      videoA.removeAttribute('src');videoA.load();
-      videoB.removeAttribute('src');videoB.load();
-      nxt.video.src=src;
-      nxt.video.load();
-      requestAnimationFrame(()=>{
-        nxt.player.classList.add('active');
-        no.classList.remove('show');
-        nxt.video.play().catch(()=>{}).then(()=>{
-          isP=true;pb.textContent='⏸';
-        });
-        activePlayer=nxt.video;
-      });
-    }, 550);
-  } else {
-    nxt.video.src=src;
-    nxt.video.load();
-    requestAnimationFrame(()=>{
-      nxt.player.classList.add('active');
-      nxt.video.play().catch(()=>{}).then(()=>{
-        isP=true;pb.textContent='⏸';
-      });
-      activePlayer=nxt.video;
-    });
-  }
+  // Fade out
+  vp.classList.remove('active');
+
+  setTimeout(()=>{
+    v.src=src;v.load();v.muted=isMuted;
+    // Wait for data then play
+    const ready=()=>{
+      vp.classList.add('active');
+      v.play().catch(()=>{}).then(()=>{isP=true;pb.textContent='⏸';});
+      v.oncanplay=null;v.onloadeddata=null;
+      loading=false;
+    };
+    v.oncanplay=ready;
+    v.onloadeddata=ready;
+    setTimeout(ready,2000); // safety fallback
+  },350);
 }
 
 function pick(){
-  let isL=Math.random()<0.68; // 68% landscape
-  let list=isL?Lfiles:Pfiles;
-  let idx=Math.floor(Math.random()*list.length);
-  load(list[idx],isL);
+  if(!queue.length||qi>=queue.length) buildQueue(currentCat);
+  if(qi>=queue.length)qi=0;
+  playVideo(queue[qi++]);
+  if(qi>=queue.length)qi=0;
+}
+
+function switchCat(catId){
+  currentCat=catId;
+  document.querySelectorAll('.vs-cat').forEach(b=>b.classList.toggle('active',b.dataset.cat===catId));
+  buildQueue(catId);
+  qi=0;
+  if(queue.length) playVideo(queue[qi++]);
+  if(qi>=queue.length)qi=0;
+}
+
+function initCats(){
+  catBar.innerHTML='';
+  categories.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='vs-cat'+(c.id==='all'?' active':'');
+    b.dataset.cat=c.id;
+    b.innerHTML='<span class="cat-emoji">'+c.emoji+'</span><span class="cat-name">'+c.name+'</span><span class="cat-count">'+allVideos.filter(v=>c.id==='all'||v.cat===c.id).length+'</span>';
+    b.onclick=()=>switchCat(c.id);
+    catBar.appendChild(b);
+  });
 }
 
 // Event listeners
-pb.onclick=()=>{if(!activePlayer){pick();return;}if(isP){activePlayer.pause();pb.textContent='▶';isP=false;}else{activePlayer.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
+pb.onclick=()=>{if(!isP&&!loading){switchCat(currentCat);return;}if(isP){v.pause();pb.textContent='▶';isP=false;}else{v.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
 sb.onclick=()=>{pick();};
-const timeHandler=()=>{if(!activePlayer||!activePlayer.duration)return;pf.style.width=((activePlayer.currentTime/activePlayer.duration)*100)+'%';te.textContent=fmt(activePlayer.currentTime)+' / '+fmt(activePlayer.duration);};
-vL.ontimeupdate=timeHandler;vP.ontimeupdate=timeHandler;
-const endHandler=()=>{setTimeout(pick,300);};
-vL.onended=endHandler;vP.onended=endHandler;
-pr.onclick=(e)=>{if(!activePlayer||!activePlayer.duration)return;const r=pr.getBoundingClientRect();activePlayer.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*activePlayer.duration;};
-e.style.display='flex';vL.style.display='block';vP.style.display='block';
+mb.onclick=()=>{isMuted=!isMuted;v.muted=isMuted;mb.textContent=isMuted?'🔇':'🔊';mb.classList.toggle('unmuted',!isMuted);};
+v.ontimeupdate=()=>{if(!v.duration)return;pf.style.width=((v.currentTime/v.duration)*100)+'%';te.textContent=fmt(v.currentTime)+' / '+fmt(v.duration);};
+v.onended=()=>{pick();};
+pr.onclick=(e)=>{if(!v.duration)return;const r=pr.getBoundingClientRect();v.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*v.duration;};
+e.style.display='flex';
+
+initCats();
+buildQueue('all');
+v.muted=true;
+// Auto-play first video
+pick();
 
 // Observe section headers
 document.querySelectorAll('.section-header').forEach(el => observer.observe(el));
 
-// ===== 中英文切换 =====
-const i18nMap = {
-  navMeiyu:['美育','Arts'],
-  navMusic:['音乐','Music'],
-  navMall:['商城','Shop'],
-  navInstrument:['乐器','Instruments'],
-  navTech:['科技','Tech'],
-  navAbout:['品牌','Brand'],
-  navContact:['联系我们','Contact'],
-  heroExplore:['探索蛙田','Explore Watian'],
-  heroAbout:['了解我们','About Us'],
-  sectionMeiyu:['蛙田美育','Watian Arts'],
-  sectionMusic:['蛙田音乐','Watian Music'],
-  sectionMall:['蛙田商城','Watian Mall'],
-  sectionInstrument:['蛙田乐器','Watian Instruments'],
-  sectionTech:['蛙田科技','Watian Tech'],
-  musicCard1:['原创音乐制作','Original Production'],
-  musicCard2:['原创作品分享','Original Works'],
-  musicCard3:['录音棚体验','Studio Experience'],
-  techCard1:['AI 老师系统','AI Teacher System'],
-  techCard2:['智慧课堂','Smart Classroom'],
-  techCard3:['数字解决方案','Digital Solutions'],
-  instrumentCard1:['键盘乐器','Keyboards'],
-  instrumentCard2:['吉他/贝斯','Guitars / Bass'],
-  instrumentCard3:['音箱/效果器','Amps / Effects'],
-  mallLink:['前往小程序选购 →','Visit Mini Program →'],
-  videoHint:['点 🎲 开盒','Click 🎲 to Open'],
-};
-let currentLang='zh';
+// ===== STORY BOOK =====
+const bookPages = [
+  // Spread 0: Opening
+  {
+    leftCN: `<div class="book-title-page">
+      <div class="tiny-label">BRAND STORY</div>
+      <h1>从一间琴房<br>到一座生态</h1>
+      <div class="sub">2014 — 2026</div>
+    </div>`,
+    rightEN: `<div class="book-credo">
+      <svg class="credo-icon" viewBox="0 0 24 24" fill="none" stroke="#2d2a24" stroke-width="1.5">
+        <path d="M3 21c3-3 6-5 9-5s6 2 9 5"/><path d="M3 17c3-3 6-5 9-5s6 2 9 5"/><path d="M3 13c3-3 6-5 9-5s6 2 9 5"/>
+      </svg>
+      <blockquote>"Education is not just about<br>transmitting knowledge.<br>It is a ritual of connection<br>and inheritance."</blockquote>
+      <div class="credo-year">2014 — 2026 · Watian Culture</div>
+    </div>`
+  },
+  // Spread 1: Stories 1-2
+  {
+    leftCN: `<span class="page-num">— 壹 —</span>
+      <span class="page-icon">🏠</span>
+      <h3>一间教室的起点</h3>
+      <p>很多琴行的老板本身就是老师，但我偏偏什么都不是——我只是一位想给自己孩子找好老师的家长。郊区师资匮乏，身边恰好认识专业的乐器老师，既然要教自己的孩子，不如就办个琴行吧。于是，从一间教室、一个门外汉开始，一头扎进了这个行业。</p>`,
+    rightEN: `<span class="page-num">— I —</span>
+      <span class="page-icon">🏠</span>
+      <h3>Where It Began</h3>
+      <p>Most music shop owners are teachers themselves, but I was just a parent who wanted the best teacher for my child. Suburban Shanghai had few good teachers, but I knew some professionals. Since I was teaching my own kids anyway, why not start a shop? And so, from one room with no experience, I dove in.</p>`
+  },
+  // Spread 2: Stories 3-4
+  {
+    leftCN: `<span class="page-num">— 叁 —</span>
+      <span class="page-icon">🥁</span>
+      <h3>从一个鼓班开始</h3>
+      <p>最初只有一个架子鼓小班。几个孩子坐在鼓凳上，小小的手握着鼓棒，敲出来的声音可能并不整齐，但那种认真和兴奋，是后来一切故事的起点。慢慢地，一个班变成了多个班。架子鼓之外，又有了吉他、键盘、DJ。</p>`,
+    rightEN: `<span class="page-num">— III —</span>
+      <span class="page-icon">🥁</span>
+      <h3>A Single Drum Class</h3>
+      <p>It started with one small drum class. A few kids sat on drum stools, tiny hands gripping sticks. The rhythm wasn't perfect, but the earnest excitement — that was the spark. One class became many. Drums grew into guitar, keyboard, DJ.</p>`
+  },
+  // Spread 3: Stories 5-6
+  {
+    leftCN: `<span class="page-num">— 伍 —</span>
+      <span class="page-icon">🌱</span>
+      <h3>从参与者到创造者</h3>
+      <p>一开始只是参加别人的音乐节。后来开始自己办音乐节——租场地、调音响、排流程、现场执行。再后来，有了自己的比赛、自己的考级体系。<strong>从参与者，变成了创造者。</strong></p>`,
+    rightEN: `<span class="page-num">— V —</span>
+      <span class="page-icon">🌱</span>
+      <h3>From Participant to Creator</h3>
+      <p>At first we just joined other music festivals. Then we started our own — renting venues, tuning sound systems, running the show. Later came our own competitions, our own grading system. <strong>From participants, we became creators.</strong></p>`
+  },
+  // Spread 4: Why Watian (closing)
+  {
+    leftCN: `<div style="padding:0.5rem 0;">
+      <h3 style="font-family:'Noto Serif SC',serif;font-size:1.2rem;color:#2d2a24;margin-bottom:0.8rem;text-align:center;">为什么是蛙田？</h3>
+      <span class="page-num">— 终 —</span>
+      <p style="font-size:0.88rem;line-height:2;color:#5a5245;">
+        <strong style="color:#0d9488;font-size:1.05rem;">"蛙"</strong>，是低处生长的生命，不张扬，但生命力顽强。<br><br>
+        <strong style="color:#0d9488;font-size:1.05rem;">"田"</strong>，是扎根土地的劳作，不浮躁，但年年有收成。<br><br>
+        这两个字，是创始人给自己和这个品牌的注脚：<br>
+        不做最响亮的那个，做最踏实的那个；<br>
+        不追风口，追根系。<br><br>
+        十多年，一间琴行长成了一座生态。<br>
+        未来，这座生态会长成什么模样，还在续写中……
+      </p>
+    </div>`,
+    rightEN: `<div style="padding:0.5rem 0;">
+      <h3 style="font-family:'Noto Serif SC',serif;font-size:1.2rem;color:#2d2a24;margin-bottom:0.8rem;text-align:center;">Why Watian?</h3>
+      <span class="page-num">— End —</span>
+      <p style="font-size:0.88rem;line-height:2;color:#5a5245;">
+        <strong style="color:#0d9488;font-size:1.05rem;">"Wa"</strong> means a frog — life that grows low to the ground, unassuming yet resilient.<br><br>
+        <strong style="color:#0d9488;font-size:1.05rem;">"Tian"</strong> means a field — honest labor rooted in the soil, unflashy but yielding harvest year after year.<br><br>
+        These two characters are the founder's note to himself and the brand:<br>
+        Don't be the loudest. Be the most grounded.<br>
+        Don't chase trends. Nurture roots.<br><br>
+        Over a decade, one music shop grew into an ecosystem.<br>
+        What it becomes next is still being written…
+      </p>
+    </div>`
+  }
+];
 
-function toggleLang(){
-  currentLang=currentLang==='zh'?'en':'zh';
-  const btn=document.getElementById('langToggle');
-  btn.textContent=currentLang==='zh'?'EN':'中';
-  document.documentElement.lang=currentLang==='zh'?'zh-CN':'en';
-  
-  // Nav links
-  document.querySelectorAll('.nav-links a').forEach(a=>{
-    const key=a.getAttribute('href').slice(1);
-    const k='nav'+key.charAt(0).toUpperCase()+key.slice(1);
-    if(i18nMap[k]) a.textContent=i18nMap[k][currentLang==='zh'?0:1];
-  });
-  // Hero
-  const h1=document.querySelector('#hero h1');
-  if(h1) h1.textContent=currentLang==='zh'?'以文化为田 耕耘美好':'Cultivate Beauty<br>Through Culture';
-  const heroP=document.querySelector('#hero .hero-badge');
-  if(heroP) heroP.textContent=currentLang==='zh'?'上海蛙田文化传媒有限公司':'Shanghai Watian Media';
-  document.getElementById('heroExplore').textContent=currentLang==='zh'?'探索蛙田':'Explore Watian';
-  document.getElementById('heroAbout').textContent=currentLang==='zh'?'了解我们':'About Us';
-  // Section tags — match both zh and en
-  document.querySelectorAll('.section-tag').forEach(el=>{
-    const txt=el.textContent.trim();
-    for(const[k,v]of Object.entries(i18nMap)){
-      if(v[0]===txt||v[1]===txt){
-        el.textContent=v[currentLang==='zh'?0:1];
-        break;
-      }
-    }
-  });
-  // Card titles
-  document.querySelectorAll('.card h3').forEach(el=>{
-    const txt=el.textContent.trim();
-    for(const[k,v]of Object.entries(i18nMap)){
-      if(v[0]===txt||v[1]===txt){
-        el.textContent=v[currentLang==='zh'?0:1];
-        break;
-      }
-    }
-  });
-  // Section titles (h2)
-  const zhTitles={'以美育人，向美而生':'Nurture Through Beauty','创作 · 分享 · 共鸣':'Create · Share · Resonate','精选好物，品质生活':'Curated Goods, Quality Life','匠心之音，品质之选':'Artisan Sound, Quality Choice','科技赋能，智慧未来':'Tech Empowered, Smart Future'};
-  document.querySelectorAll('.section-title').forEach(el=>{
-    const txt=el.textContent.trim();
-    if(currentLang==='en'&&zhTitles[txt]) el.textContent=zhTitles[txt];
-    else if(currentLang==='zh'){for(const[k,v]of Object.entries(zhTitles)){if(v===txt){el.textContent=k;break;}}}
-  });
-  // Section descriptions (p.section-desc)
-  const zhDescs={
-    '让每个孩子在艺术中发现自我，用美育滋养心灵，陪伴成长。':'Let every child discover themselves through art. Nurture the soul with aesthetic education.',
-    '蛙田音乐致力于原创音乐创作与分享。每一首歌，都是一个故事；每一个音符，都是心之所向。':'Watian Music is dedicated to original music — every song tells a story, every note comes from the heart.',
-    '蛙田精选文化好物、艺术用品、音乐器材，让高品质触手可及。':'Curated cultural goods, art supplies, and musical instruments. Quality life, within reach.',
-    '精选国内外优质乐器，提供专业售后与教学支持，让音乐之路更加顺畅。':'Premium instruments from around the world, with professional after-sales support.',
-    '用前沿科技为文化教育注入新活力，打造智慧化教学与管理解决方案。':'Injecting cutting-edge tech into cultural education. Smart teaching and management solutions.'
-  };
-  document.querySelectorAll('.section-desc').forEach(el=>{
-    const txt=el.textContent.trim();
-    if(currentLang==='en'&&zhDescs[txt]) el.textContent=zhDescs[txt];
-    else if(currentLang==='zh'){for(const[k,v]of Object.entries(zhDescs)){if(v===txt){el.textContent=k;break;}}}
-  });
-  // Card descriptions
-  document.querySelectorAll('.card p').forEach(el=>{
-    const txt=el.textContent.trim();
-    if(currentLang==='en'){
-      if(txt.includes('专业音乐创作')) el.textContent='Professional music creation and production — from songwriting to recording.';
-      else if(txt.includes('汇聚蛙田音乐人')) el.textContent='A collection of original works from Watian musicians. Every song has a story.';
-      else if(txt.includes('专业录音设备')) el.textContent='Professional recording studio. Your sound presented at the highest quality.';
-      else if(txt.includes('大语言模型')) el.textContent='AI-powered teaching assistant for personalized learning experiences.';
-      else if(txt.includes('多媒体互动')) el.textContent='Interactive multimedia equipment and digital resources for smart classrooms.';
-      else if(txt.includes('一站式数字化')) el.textContent='One-stop digital transformation — from enrollment management to evaluation.';
-    }
-  });
+let currentSpread = 0;
+const totalSpreads = bookPages.length;
+
+function renderBook() {
+  const s = bookPages[currentSpread];
+  document.getElementById('bookLeft').innerHTML = s.leftCN;
+  document.getElementById('bookRight').innerHTML = s.rightEN;
+  // Dots
+  const dots = document.getElementById('bookDots');
+  dots.innerHTML = '';
+  for (let i = 0; i < totalSpreads; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'book-dot' + (i === currentSpread ? ' active' : '');
+    dots.appendChild(dot);
+  }
+  document.getElementById('bookPageInfo').textContent = (currentSpread + 1) + ' / ' + totalSpreads;
+  document.getElementById('bookPrev').disabled = currentSpread === 0;
+  document.getElementById('bookNext').disabled = currentSpread === totalSpreads - 1;
 }
+
+function turnPage(dir) {
+  const spread = document.getElementById('bookSpread');
+  spread.classList.remove('turning');
+  void spread.offsetWidth; // reflow
+  currentSpread += dir;
+  renderBook();
+  spread.classList.add('turning');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const spread = document.getElementById('bookSpread');
+  if (spread) {
+    renderBook();
+    document.getElementById('bookPrev').addEventListener('click', () => turnPage(-1));
+    document.getElementById('bookNext').addEventListener('click', () => turnPage(1));
+  }
+});
+
+// (Bilingual content is embedded directly in HTML — no JS toggle needed)
 </script>
 </body>
 </html>
