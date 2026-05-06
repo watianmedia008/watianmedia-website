@@ -1141,6 +1141,7 @@
         <div class="vs-player active" id="vsPlayer">
           <div class="vs-glow" id="vsGlow"></div>
           <video id="vsVideo" muted autoplay playsinline webkit-playsinline preload="auto"></video>
+          <div class="vs-play-overlay" id="vsPlayOverlay" style="display:none;position:absolute;inset:0;z-index:5;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);cursor:pointer;border-radius:16px;font-size:48px;color:white;text-shadow:0 2px 12px rgba(0,0,0,0.4);" onclick="vsPlayTap()">▶️</div>
           <div class="vs-label" id="vsCatName"></div>
         </div>
       </div>
@@ -1892,7 +1893,7 @@ const categories = [
 ];
 
 function isLandscape(file) {
-  const p = file.match(/^(宋式点茶|儿童乐高搭建|口语班|科创课（一）|茶艺课|燃脂操)/);
+  const p = file.match(/^(宋式点茶|儿童乐高搭建|口语班|科创课（一）|茶艺课|燃脂操|硬笔书法|软笔书法)/);
   return !p;
 }
 
@@ -1923,6 +1924,21 @@ function buildQueue(cat){
   qi=0;
 }
 
+// Auto-play overlay helpers
+function showPlayOverlay(){
+  const o=document.getElementById('vsPlayOverlay');
+  if(o){o.style.display='flex';}
+}
+function hidePlayOverlay(){
+  const o=document.getElementById('vsPlayOverlay');
+  if(o){o.style.display='none';}
+}
+function vsPlayTap(){
+  const v=document.getElementById('vsVideo');
+  hidePlayOverlay();
+  v.play().then(()=>{isP=true;pb.textContent='⏸';}).catch(()=>{showPlayOverlay();});
+}
+
 function playVideo(videoObj){
   const file=videoObj.file,l=isLandscape(file);
   const src='https://pub-4be7bb5e88a6410eae4e8edbc0a4138b.r2.dev/'+encodeURIComponent(file);
@@ -1951,19 +1967,26 @@ function playVideo(videoObj){
       // Safety fallback: force play after 5s if canplay never fires
       const safetyTimer=setTimeout(()=>{
         vp.classList.add('active');
-        v.play().then(()=>{isP=true;pb.textContent='⏸';catName.textContent=videoObj.label;}).catch(()=>{catName.textContent=videoObj.label;});
+        v.play().then(()=>{isP=true;pb.textContent='⏸';catName.textContent=videoObj.label;hidePlayOverlay();}).catch(()=>{
+          catName.textContent=videoObj.label;
+          showPlayOverlay();
+        });
       },5000);
       v.oncanplay=()=>{
         clearTimeout(safetyTimer);
         vp.classList.add('active');
         catName.textContent=videoObj.label;
-        v.play().then(()=>{isP=true;pb.textContent='⏸';}).catch(()=>{});
+        v.play().then(()=>{isP=true;pb.textContent='⏸';hidePlayOverlay();}).catch(()=>{
+          // Autoplay blocked - show play overlay
+          showPlayOverlay();
+        });
         v.oncanplay=null;v.onerror=null;
       };
       v.onerror=()=>{
         clearTimeout(safetyTimer);
         catName.textContent='❌ '+videoObj.label;
         vp.classList.add('active');
+        hidePlayOverlay();
         setTimeout(()=>{pick();},2000);
       };
     };
@@ -2000,7 +2023,7 @@ function initCats(){
 }
 
 // Event listeners
-pb.onclick=()=>{if(!isP){switchCat(currentCat);return;}if(isP){v.pause();pb.textContent='▶';isP=false;}else{v.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
+pb.onclick=()=>{hidePlayOverlay();if(!isP){switchCat(currentCat);return;}if(isP){v.pause();pb.textContent='▶';isP=false;}else{v.play().catch(()=>{});pb.textContent='⏸';isP=true;}};
 sb.onclick=()=>{pick();};
 mb.onclick=()=>{isMuted=!isMuted;v.muted=isMuted;mb.textContent=isMuted?'🔇':'🔊';mb.classList.toggle('unmuted',!isMuted);};
 v.ontimeupdate=()=>{if(!v.duration)return;pf.style.width=((v.currentTime/v.duration)*100)+'%';te.textContent=fmt(v.currentTime)+' / '+fmt(v.duration);};
