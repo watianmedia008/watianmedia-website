@@ -14,19 +14,18 @@ const ALLOWED_DOMAINS = [
 
 const R2_BASE_URL = 'https://pub-4be7bb5e88a6410eae4e8edbc0a4138b.r2.dev';
 
-// 视频文件扩展名
-const VIDEO_EXTS = ['.mp4', '.webm', '.mov', '.avi', '.mkv'];
+// 多媒体文件扩展名
+const MEDIA_EXTS = ['.mp4', '.webm', '.mov', '.avi', '.mkv', '.mp3', '.wav', '.ogg', '.flac', '.aac'];
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const path = url.pathname;  // e.g. /中药香囊.mp4
+    const path = url.pathname;
 
-    // 检查是不是视频请求
-    const isVideo = VIDEO_EXTS.some(ext => path.toLowerCase().endsWith(ext));
+    // 检查是不是多媒体请求
+    const isMedia = MEDIA_EXTS.some(ext => path.toLowerCase().endsWith(ext));
 
-    if (!isVideo) {
-      // 非视频文件 - 正常返回静态资源
+    if (!isMedia) {
       return env.ASSETS.fetch(request);
     }
 
