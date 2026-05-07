@@ -1941,7 +1941,7 @@ function vsPlayTap(){
 
 function playVideo(videoObj){
   const file=videoObj.file,l=isLandscape(file);
-  const src='https://watian-video-proxy.watianmedia008.workers.dev/'+encodeURIComponent(file);
+  const src=window.location.origin+'/'+encodeURIComponent(file);
   setTheme(Math.floor(Math.random()*themes.length));
   e.style.display='none';pf.style.width='0%';te.textContent='0:00 / 0:00';
   catName.textContent=videoObj.label;
