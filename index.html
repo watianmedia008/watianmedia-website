@@ -1140,7 +1140,7 @@
         <!-- Single player -->
         <div class="vs-player active" id="vsPlayer">
           <div class="vs-glow" id="vsGlow"></div>
-          <video id="vsVideo" muted autoplay playsinline webkit-playsinline preload="auto"></video>
+          <video id="vsVideo" muted autoplay playsinline webkit-playsinline preload="auto" controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false;"></video>
           <div class="vs-play-overlay" id="vsPlayOverlay" style="display:none;position:absolute;inset:0;z-index:5;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);cursor:pointer;border-radius:16px;font-size:48px;color:white;text-shadow:0 2px 12px rgba(0,0,0,0.4);" onclick="vsPlayTap()">▶️</div>
           <div class="vs-label" id="vsCatName"></div>
         </div>
@@ -1941,7 +1941,7 @@ function vsPlayTap(){
 
 function playVideo(videoObj){
   const file=videoObj.file,l=isLandscape(file);
-  const src='https://pub-4be7bb5e88a6410eae4e8edbc0a4138b.r2.dev/'+encodeURIComponent(file);
+  const src='https://watian-video-proxy.watianmedia008.workers.dev/'+encodeURIComponent(file);
   setTheme(Math.floor(Math.random()*themes.length));
   e.style.display='none';pf.style.width='0%';te.textContent='0:00 / 0:00';
   catName.textContent=videoObj.label;
