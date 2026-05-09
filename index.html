@@ -4,7 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>蛙田文化 | 上海蛙田文化传媒有限公司</title>
-  <meta name="description" content="蛙田文化 — 美育·音乐·商城·乐器·科技">
+  <meta name="description" content="蛙田文化 — 美育·音乐·商城·乐器·科技。上海蛙田文化传媒有限公司，涵盖美育培训、原创音乐、乐器零售、AI科技等多板块文化教育生态。">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="蛙田文化 | 上海蛙田文化传媒有限公司">
+  <meta property="og:description" content="美育·音乐·商城·乐器·科技 — 从一间琴房到一座生态，蛙田文化致力于为孩子创造更美好的成长体验。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.watianmedia.com">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="蛙田文化 | 上海蛙田文化传媒有限公司">
+  <meta name="twitter:description" content="美育·音乐·商城·乐器·科技 — 蛙田文化，做最踏实的文化教育品牌。">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "蛙田文化",
+    "alternateName": "上海蛙田文化传媒有限公司",
+    "description": "蛙田文化 — 美育·音乐·商城·乐器·科技，一站式文化教育生态平台。",
+    "url": "https://www.watianmedia.com",
+    "email": "service@watianmedia.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "上海市",
+      "addressCountry": "CN"
+    },
+    "sameAs": []
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
@@ -965,6 +997,173 @@
       transform: translateY(0);
     }
 
+    /* ===== CONTACT MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      max-width: 480px;
+      width: 92%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.15);
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.35s ease;
+      position: relative;
+    }
+    .modal-overlay.open .modal-box {
+      transform: translateY(0) scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--bg-dark);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .modal-en {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    .modal-qr-row {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+    .modal-qr-item {
+      text-align: center;
+      flex: 1;
+    }
+    .modal-qr-item img {
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      background: #fafaf9;
+    }
+    .modal-qr-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-weight: 400;
+    }
+    .modal-info {
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    .modal-info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .modal-info-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(13,148,136,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ===== MINI-PROGRAM FLOATING ===== */
+    .mp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .mp-bubble {
+      background: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mp-bubble.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mp-bubble img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+    }
+    .mp-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(13,148,136,0.35);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mp-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 32px rgba(13,148,136,0.45);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       nav { padding: 0 1rem; }
@@ -1074,9 +1273,38 @@
     <li><a href="#instrument">乐器</a></li>
     <li><a href="#tech">科技</a></li>
     <li><a href="#about">品牌</a></li>
-    <li><a href="#hero" class="nav-cta">联系我们</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openContact()">联系我们</a></li>
   </ul>
 </nav>
+
+<!-- ===== CONTACT MODAL ===== -->
+<div class="modal-overlay" id="contactModal" onclick="if(event.target===this)closeContact()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeContact()">✕</button>
+    <div class="modal-title">联系我们</div>
+    <div class="modal-en" style="text-align:center;">Get in Touch</div>
+    <div class="modal-qr-row">
+      <div class="modal-qr-item">
+        <img src="https://pub-4be7bb5e88a6410eae4e8edbc0a4138b.r2.dev/images/qr-code.png" alt="蛙田文化公众号" onerror="this.style.display='none';this.parentElement.querySelector('.modal-qr-label').textContent='请搜索「蛙田文化」'">
+        <div class="modal-qr-label">📱 微信公众号</div>
+      </div>
+    </div>
+    <div class="modal-info">
+      <div class="modal-info-row">
+        <div class="modal-info-icon">📍</div>
+        <span>上海市 · 蛙田文化</span>
+      </div>
+      <div class="modal-info-row">
+        <div class="modal-info-icon">📧</div>
+        <a href="mailto:service@watianmedia.com" style="color:var(--primary);text-decoration:none;">service@watianmedia.com</a>
+      </div>
+      <div class="modal-info-row">
+        <div class="modal-info-icon">🛒</div>
+        <span>微信小程序搜索「蛙田文化」</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ===== HERO ===== -->
 <section id="hero">
@@ -1225,6 +1453,38 @@
               <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;" class="playing-indicator" style="display:none;"></span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Music Festival Showcase -->
+    <div class="festival-showcase" style="margin:2rem 0;background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(124,58,237,0.02));border:1px solid rgba(124,58,237,0.1);border-radius:24px;padding:2rem 1.5rem;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;">
+        <span style="font-size:28px;">🎪</span>
+        <div>
+          <h3 style="font-size:1.15rem;font-weight:600;color:var(--bg-dark);margin:0;">蛙田音乐节</h3>
+          <div class="en-sub" style="margin-top:2px;">Watian Music Festival</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
+        <div style="background:white;border-radius:16px;padding:1.25rem;border:1px solid var(--border);transition:all 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.06)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:32px;margin-bottom:0.5rem;">🥁</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.25rem;">第一届 · 2019</div>
+          <h4 style="font-size:1rem;font-weight:600;color:var(--bg-dark);margin-bottom:0.5rem;">初声·蛙鸣</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">从参与别人的音乐节，到自己办一场。孩子们第一次站上自己的舞台，蛙田的音乐梦想正式起航。</p>
+        </div>
+        <div style="background:white;border-radius:16px;padding:1.25rem;border:1px solid var(--border);transition:all 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.06)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:32px;margin-bottom:0.5rem;">🎸</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.25rem;">第二届 · 2024</div>
+          <h4 style="font-size:1rem;font-weight:600;color:var(--bg-dark);margin-bottom:0.5rem;">回声·蛙聚</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">规模升级，三支儿童乐队同台。从鼓班到乐队，从琴房到舞台——蛙田音乐的生态正在成形。</p>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(217,119,6,0.06));border-radius:16px;padding:1.25rem;border:2px dashed rgba(124,58,237,0.25);transition:all 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(124,58,237,0.12)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <div style="font-size:32px;margin-bottom:0.5rem;">✨</div>
+          <div style="font-size:0.75rem;color:var(--section-music);letter-spacing:2px;margin-bottom:0.25rem;font-weight:500;">第三届 · 筹备中</div>
+          <h4 style="font-size:1rem;font-weight:600;color:var(--bg-dark);margin-bottom:0.5rem;">AI × 音乐</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">AI主持人 + AI音乐生成 + 声音克隆……科技与艺术的碰撞，蛙田第三届音乐节即将开启全新篇章。</p>
+          <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--section-music);font-weight:500;">🎯 诚邀合作 · 商务洽谈</div>
         </div>
       </div>
     </div>
@@ -1588,6 +1848,16 @@
         <p>将名师教学智慧AI化，萃取优质教师的教学方法与课堂经验，生成可复用的AI教学技能模块，让好老师突破数量限制惠及更多孩子。</p>
       </div>
       <div class="card">
+        <div class="card-icon">🎤</div>
+        <h3>RVC 声音克隆</h3>
+        <p>基于 Retrieval-based Voice Conversion 技术，精准复刻人声音色。可用于AI主持人、虚拟教师、音乐创作——让熟悉的声音在任何场景被听见。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎹</div>
+        <h3>AI 音乐生成</h3>
+        <p>搭载 HeartMuLa 音乐引擎，输入歌词与风格标签即可生成原创歌曲。从儿歌到主题曲，AI赋能音乐创作降本增效。</p>
+      </div>
+      <div class="card">
         <div class="card-icon">📱</div>
         <h3>智慧课堂</h3>
         <p>线上线下融合教学平台，家校互动、课程预约、学习报告一站式管理。</p>
@@ -1640,6 +1910,15 @@
   </div>
 </section>
 
+<!-- ===== MINI-PROGRAM FLOATING ===== -->
+<div class="mp-float">
+  <div class="mp-bubble" id="mpBubble">
+    <img src="https://pub-4be7bb5e88a6410eae4e8edbc0a4138b.r2.dev/images/qr-code.png" alt="蛙田小程序" onerror="this.style.display='none';this.parentElement.textContent='微信搜🔍蛙田文化'">
+    <div><strong>蛙田商城</strong><br><span style="font-size:11px;color:var(--text-muted);">扫码进入小程序</span></div>
+  </div>
+  <button class="mp-btn" id="mpBtn" title="小程序商城" onclick="toggleMpBubble()">🛒</button>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-grid">
@@ -1666,11 +1945,11 @@
       <span style="display:block;margin:0;padding:4px 0;color:var(--text-muted);font-size:0.9rem;">上海市 · 蛙田文化</span>
       <a href="mailto:service@watianmedia.com">service@watianmedia.com</a>
       <span style="display:block;margin:0;padding:4px 0;color:var(--text-muted);font-size:0.9rem;cursor:default;">微信公众号 · 搜索「蛙田文化」</span>
-      <a href="javascript:void(0)" onclick="alert('请在微信内搜索「蛙田文化」小程序');return false;" style="color:var(--primary-light);">蛙田小程序 →</a>
+      <a href="javascript:void(0)" onclick="openContact()" style="color:var(--primary-light);">蛙田小程序 →</a>
     </div>
   </div>
   <div class="footer-bottom">
-    © 2025 上海蛙田文化传媒有限公司 All Rights Reserved.
+    © 2026 上海蛙田文化传媒有限公司 All Rights Reserved.
   </div>
 </footer>
 
@@ -2160,6 +2439,33 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // (Bilingual content is embedded directly in HTML — no JS toggle needed)
+
+// ===== CONTACT MODAL =====
+function openContact() {
+  document.getElementById('contactModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeContact() {
+  document.getElementById('contactModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== MINI-PROGRAM FLOATING =====
+function toggleMpBubble() {
+  const b = document.getElementById('mpBubble');
+  b.classList.toggle('show');
+}
+// Auto-show bubble after 5s, then hide after 10s
+setTimeout(() => {
+  const b = document.getElementById('mpBubble');
+  if (b) b.classList.add('show');
+  setTimeout(() => { if (b) b.classList.remove('show'); }, 10000);
+}, 5000);
+
+// Keyboard: ESC to close modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeContact();
+});
 </script>
 </body>
 </html>
