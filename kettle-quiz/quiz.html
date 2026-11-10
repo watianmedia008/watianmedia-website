@@ -115,6 +115,13 @@ body{
 .unlocked-tip.show{display:block}
 
 .footer{text-align:center;font-size:12px;color:var(--muted);margin-top:32px;line-height:1.8}
+
+/* 学习成长增强：难度标签 / 错因 / 思路提示 / 复习提示 */
+.q .q-no .lv{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;border:1px solid currentColor;border-radius:4px;padding:0 5px}
+.exp .why{font-size:13px;color:var(--red);margin:6px 0}
+.exp .hint{font-size:13px;color:var(--orange);margin:6px 0}
+.exp .ans{margin-top:6px}
+.wrong-banner{display:none;background:rgba(217,119,6,.1);border:1px solid var(--orange);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--orange);margin:12px 0;font-weight:600;line-height:1.6}
 </style>
 </head>
 <body>
@@ -138,6 +145,7 @@ body{
       <span class="num">1</span><h2>免费试做</h2><span class="badge">免费</span>
     </div>
     <div class="progress" id="free-progress"></div>
+    <div class="wrong-banner" id="wrong-banner"></div>
     <div id="free-quiz"></div>
   </div>
 
@@ -175,27 +183,27 @@ body{
 
 <script>
 /* ---------- 题库数据（内联） ---------- */
-const QUESTIONS = [
-  {"id":1,"free":true,"question":"电热水壶的水烧开后能自动断电，靠的是壶底的什么装置？","options":["保险丝","双金属片温控开关","热敏电阻","定时器"],"answer":1,"explanation":"壶底温控开关里有一片双金属片，水开时受热弯曲，把触点顶开，电路断开，自动停止加热。"},
-  {"id":2,"free":true,"question":"双金属片是由什么组成的？","options":["两片完全相同的金属","金属和塑料","两种热膨胀程度不同的金属压合而成","金属和陶瓷"],"answer":2,"explanation":"双金属片把两种热膨胀系数（受热膨胀程度）不同的金属紧紧压合在一起，受热时两层膨胀不一样，就会弯曲。"},
-  {"id":3,"free":true,"question":"水烧开时，电热水壶里的双金属片会怎样？","options":["融化掉","受热弯曲，把触点顶开断电","变得更硬更直","缩小消失"],"answer":1,"explanation":"水温升高到 100°C，双金属片受热向上弯曲，把触点顶开，电路\"啪\"地断开。"},
-  {"id":4,"free":false,"flag":"red","question":"双金属片受热时，会向哪一侧弯曲？","options":["向热膨胀系数大的金属一侧","向热膨胀系数小的金属一侧","不弯曲，只会变长","先左后右来回摆"],"answer":1,"explanation":"受热时热膨胀系数大的那层金属膨胀得更多、变得更长，被压住后就迫使整片双金属片向热膨胀系数小的那一侧弯曲。【易错点·建议人工复核】"},
-  {"id":5,"free":false,"question":"电热水壶通电后，加热盘的热量主要通过哪种方式传给壶里的水？","options":["热辐射","热传导","热对流","摩擦生热"],"answer":1,"explanation":"加热盘直接贴着壶底和水，热量通过热传导传给水；水被加热后内部还会发生对流，但加热盘到水这一层主要是传导。"},
-  {"id":6,"free":false,"question":"关于水的沸腾和蒸发，下列说法正确的是？","options":["蒸发必须在沸点温度才能发生","沸腾在任何温度下都能进行","沸腾是达到沸点后、液体内部和表面同时发生的剧烈汽化","蒸发发生在液体内部"],"answer":2,"explanation":"沸腾要在沸点温度下、内部和表面同时剧烈汽化；蒸发则在任何温度下、只在液体表面缓慢进行。"},
-  {"id":7,"free":false,"question":"在高海拔的高山上烧水，水\"开了\"却达不到 100°C（不够烫），主要原因是？","options":["高山气温太低","高山气压低，水的沸点降低","高山水质不纯","高山氧气稀薄"],"answer":1,"explanation":"液体的沸点随大气压降低而降低。高山气压低，水不到 100°C 就沸腾了。"},
-  {"id":8,"free":false,"question":"电热水壶跳闸断电后，水温降到一定程度又会重新通电加热，这是因为？","options":["保险丝自动恢复了","双金属片冷却后复位，触点重新闭合","有人又按了一下开关","水把开关冲开了"],"answer":1,"explanation":"水温下降，双金属片冷却回弹复位，触点重新闭合，电路再次接通，继续加热——这就是水壶保温、反复加热的原理。"},
-  {"id":9,"free":false,"question":"电热水壶刚通电（冷态）时，温控开关的触点是闭合还是断开的？","options":["闭合（通电加热）","断开（不加热）","一半闭合一半断开","与温度无关"],"answer":0,"explanation":"电热水壶温控器是常闭型：冷态触点闭合、通电加热；等水烧开、双金属片弯曲后才顶开触点断电。"},
-  {"id":10,"free":false,"question":"双金属片温控开关\"跳闸\"的本质是？","options":["水把电路淹短路了","双金属片弯曲顶开触点，电路变成断路","加热丝烧断了","插头松动了"],"answer":1,"explanation":"跳闸就是触点分离、电路断路，停止加热；并不是短路或烧坏。"},
-  {"id":11,"free":false,"question":"加热丝通电发热，发生的能量转化是？","options":["电能转化为内能","内能转化为电能","电能转化为光能","机械能转化为电能"],"answer":0,"explanation":"电流通过加热丝，电能转化为内能（热量），这是电流的热效应。"},
-  {"id":12,"free":false,"question":"水在沸腾的过程中继续加热，水温会怎样变化？","options":["持续升高","保持不变","先升后降","持续下降"],"answer":1,"explanation":"水沸腾后温度保持沸点不变，继续吸收的热量用于把水变成水蒸气（汽化），而不是升温。"},
-  {"id":13,"free":false,"question":"电热水壶壶嘴上方冒出的\"白气\"其实是什么？","options":["水蒸气","水蒸气遇冷液化成的小水滴","烟","二氧化碳"],"answer":1,"explanation":"\"白气\"是高温水蒸气遇到冷空气后液化成的小水滴；真正的水蒸气是无色透明、看不见的。"},
-  {"id":14,"free":false,"flag":"red","question":"把 1kg 的水从 20°C 加热到 100°C（水的比热容取 4.2×10³ J/(kg·°C)），水吸收的热量约为多少？","options":["4.2×10³ J","8.4×10⁴ J","3.36×10⁵ J","4.2×10⁵ J"],"answer":2,"explanation":"Q = cmΔt = 4.2×10³ × 1 × (100−20) = 4.2×10³ × 80 = 3.36×10⁵ J。【数值计算·建议人工复核】"},
-  {"id":15,"free":false,"flag":"red","question":"加热丝和连接导线是串联的（电流相同），为什么加热丝发烫而导线几乎不热？","options":["导线里的电流更小","加热丝电阻更大，根据 Q=I²Rt 发热更多","导线两端的电压更高","加热丝本来温度就高"],"answer":1,"explanation":"串联电路电流相同，根据焦耳定律 Q=I²Rt，加热丝电阻远大于导线，所以加热丝发热多、导线发热少。【表述·建议人工复核，注意与 P=U²/R 的区别】"},
-  {"id":16,"free":false,"question":"除了电热水壶，下面哪个电器/装置也常用到双金属片？","options":["电饭煲的保温温控","手机屏幕","LED 灯泡","电视遥控器"],"answer":0,"explanation":"电饭煲保温、电熨斗温控、热继电器、双金属温度计等都用到双金属片受热弯曲的原理。"}
-];
+const QUESTIONS = [{"id":1,"free":true,"level":"基础","question":"电热水壶的水烧开后能自动断电，靠的是壶底的什么装置？","options":["保险丝","双金属片温控开关","热敏电阻","定时器"],"answer":1,"hint":"壶底有一个对温度敏感的开关，通电加热到一定程度它会自己跳断。","explanation":"壶底温控开关里有一片双金属片，水开时受热弯曲，把触点顶开，电路断开，自动停止加热。","distractors":["保险丝是电流过大时熔断保护，不感知温度。",null,"热敏电阻也能测温，但电热水壶跳闸靠的是机械的双金属片。","定时器按时间断电，和温度无关。"]},{"id":2,"free":true,"level":"基础","question":"双金属片是由什么组成的？","options":["两片完全相同的金属","金属和塑料","两种热膨胀程度不同的金属压合而成","金属和陶瓷"],"answer":2,"hint":"两种金属压合在一起，受热时因为膨胀程度不同才会弯曲。","explanation":"双金属片把两种热膨胀系数（受热膨胀程度）不同的金属紧紧压合在一起，受热时两层膨胀不一样，就会弯曲。","distractors":["两片完全相同的金属，膨胀程度一样，就不会弯曲。","塑料不耐高温，不是双金属片的材料。",null,"陶瓷不是双金属片的材料。"]},{"id":3,"free":true,"level":"基础","question":"水烧开时，电热水壶里的双金属片会怎样？","options":["融化掉","受热弯曲，把触点顶开断电","变得更硬更直","缩小消失"],"answer":1,"hint":"水温升高，双金属片会变形，变形后触发了断电。","explanation":"水温升高到 100°C，双金属片受热向上弯曲，把触点顶开，电路「啪」地断开。","distractors":["金属在 100°C 远不会融化。",null,"受热是膨胀变弯，不是变硬变直。","热胀冷缩是膨胀，不是缩小。"]},{"id":4,"free":false,"level":"进阶","flag":"red","question":"双金属片受热时，会向哪一侧弯曲？","options":["向热膨胀系数大的金属一侧","向热膨胀系数小的金属一侧","不弯曲，只会变长","先左后右来回摆"],"answer":1,"hint":"受热时膨胀多的那层变长，会把整片压向膨胀少的那侧。","explanation":"受热时热膨胀系数大的那层金属膨胀得更多、变得更长，被压住后就迫使整片双金属片向热膨胀系数小的那一侧弯曲。【易错点·建议人工复核】","distractors":["方向反了：膨胀大的那层变长，会把整片压向膨胀小的那侧。",null,"两层膨胀程度不同，一定会弯曲。","会稳定弯向一侧，不会来回摆。"]},{"id":5,"free":false,"level":"基础","question":"电热水壶通电后，加热盘的热量主要通过哪种方式传给壶里的水？","options":["热辐射","热传导","热对流","摩擦生热"],"answer":1,"hint":"加热盘贴着壶底，热量直接通过接触传递。","explanation":"加热盘直接贴着壶底和水，热量通过热传导传给水；水被加热后内部还会发生对流，但加热盘到水这一层主要是传导。","distractors":["辐射不需要介质、隔着空间也能传，这里靠的是接触。",null,"对流是液体内部流动，加热盘到水这一层是传导。","这里没有摩擦。"]},{"id":6,"free":false,"level":"基础","question":"关于水的沸腾和蒸发，下列说法正确的是？","options":["蒸发必须在沸点温度才能发生","沸腾在任何温度下都能进行","沸腾是达到沸点后、液体内部和表面同时发生的剧烈汽化","蒸发发生在液体内部"],"answer":2,"hint":"分清沸腾和蒸发的发生条件与位置。","explanation":"沸腾要在沸点温度下、内部和表面同时剧烈汽化；蒸发则在任何温度下、只在液体表面缓慢进行。","distractors":["蒸发在任何温度下都能发生，不需要沸点。","沸腾必须在沸点温度下才能进行。",null,"蒸发只发生在液体表面，不在内部。"]},{"id":7,"free":false,"level":"进阶","question":"在高海拔的高山上烧水，水「开了」却达不到 100°C（不够烫），主要原因是？","options":["高山气温太低","高山气压低，水的沸点降低","高山水质不纯","高山氧气稀薄"],"answer":1,"hint":"沸点和气压有关，不是气温。","explanation":"液体的沸点随大气压降低而降低。高山气压低，水不到 100°C 就沸腾了。","distractors":["沸点由气压决定，和气温高低无关。",null,"杂质对沸点影响很小，不是主因。","氧气影响燃烧，不影响沸点。"]},{"id":8,"free":false,"level":"进阶","question":"电热水壶跳闸断电后，水温降到一定程度又会重新通电加热，这是因为？","options":["保险丝自动恢复了","双金属片冷却后复位，触点重新闭合","有人又按了一下开关","水把开关冲开了"],"answer":1,"hint":"断电后温度下降，双金属片会恢复原状。","explanation":"水温下降，双金属片冷却回弹复位，触点重新闭合，电路再次接通，继续加热——这就是水壶保温、反复加热的原理。","distractors":["保险丝熔断后不会自动恢复。",null,"这个过程不需要人工干预。","水不会直接碰到开关。"]},{"id":9,"free":false,"level":"进阶","question":"电热水壶刚通电（冷态）时，温控开关的触点是闭合还是断开的？","options":["闭合（通电加热）","断开（不加热）","一半闭合一半断开","与温度无关"],"answer":0,"hint":"水壶要能加热，通电时电路必须是通的。","explanation":"电热水壶温控器是常闭型：冷态触点闭合、通电加热；等水烧开、双金属片弯曲后才顶开触点断电。","distractors":[null,"冷态就断开的话，水壶永远无法加热。","开关只有通、断两种状态。","触点状态恰恰由温度（双金属片弯曲）决定。"]},{"id":10,"free":false,"level":"基础","question":"双金属片温控开关「跳闸」的本质是？","options":["水把电路淹短路了","双金属片弯曲顶开触点，电路变成断路","加热丝烧断了","插头松动了"],"answer":1,"hint":"跳闸＝电路断开停止加热，不是短路。","explanation":"跳闸就是触点分离、电路断路，停止加热；并不是短路或烧坏。","distractors":["短路是危险故障，跳闸是正常保护。",null,"加热丝没有断，还能继续用。","插头没有问题。"]},{"id":11,"free":false,"level":"基础","question":"加热丝通电发热，发生的能量转化是？","options":["电能转化为内能","内能转化为电能","电能转化为光能","机械能转化为电能"],"answer":0,"hint":"电流通过导体发热，是电变成热。","explanation":"电流通过加热丝，电能转化为内能（热量），这是电流的热效应。","distractors":[null,"方向反了，是电变成热。","主要是发热，不是发光。","这里不涉及机械能。"]},{"id":12,"free":false,"level":"进阶","question":"水在沸腾的过程中继续加热，水温会怎样变化？","options":["持续升高","保持不变","先升后降","持续下降"],"answer":1,"hint":"沸腾后继续加热，热量去哪了？","explanation":"水沸腾后温度保持沸点不变，继续吸收的热量用于把水变成水蒸气（汽化），而不是升温。","distractors":["沸腾后温度锁定在沸点，不再升。",null,"沸腾后温度稳定，不会降。","不会下降。"]},{"id":13,"free":false,"level":"基础","question":"电热水壶壶嘴上方冒出的「白气」其实是什么？","options":["水蒸气","水蒸气遇冷液化成的小水滴","烟","二氧化碳"],"answer":1,"hint":"水蒸气无色，白气是凝结的小水珠。","explanation":"「白气」是高温水蒸气遇到冷空气后液化成的小水滴；真正的水蒸气是无色透明、看不见的。","distractors":["水蒸气是无色透明、看不见的。",null,"烟是固体小颗粒。","和二氧化碳无关。"]},{"id":14,"free":false,"level":"挑战","flag":"red","question":"把 1kg 的水从 20°C 加热到 100°C（水的比热容取 4.2×10³ J/(kg·°C)），水吸收的热量约为多少？","options":["4.2×10³ J","8.4×10⁴ J","3.36×10⁵ J","4.2×10⁵ J"],"answer":2,"hint":"用 Q=cmΔt，注意 Δt=100−20=80。","explanation":"Q = cmΔt = 4.2×10³ × 1 × (100−20) = 4.2×10³ × 80 = 3.36×10⁵ J。【数值计算·建议人工复核】","distractors":["这是比热容本身，漏乘了 80。","Δt 算成了 20（应为 80）。",null,"数值近似，精确算应为 3.36×10⁵。"]},{"id":15,"free":false,"level":"挑战","flag":"red","question":"加热丝和连接导线是串联的（电流相同），为什么加热丝发烫而导线几乎不热？","options":["导线里的电流更小","加热丝电阻更大，根据 Q=I²Rt 发热更多","导线两端的电压更高","加热丝本来温度就高"],"answer":1,"hint":"串联电流相同，比较发热看电阻，用 Q=I²Rt。","explanation":"串联电路电流相同，根据焦耳定律 Q=I²Rt，加热丝电阻远大于导线，所以加热丝发热多、导线发热少。【表述·建议人工复核，注意与 P=U²/R 的区别】","distractors":["串联电路各处电流相同。",null,"串联分压：电阻大的加热丝分压更多，不是导线。","因果颠倒：是发热多才温度高。"]},{"id":16,"free":false,"level":"进阶","question":"除了电热水壶，下面哪个电器/装置也常用到双金属片？","options":["电饭煲的保温温控","手机屏幕","LED 灯泡","电视遥控器"],"answer":0,"hint":"想想还有哪些电器靠温控自动断电或保温。","explanation":"电饭煲保温、电熨斗温控、热继电器、双金属温度计等都用到双金属片受热弯曲的原理。","distractors":[null,"手机屏幕不需要温控开关。","LED 灯泡不靠双金属片。","遥控器不靠双金属片。"]}];
 
 const UNLOCK_CODE = "1888";   // 收款后老师发此码
 const STORE_KEY = "kettle_unlocked_v1";
+const WRONG_KEY = "kettle_wrong_v1";
+
+/* 错题收集（间隔复习）：做错记录，回来再看记得更牢 */
+function getWrong(){ try{ return JSON.parse(localStorage.getItem(WRONG_KEY)||'[]'); }catch(e){ return []; } }
+function recordWrong(id){
+  const w = getWrong();
+  if(!w.includes(id)){ w.push(id); try{ localStorage.setItem(WRONG_KEY, JSON.stringify(w)); }catch(e){} }
+}
+function updateWrongBanner(){
+  const banner = document.getElementById("wrong-banner");
+  if(!banner) return;
+  const w = getWrong();
+  if(w.length > 0){
+    banner.innerHTML = `🔁 你还有 <b>${w.length}</b> 道题没做对，建议过一会（或明天）回来重看一遍错题——间隔复习记得更牢。`;
+    banner.style.display = "block";
+  }
+}
 
 /* ---------- 渲染 ---------- */
 const freeQuiz = document.getElementById("free-quiz");
@@ -204,8 +212,10 @@ const freeProgress = document.getElementById("free-progress");
 
 function el(html){ const d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstElementChild; }
 
+const LEVEL_COLOR = {"基础":"var(--green)","进阶":"var(--orange)","挑战":"var(--red)"};
 function renderQuestion(q, container, index, total){
-  const card = el(`<div class="q"><div class="q-no">第 ${index+1} 题 / 共 ${total} 题</div>
+  const lv = q.level ? `<span class="lv" style="color:${LEVEL_COLOR[q.level]||'var(--muted)'}">${q.level}</span>` : '';
+  const card = el(`<div class="q"><div class="q-no">第 ${index+1} 题 / 共 ${total} 题${lv}</div>
     <div class="q-text">${q.question}</div><div class="opts"></div><div class="exp"></div></div>`);
   const opts = card.querySelector(".opts");
   const exp = card.querySelector(".exp");
@@ -229,12 +239,21 @@ function answer(q, chosen, card, opts, exp){
     else if(i === chosen) o.classList.add("wrong");
     else o.classList.add("dim");
   });
-  const tag = correct ? "✅ 答对了" : "❌ 答错了";
-  exp.innerHTML = `<span class="exp-tag">${tag}</span>${q.explanation}`;
-  exp.classList.add("show", correct ? "correct" : "wrong");
-  exp.innerHTML = `<span class="exp-tag">${tag} · 解析</span>${q.explanation}`;
+  if(correct){
+    exp.innerHTML = `<span class="exp-tag">✅ 答对了！你抓住了关键</span>${q.explanation}`;
+    exp.classList.add("show", "correct");
+  } else {
+    const wrongReason = (q.distractors && q.distractors[chosen]) ? q.distractors[chosen] : '';
+    const whyHtml = wrongReason ? `<div class="why">✗ 你选的「${q.options[chosen]}」——${wrongReason}</div>` : '';
+    const hintHtml = q.hint ? `<div class="hint">💡 思路提示：${q.hint}</div>` : '';
+    const ansHtml = `<div class="ans">✅ 正确答案：${q.options[q.answer]}。${q.explanation}</div>`;
+    exp.innerHTML = `<span class="exp-tag">❌ 差一点，看看错在哪</span>${whyHtml}${hintHtml}${ansHtml}`;
+    exp.classList.add("show", "wrong");
+    recordWrong(q.id);
+  }
   // 免费题进度
   if(card.dataset.free === "1") updateFreeProgress();
+  updateWrongBanner();
 }
 
 /* 免费题 */
@@ -308,6 +327,7 @@ function loadQR(){
   img.alt = "收款二维码";
 }
 loadQR();
+updateWrongBanner();
 </script>
 </body>
 </html>
