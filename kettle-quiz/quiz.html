@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>电热水壶为什么水开会自动断电 · 随堂测验</title>
+<style>
+:root{
+  --bg:#f2f2ef; --card:#fbfbfa; --ink:#161619; --muted:#6e6e73; --line:#e3e3df;
+  --blue:#3e63dd; --red:#e5484d; --green:#30a46c; --orange:#d97706;
+  --ease:cubic-bezier(.32,.72,0,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 48px}
+
+/* 顶部 */
+.hero{padding:28px 0 8px;text-align:center}
+.hero .tag{display:inline-block;font-size:12px;letter-spacing:2px;color:var(--blue);
+  border:1px solid var(--blue);border-radius:999px;padding:3px 12px;margin-bottom:12px}
+.hero h1{font-size:22px;line-height:1.4;margin:0 0 8px;font-weight:700}
+.hero h1 .en{display:block;font-size:13px;color:var(--muted);font-weight:400;margin-top:4px}
+.hero p.sub{font-size:14px;color:var(--muted);margin:0}
+
+/* 动画区 */
+.anim{margin:20px 0 8px;background:var(--card);border-radius:16px;overflow:hidden;
+  border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.anim iframe{display:block;width:100%;height:640px;border:0}
+.anim-note{font-size:12px;color:var(--muted);text-align:center;padding:8px 12px 12px}
+
+/* 分区标题 */
+.sec{margin-top:28px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-head .num{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex:0 0 auto}
+.sec-head h2{font-size:17px;margin:0;font-weight:700}
+.sec-head .badge{font-size:11px;color:var(--green);background:rgba(48,164,108,.12);
+  padding:2px 8px;border-radius:6px;font-weight:600}
+
+/* 题目卡片 */
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:18px;margin-bottom:14px;transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.q.hidden{opacity:0;transform:translateY(6px);pointer-events:none}
+.q .q-no{font-size:12px;color:var(--muted);margin-bottom:6px}
+.q .q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:14px}
+.q .opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:1.5px solid var(--line);
+  border-radius:12px;cursor:pointer;font-size:15px;transition:all .2s var(--ease);background:#fff}
+.opt:active{transform:scale(.985)}
+.opt .key{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted);
+  transition:all .2s var(--ease);margin-top:1px}
+.opt .txt{flex:1}
+.opt.correct{border-color:var(--green);background:rgba(48,164,108,.07)}
+.opt.correct .key{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:rgba(229,72,77,.06)}
+.opt.wrong .key{background:var(--red);border-color:var(--red);color:#fff}
+.opt.dim{opacity:.45}
+
+/* 解析 */
+.exp{display:none;margin-top:14px;padding:13px 14px;border-radius:12px;background:#f6f7fb;
+  border-left:3px solid var(--blue);font-size:14px;line-height:1.6;animation:fadeIn .35s var(--ease)}
+.exp.show{display:block}
+.exp .exp-tag{font-size:12px;color:var(--blue);font-weight:700;margin-right:6px}
+.exp.correct{border-left-color:var(--green)}
+.exp.correct .exp-tag{color:var(--green)}
+.exp.wrong{border-left-color:var(--red)}
+.exp.wrong .exp-tag{color:var(--red)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* 进度 */
+.progress{font-size:13px;color:var(--muted);text-align:center;margin:6px 0 14px}
+.progress b{color:var(--ink)}
+
+/* 付费墙 */
+.paywall{background:linear-gradient(180deg,#fff,#f7f8fc);border:1.5px solid var(--blue);
+  border-radius:20px;padding:26px 20px;text-align:center;margin-top:6px;position:relative;overflow:hidden}
+.paywall::before{content:"";position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+  background:radial-gradient(circle,rgba(62,99,221,.12),transparent 70%);border-radius:50%}
+.paywall .lock{font-size:34px;margin-bottom:6px}
+.paywall h3{font-size:18px;margin:0 0 4px;font-weight:700}
+.paywall p{font-size:14px;color:var(--muted);margin:0 0 14px}
+.paywall .price{font-size:40px;font-weight:800;color:var(--blue);line-height:1}
+.paywall .price small{font-size:16px;font-weight:600}
+.paywall .price-note{font-size:12px;color:var(--muted);margin:6px 0 16px}
+
+/* 收款码 */
+.pay-qr{width:200px;height:200px;margin:0 auto 10px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pay-qr img{width:100%;height:100%;object-fit:contain}
+.pay-qr .placeholder{font-size:13px;color:var(--muted);padding:16px;text-align:center}
+
+/* 解锁码输入 */
+.unlock{margin-top:4px}
+.unlock input{width:160px;text-align:center;font-size:20px;letter-spacing:6px;padding:10px 8px;
+  border:1.5px solid var(--line);border-radius:10px;outline:none;font-weight:700;color:var(--ink)}
+.unlock input:focus{border-color:var(--blue)}
+.unlock .btn{margin-top:10px}
+.btn{display:inline-block;background:var(--blue);color:#fff;border:none;border-radius:12px;
+  font-size:16px;font-weight:700;padding:12px 30px;cursor:pointer;transition:all .2s var(--ease)}
+.btn:active{transform:scale(.97);opacity:.92}
+.btn.ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.msg{font-size:13px;margin-top:10px;min-height:18px;font-weight:600}
+.msg.err{color:var(--red)}
+.msg.ok{color:var(--green)}
+
+/* 已解锁 */
+.unlocked-tip{display:none;background:rgba(48,164,108,.1);border:1px solid var(--green);
+  border-radius:12px;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:14px;font-weight:600}
+.unlocked-tip.show{display:block}
+
+.footer{text-align:center;font-size:12px;color:var(--muted);margin-top:32px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="tag">初中物理 · 热学</span>
+    <h1>电热水壶：水开了为什么会自动断电？<span class="en">Why does a kettle switch off when water boils?</span></h1>
+    <p class="sub">先看动画，再做几道题试试</p>
+  </div>
+
+  <!-- 动画（免费） -->
+  <div class="anim">
+    <iframe src="kettle-switch.html" title="电热水壶自动断电动画" loading="lazy"></iframe>
+    <div class="anim-note">▲ 自动循环演示：通电加热 → 水开双金属片弯曲 → 触点弹开断电</div>
+  </div>
+
+  <!-- 免费题 -->
+  <div class="sec" id="free-sec">
+    <div class="sec-head">
+      <span class="num">1</span><h2>免费试做</h2><span class="badge">免费</span>
+    </div>
+    <div class="progress" id="free-progress"></div>
+    <div id="free-quiz"></div>
+  </div>
+
+  <!-- 付费题 -->
+  <div class="sec" id="paid-sec">
+    <div class="sec-head">
+      <span class="num">2</span><h2>完整题库 + 详细解析</h2><span class="badge">13 题</span>
+    </div>
+    <div class="unlocked-tip" id="unlocked-tip">✅ 已解锁，开始挑战完整题库！</div>
+    <div id="paid-quiz"></div>
+
+    <div class="paywall" id="paywall">
+      <div class="lock">🔒</div>
+      <h3>解锁完整题库</h3>
+      <p>13 道热学变式题 + 逐题详细解析</p>
+      <div class="price"><small>¥</small>1.9<small> / 知识点</small></div>
+      <div class="price-note">低到不用犹豫，试试你掌握了多少</div>
+      <div class="pay-qr" id="pay-qr">
+        <div class="placeholder" id="qr-placeholder">收款码加载中…</div>
+      </div>
+      <p style="font-size:12px">微信扫码支付 ¥1.9，付款后截图发给老师领取解锁码</p>
+      <div class="unlock">
+        <input id="unlock-input" type="text" inputmode="numeric" maxlength="6" placeholder="输入解锁码">
+        <div><button class="btn" id="unlock-btn">解锁题库</button></div>
+      </div>
+      <div class="msg" id="unlock-msg"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    蛙田文化 · 初中物理知识动画<br>
+    先看动画建立直觉，再做变式题巩固考点
+  </div>
+</div>
+
+<script>
+/* ---------- 题库数据（内联） ---------- */
+const QUESTIONS = [
+  {"id":1,"free":true,"question":"电热水壶的水烧开后能自动断电，靠的是壶底的什么装置？","options":["保险丝","双金属片温控开关","热敏电阻","定时器"],"answer":1,"explanation":"壶底温控开关里有一片双金属片，水开时受热弯曲，把触点顶开，电路断开，自动停止加热。"},
+  {"id":2,"free":true,"question":"双金属片是由什么组成的？","options":["两片完全相同的金属","金属和塑料","两种热膨胀程度不同的金属压合而成","金属和陶瓷"],"answer":2,"explanation":"双金属片把两种热膨胀系数（受热膨胀程度）不同的金属紧紧压合在一起，受热时两层膨胀不一样，就会弯曲。"},
+  {"id":3,"free":true,"question":"水烧开时，电热水壶里的双金属片会怎样？","options":["融化掉","受热弯曲，把触点顶开断电","变得更硬更直","缩小消失"],"answer":1,"explanation":"水温升高到 100°C，双金属片受热向上弯曲，把触点顶开，电路\"啪\"地断开。"},
+  {"id":4,"free":false,"flag":"red","question":"双金属片受热时，会向哪一侧弯曲？","options":["向热膨胀系数大的金属一侧","向热膨胀系数小的金属一侧","不弯曲，只会变长","先左后右来回摆"],"answer":1,"explanation":"受热时热膨胀系数大的那层金属膨胀得更多、变得更长，被压住后就迫使整片双金属片向热膨胀系数小的那一侧弯曲。【易错点·建议人工复核】"},
+  {"id":5,"free":false,"question":"电热水壶通电后，加热盘的热量主要通过哪种方式传给壶里的水？","options":["热辐射","热传导","热对流","摩擦生热"],"answer":1,"explanation":"加热盘直接贴着壶底和水，热量通过热传导传给水；水被加热后内部还会发生对流，但加热盘到水这一层主要是传导。"},
+  {"id":6,"free":false,"question":"关于水的沸腾和蒸发，下列说法正确的是？","options":["蒸发必须在沸点温度才能发生","沸腾在任何温度下都能进行","沸腾是达到沸点后、液体内部和表面同时发生的剧烈汽化","蒸发发生在液体内部"],"answer":2,"explanation":"沸腾要在沸点温度下、内部和表面同时剧烈汽化；蒸发则在任何温度下、只在液体表面缓慢进行。"},
+  {"id":7,"free":false,"question":"在高海拔的高山上烧水，水\"开了\"却达不到 100°C（不够烫），主要原因是？","options":["高山气温太低","高山气压低，水的沸点降低","高山水质不纯","高山氧气稀薄"],"answer":1,"explanation":"液体的沸点随大气压降低而降低。高山气压低，水不到 100°C 就沸腾了。"},
+  {"id":8,"free":false,"question":"电热水壶跳闸断电后，水温降到一定程度又会重新通电加热，这是因为？","options":["保险丝自动恢复了","双金属片冷却后复位，触点重新闭合","有人又按了一下开关","水把开关冲开了"],"answer":1,"explanation":"水温下降，双金属片冷却回弹复位，触点重新闭合，电路再次接通，继续加热——这就是水壶保温、反复加热的原理。"},
+  {"id":9,"free":false,"question":"电热水壶刚通电（冷态）时，温控开关的触点是闭合还是断开的？","options":["闭合（通电加热）","断开（不加热）","一半闭合一半断开","与温度无关"],"answer":0,"explanation":"电热水壶温控器是常闭型：冷态触点闭合、通电加热；等水烧开、双金属片弯曲后才顶开触点断电。"},
+  {"id":10,"free":false,"question":"双金属片温控开关\"跳闸\"的本质是？","options":["水把电路淹短路了","双金属片弯曲顶开触点，电路变成断路","加热丝烧断了","插头松动了"],"answer":1,"explanation":"跳闸就是触点分离、电路断路，停止加热；并不是短路或烧坏。"},
+  {"id":11,"free":false,"question":"加热丝通电发热，发生的能量转化是？","options":["电能转化为内能","内能转化为电能","电能转化为光能","机械能转化为电能"],"answer":0,"explanation":"电流通过加热丝，电能转化为内能（热量），这是电流的热效应。"},
+  {"id":12,"free":false,"question":"水在沸腾的过程中继续加热，水温会怎样变化？","options":["持续升高","保持不变","先升后降","持续下降"],"answer":1,"explanation":"水沸腾后温度保持沸点不变，继续吸收的热量用于把水变成水蒸气（汽化），而不是升温。"},
+  {"id":13,"free":false,"question":"电热水壶壶嘴上方冒出的\"白气\"其实是什么？","options":["水蒸气","水蒸气遇冷液化成的小水滴","烟","二氧化碳"],"answer":1,"explanation":"\"白气\"是高温水蒸气遇到冷空气后液化成的小水滴；真正的水蒸气是无色透明、看不见的。"},
+  {"id":14,"free":false,"flag":"red","question":"把 1kg 的水从 20°C 加热到 100°C（水的比热容取 4.2×10³ J/(kg·°C)），水吸收的热量约为多少？","options":["4.2×10³ J","8.4×10⁴ J","3.36×10⁵ J","4.2×10⁵ J"],"answer":2,"explanation":"Q = cmΔt = 4.2×10³ × 1 × (100−20) = 4.2×10³ × 80 = 3.36×10⁵ J。【数值计算·建议人工复核】"},
+  {"id":15,"free":false,"flag":"red","question":"加热丝和连接导线是串联的（电流相同），为什么加热丝发烫而导线几乎不热？","options":["导线里的电流更小","加热丝电阻更大，根据 Q=I²Rt 发热更多","导线两端的电压更高","加热丝本来温度就高"],"answer":1,"explanation":"串联电路电流相同，根据焦耳定律 Q=I²Rt，加热丝电阻远大于导线，所以加热丝发热多、导线发热少。【表述·建议人工复核，注意与 P=U²/R 的区别】"},
+  {"id":16,"free":false,"question":"除了电热水壶，下面哪个电器/装置也常用到双金属片？","options":["电饭煲的保温温控","手机屏幕","LED 灯泡","电视遥控器"],"answer":0,"explanation":"电饭煲保温、电熨斗温控、热继电器、双金属温度计等都用到双金属片受热弯曲的原理。"}
+];
+
+const UNLOCK_CODE = "1888";   // 收款后老师发此码
+const STORE_KEY = "kettle_unlocked_v1";
+
+/* ---------- 渲染 ---------- */
+const freeQuiz = document.getElementById("free-quiz");
+const paidQuiz = document.getElementById("paid-quiz");
+const freeProgress = document.getElementById("free-progress");
+
+function el(html){ const d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstElementChild; }
+
+function renderQuestion(q, container, index, total){
+  const card = el(`<div class="q"><div class="q-no">第 ${index+1} 题 / 共 ${total} 题</div>
+    <div class="q-text">${q.question}</div><div class="opts"></div><div class="exp"></div></div>`);
+  const opts = card.querySelector(".opts");
+  const exp = card.querySelector(".exp");
+  const keys = ["A","B","C","D"];
+  q.options.forEach((opt, i) => {
+    const o = el(`<div class="opt"><span class="key">${keys[i]}</span><span class="txt">${opt}</span></div>`);
+    o.addEventListener("click", () => answer(q, i, card, opts, exp));
+    opts.appendChild(o);
+  });
+  container.appendChild(card);
+  return card;
+}
+
+function answer(q, chosen, card, opts, exp){
+  if(card.dataset.done) return;
+  card.dataset.done = "1";
+  const correct = chosen === q.answer;
+  const optEls = opts.querySelectorAll(".opt");
+  optEls.forEach((o, i) => {
+    if(i === q.answer) o.classList.add("correct");
+    else if(i === chosen) o.classList.add("wrong");
+    else o.classList.add("dim");
+  });
+  const tag = correct ? "✅ 答对了" : "❌ 答错了";
+  exp.innerHTML = `<span class="exp-tag">${tag}</span>${q.explanation}`;
+  exp.classList.add("show", correct ? "correct" : "wrong");
+  exp.innerHTML = `<span class="exp-tag">${tag} · 解析</span>${q.explanation}`;
+  // 免费题进度
+  if(card.dataset.free === "1") updateFreeProgress();
+}
+
+/* 免费题 */
+const freeQs = QUESTIONS.filter(q => q.free);
+freeQs.forEach((q, i) => {
+  const card = renderQuestion(q, freeQuiz, i, freeQs.length);
+  card.dataset.free = "1";
+});
+function updateFreeProgress(){
+  const done = [...freeQuiz.querySelectorAll(".q")].filter(c => c.dataset.done).length;
+  freeProgress.innerHTML = `已完成 <b>${done}</b> / ${freeQs.length} 题 · 全对即可解锁进阶挑战`;
+  if(done === freeQs.length){
+    setTimeout(() => {
+      document.getElementById("paid-sec").scrollIntoView({behavior:"smooth", block:"start"});
+    }, 400);
+  }
+}
+updateFreeProgress();
+
+/* 付费题（默认锁定，仅渲染到内存） */
+const paidQs = QUESTIONS.filter(q => !q.free);
+
+function renderPaid(){
+  paidQuiz.innerHTML = "";
+  paidQs.forEach((q, i) => renderQuestion(q, paidQuiz, i, paidQs.length));
+}
+
+/* ---------- 解锁逻辑 ---------- */
+const paywall = document.getElementById("paywall");
+const unlockedTip = document.getElementById("unlocked-tip");
+const unlockInput = document.getElementById("unlock-input");
+const unlockBtn = document.getElementById("unlock-btn");
+const unlockMsg = document.getElementById("unlock-msg");
+
+function isUnlocked(){ try{ return localStorage.getItem(STORE_KEY) === "1"; }catch(e){ return false; } }
+function doUnlock(){
+  try{ localStorage.setItem(STORE_KEY, "1"); }catch(e){}
+  paywall.style.display = "none";
+  unlockedTip.classList.add("show");
+  renderPaid();
+}
+
+if(isUnlocked()){
+  doUnlock();
+}
+
+unlockBtn.addEventListener("click", () => {
+  const v = unlockInput.value.trim();
+  if(v === UNLOCK_CODE){
+    unlockMsg.className = "msg ok";
+    unlockMsg.textContent = "解锁成功！开始做题吧 👇";
+    setTimeout(doUnlock, 300);
+  } else {
+    unlockMsg.className = "msg err";
+    unlockMsg.textContent = "解锁码不正确，请核对后重试";
+    unlockInput.value = "";
+    unlockInput.focus();
+  }
+});
+unlockInput.addEventListener("keydown", e => { if(e.key === "Enter") unlockBtn.click(); });
+
+/* ---------- 收款码：优先加载本地图片，失败显示占位 ---------- */
+const qrBox = document.getElementById("pay-qr");
+function loadQR(){
+  const img = new Image();
+  img.onload = () => { qrBox.innerHTML = ""; qrBox.appendChild(img); };
+  img.onerror = () => {
+    qrBox.innerHTML = `<div class="placeholder">请向老师索取收款码图片<br>（pay-qr.png）</div>`;
+  };
+  img.src = "pay-qr.png";
+  img.alt = "收款二维码";
+}
+loadQR();
+</script>
+</body>
+</html>
