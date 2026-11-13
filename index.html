@@ -406,6 +406,67 @@
       font-weight: 300;
     }
 
+    /* 理科知识可视化 · 物理原理演示 */
+    .physics-demo {
+      margin-top: 3rem;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s;
+    }
+    .physics-demo.visible { opacity: 1; transform: translateY(0); }
+    .physics-demo-frame {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #fbfbfa;
+    }
+    .physics-demo-frame iframe {
+      display: block;
+      width: 100%;
+      height: 660px;
+      border: 0;
+    }
+    .physics-demo-tag {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      background: rgba(8, 145, 178, 0.08);
+      color: var(--section-tech);
+      margin-bottom: 0.75rem;
+    }
+    .physics-demo-info h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+    }
+    .physics-demo-info p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin: 0 0 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .physics-demo { grid-template-columns: 1fr; }
+      .physics-demo-frame iframe { height: 660px; }
+    }
+    @media (max-width: 768px) {
+      .physics-demo { padding: 1.2rem; border-radius: 16px; }
+      .physics-demo-info h3 { font-size: 1.2rem; }
+      .physics-demo-frame iframe { height: 615px; }
+    }
+
     /* Section-specific card icon colors */
     .meiyu .card-icon { background: rgba(225, 29, 72, 0.1); color: var(--section-meiyu); }
     .music .card-icon { background: rgba(124, 58, 237, 0.1); color: var(--section-music); }
@@ -1868,6 +1929,18 @@
         <p>为教培机构提供数字化升级方案，从小程序开发到运营系统定制化服务。</p>
       </div>
     </div>
+    <!-- 理科知识可视化 · 物理原理演示 -->
+    <div class="physics-demo fade-up">
+      <div class="physics-demo-frame">
+        <iframe src="/kettle-quiz/kettle-embed.html" title="电热水壶：水开了为什么会自动断电" loading="lazy"></iframe>
+      </div>
+      <div class="physics-demo-info">
+        <span class="physics-demo-tag">理科知识可视化</span>
+        <h3>把课本原理，做成看得见的动画</h3>
+        <p>双金属片受热弯曲、顶开触点、自动断电——抽象的物理原理，一个会动的演示就能看懂。蛙田把初高中课本里的物理、化学、生物概念，做成可交互的可视化课件。</p>
+        <a class="btn-primary" href="/kettle-quiz/quiz" target="_blank" rel="noopener">体验随堂测验 →</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2124,6 +2197,8 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe cards
 document.querySelectorAll('.card').forEach(el => observer.observe(el));
+// Observe physics demo
+document.querySelectorAll('.physics-demo').forEach(el => observer.observe(el));
 // Observe showcase elements
 document.querySelectorAll('.showcase-text, .showcase-visual').forEach(el => observer.observe(el));
 // Observe fade-up elements in about
