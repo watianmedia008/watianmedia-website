@@ -468,6 +468,49 @@
       .physics-demo-frame iframe { height: 615px; }
     }
 
+    /* 数学可视化演示 */
+    .math-demo {
+      margin-top: 3rem;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s;
+    }
+    .math-demo.visible { opacity: 1; transform: translateY(0); }
+    .math-demo-head { margin-bottom: 1.5rem; }
+    .math-demo-head h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+    }
+    .math-demo-head p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin: 0;
+    }
+    .math-demo-frame {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #0d1117;
+    }
+    .math-demo-frame iframe {
+      display: block;
+      width: 100%;
+      height: 2500px;
+      border: 0;
+    }
+    @media (max-width: 768px) {
+      .math-demo { padding: 1.2rem; border-radius: 16px; }
+      .math-demo-head h3 { font-size: 1.2rem; }
+      .math-demo-frame iframe { height: 2600px; }
+    }
+
     /* Section-specific card icon colors */
     .meiyu .card-icon { background: rgba(225, 29, 72, 0.1); color: var(--section-meiyu); }
     .music .card-icon { background: rgba(124, 58, 237, 0.1); color: var(--section-music); }
@@ -2024,6 +2067,29 @@
         <a class="btn-primary" href="/kettle-quiz/quiz" target="_blank" rel="noopener">体验随堂测验 →</a>
       </div>
     </div>
+
+    <!-- 数学可视化演示 -->
+    <div class="math-demo fade-up">
+      <div class="math-demo-head">
+        <span class="physics-demo-tag">理科知识可视化 · 数学</span>
+        <h3>第20题 · 对数换元 → 二次函数</h3>
+        <p>换底公式、换元降维、二次函数含参最值——一道对数复合函数压轴题的三步拆解。拖动底数 a 与参数 m，看曲线如何变化、最大值如何移动。</p>
+      </div>
+      <div class="math-demo-frame">
+        <iframe src="/math-viz/log-quadratic.html" title="第20题：对数换元→二次函数可视化" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="math-demo fade-up">
+      <div class="math-demo-head">
+        <span class="physics-demo-tag">理科知识可视化 · 数学</span>
+        <h3>第21题 · QB函数新定义</h3>
+        <p>抽象函数"新定义"题怎么读？热力图直观展示 f(x)+f(y) ≥ f(xy) 的满足区与反例区，拖动底数 a 看 a=1 为何是唯一答案。</p>
+      </div>
+      <div class="math-demo-frame">
+        <iframe src="/math-viz/qb-function.html" title="第21题：QB函数新定义可视化" loading="lazy"></iframe>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2284,6 +2350,18 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.card').forEach(el => observer.observe(el));
 // Observe physics demo
 document.querySelectorAll('.physics-demo').forEach(el => observer.observe(el));
+// Observe math demo
+document.querySelectorAll('.math-demo').forEach(el => observer.observe(el));
+// Math iframe 高度自适应内容（iframe 通过 postMessage 上报高度）
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'math-height' && e.data.height) {
+    document.querySelectorAll('.math-demo-frame iframe').forEach(f => {
+      if (f.contentWindow === e.source) {
+        f.style.height = e.data.height + 'px';
+      }
+    });
+  }
+});
 // Observe showcase elements
 document.querySelectorAll('.showcase-text, .showcase-visual').forEach(el => observer.observe(el));
 // Observe fade-up elements in about

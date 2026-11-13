@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QB函数新定义 | 数学可视化</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --blue: #58a6ff; --orange: #f0883e; --red: #f85149;
+    --green: #3fb950; --purple: #bc8cff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.7; padding: 20px 16px 40px; max-width: 860px; margin: 0 auto;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 6px; }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+  .card h2 { font-size: 1.05rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .badge { display: inline-block; background: rgba(188, 140, 255, 0.15); color: var(--purple); padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+  .problem { background: rgba(188, 140, 255, 0.06); border: 1px solid rgba(188, 140, 255, 0.25); border-radius: 12px; padding: 16px 18px; font-size: 0.98rem; }
+  .problem .sub { color: var(--purple); font-weight: 600; }
+  .kp { margin-bottom: 14px; }
+  .kp h3 { font-size: 1rem; color: var(--blue); margin-bottom: 4px; }
+  .kp .formula { background: rgba(88, 166, 255, 0.08); border-radius: 8px; padding: 8px 12px; margin: 8px 0; font-family: "Times New Roman", serif; font-size: 1.05rem; text-align: center; letter-spacing: 0.5px; }
+  .kp p { color: var(--text); font-size: 0.93rem; }
+  .kp .note { color: var(--muted); font-size: 0.85rem; }
+  .highlight { color: var(--orange); font-weight: 600; }
+  .red { color: var(--red); font-weight: 600; }
+  .green { color: var(--green); font-weight: 600; }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 8px; }
+  .slider-row label { font-size: 0.9rem; white-space: nowrap; }
+  .slider-row .val { font-family: "Times New Roman", serif; font-weight: 600; color: var(--orange); min-width: 52px; text-align: center; }
+  input[type=range] { flex: 1; min-width: 140px; accent-color: var(--blue); }
+  canvas { display: block; width: 100%; border-radius: 8px; background: #0a0e14; margin: 6px 0; }
+  .panel-label { font-size: 0.88rem; color: var(--blue); font-weight: 600; margin-top: 8px; }
+  .legend { font-size: 0.82rem; color: var(--muted); }
+  .legend span { margin-right: 14px; }
+  .legend i { display: inline-block; width: 12px; height: 12px; margin-right: 4px; vertical-align: middle; border-radius: 2px; }
+  .step { margin-bottom: 12px; }
+  .step h4 { font-size: 0.95rem; color: var(--orange); margin-bottom: 4px; }
+  .step p { font-size: 0.9rem; }
+  .step .formula { background: rgba(240, 136, 62, 0.08); border-radius: 8px; padding: 6px 12px; margin: 6px 0; font-family: "Times New Roman", serif; font-size: 1rem; text-align: center; }
+  .answer-box { background: rgba(63, 185, 80, 0.1); border: 1px solid rgba(63, 185, 80, 0.35); border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>QB函数 · 抽象函数新定义</h1>
+  <div class="subtitle">第21题 · 不等式恒成立 + 充要条件 · 高中数学</div>
+
+  <div class="problem">
+    <span class="badge">题目</span>
+    <p style="margin-top:8px;">已知函数 y = f(x)，x ∈ D，若对于定义域 D 内<b>任意</b>实数 x, y，不等式</p>
+    <p style="text-align:center;font-family:'Times New Roman',serif;font-size:1.15rem;margin:8px 0;">f(x) + f(y) ≥ f(xy)</p>
+    <p>都成立，则称函数 y = f(x)，x ∈ D 是 <b>QB 函数</b>。</p>
+    <p style="margin-top:6px;"><span class="sub">(1)</span> 判断函数 f(x) = −x² 是否是 QB 函数，并说明理由；</p>
+    <p style="margin-top:4px;"><span class="sub">(2)</span> D = (0, +∞)，若 g(x) = log<sub>½</sub>(ax) 是 QB 函数，求实数 a 的取值范围；</p>
+    <p style="margin-top:4px;"><span class="sub">(3)</span> 已知 h(x) = aˣ（a &gt; 0，a ∈ R），证明："函数 y = h(x) 是 QB 函数" 的充要条件是 "a = 1"。</p>
+  </div>
+
+  <div class="card">
+    <h2>📚 核心知识点详解</h2>
+
+    <div class="kp">
+      <h3>① QB 函数定义 —— 读懂"新定义"题</h3>
+      <div class="formula">对任意 x, y ∈ D，都有 f(x) + f(y) ≥ f(xy)</div>
+      <p>意思是：<b>两个点的函数值之和，不小于这两个点乘积处的函数值</b>。它是对"函数增长快慢"的一种约束。</p>
+      <p class="note">💡 这类"新定义"题不用怕，本质就是：把题目给的不等式，套到具体函数上，验证它是否恒成立（判断题）或反过来求参数（求参题）。</p>
+    </div>
+
+    <div class="kp">
+      <h3>② 判断 / 求参的核心方法</h3>
+      <p><b>判断题（第1小题）</b>：只要找到<b>一个反例</b> (x, y) 使 f(x)+f(y) &lt; f(xy)，就否定。常取 x = y = 1、x = y = 0 等简单值试探。</p>
+      <p><b>求参题（第2小题）</b>：把具体函数代入不等式，利用运算性质（如 log(xy) = log x + log y）化简，再分离参数。</p>
+      <p><b>证明题（第3小题）</b>：充要条件 = 充分性 + 必要性，必要性常用<b>反证法 / 构造反例</b>。</p>
+    </div>
+
+    <div class="kp">
+      <h3>③ 关键陷阱 —— 定义域决定反例的取法</h3>
+      <p>第(3)小题 h(x) = aˣ 的定义域是 <b>全体实数 R</b>（含负数）。</p>
+      <p>若 a &gt; 1，取 x = y = n（n 足够大），aⁿ 指数爆炸，aⁿ + aⁿ &lt; a<sup>n²</sup>；</p>
+      <p>若 0 &lt; a &lt; 1，取 x = −1，y = n（n 足够大），a⁻¹ + aⁿ &lt; a<sup>−n</sup>（因 aⁿ → 0）。</p>
+      <p class="note">⚠️ 很多人只取正数 x、y 试探，就会漏掉"负自变量"带来的反例，得出错误结论。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🎬 交互可视化 <span style="font-size:0.8rem;color:var(--muted);font-weight:400;">（热力图：绿色=满足，红色=不满足）</span></h2>
+
+    <div class="panel-label">面板 A — 第(1)题：f(x) = −x²（红色区域就是不满足 QB 定义的地方）</div>
+    <canvas id="cvA" height="300"></canvas>
+    <div class="legend">
+      <span><i style="background:#3fb950;"></i>f(x)+f(y) ≥ f(xy) 成立</span>
+      <span><i style="background:#f85149;"></i>不成立（反例区）</span>
+      <span>⭕ 反例 (1,1)</span>
+    </div>
+
+    <div class="slider-row" style="margin-top:14px;">
+      <label>第(3)题底数 a =</label>
+      <input type="range" id="sliderA" min="0.3" max="2.5" step="0.05" value="1">
+      <span class="val" id="valA">1.00</span>
+    </div>
+    <div class="panel-label">面板 B — 第(3)题：h(x) = aˣ（拖动 a，观察 a=1 是唯一"全绿"的值）</div>
+    <canvas id="cvB" height="300"></canvas>
+    <div class="legend">
+      <span><i style="background:#3fb950;"></i>成立</span>
+      <span><i style="background:#f85149;"></i>不成立</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📝 解题过程</h2>
+
+    <div class="step">
+      <h4>第(1)小题：f(x) = −x² 是否 QB 函数？</h4>
+      <p>需验证 −x² − y² ≥ −(xy)² 是否恒成立，即 x² + y² ≤ x²y²。</p>
+      <p>取 <span class="highlight">x = y = 1</span>：左 = 1 + 1 = 2，右 = 1，2 ≤ 1 不成立。</p>
+      <div class="answer-box">答案(1)：f(x) = −x² 不是 QB 函数（反例 x = y = 1）</div>
+    </div>
+
+    <div class="step">
+      <h4>第(2)小题：g(x) = log<sub>½</sub>(ax) 求 a</h4>
+      <p>g(x) + g(y) = 2log<sub>½</sub>a + log<sub>½</sub>(xy)，g(xy) = log<sub>½</sub>a + log<sub>½</sub>(xy)。</p>
+      <p>代入不等式得 log<sub>½</sub>a ≥ 0。因底 ½ &lt; 1 对数递减，故 0 &lt; a ≤ 1。</p>
+      <div class="answer-box">答案(2)：a ∈ (0, 1]</div>
+    </div>
+
+    <div class="step">
+      <h4>第(3)小题：证明 h(x) = aˣ 是 QB 函数 ⇔ a = 1</h4>
+      <p><b>充分性</b>：a = 1 时 h(x) = 1，则 1 + 1 ≥ 1 恒成立，是 QB 函数。</p>
+      <p><b>必要性</b>（反证）：</p>
+      <p>· 若 a &gt; 1：取 x = y = n（n 足够大），则 2aⁿ &lt; a<sup>n²</sup>（因 a&gt;1 时 a<sup>n²−n</sup>→∞），矛盾；</p>
+      <p>· 若 0 &lt; a &lt; 1：取 x = −1，y = n（n 足够大），则 a⁻¹ + aⁿ &lt; a<sup>−n</sup>（因 aⁿ→0，a⁻¹ 固定），矛盾。</p>
+      <p>故 a ≠ 1 时都不是 QB 函数，只能是 a = 1。</p>
+      <div class="answer-box">答案(3)：充要条件是 a = 1</div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  function setup(canvas){
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const h = parseInt(canvas.getAttribute('height'));
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+
+  const cvA = document.getElementById('cvA');
+  const cvB = document.getElementById('cvB');
+  const sliderA = document.getElementById('sliderA');
+  const valA = document.getElementById('valA');
+
+  function heatmap(canvas, f, xMin, xMax, yMin, yMax){
+    const { ctx, w, h } = setup(canvas);
+    const pad = 34;
+    const plotW = w - pad*2, plotH = h - pad*2;
+    const N = 90;
+    const cellW = plotW/N, cellH = plotH/N;
+    // 预计算网格
+    const grid = [];
+    for(let i=0;i<=N;i++){
+      const row = [];
+      const y = yMin + (yMax-yMin)*i/N;
+      for(let j=0;j<=N;j++){
+        const x = xMin + (xMax-xMin)*j/N;
+        row.push(f(x)+f(y)-f(x*y));
+      }
+      grid.push(row);
+    }
+    ctx.clearRect(0,0,w,h);
+    // 画热力格（固定 scale + sqrt 压缩，避免角落大值冲淡中间区域）
+    const scale = 3;
+    for(let i=0;i<N;i++){
+      for(let j=0;j<N;j++){
+        const d = grid[i][j];
+        if(!isFinite(d)){ ctx.fillStyle = '#1a1f26'; }
+        else {
+          const t = Math.sqrt(Math.min(1, Math.abs(d)/scale));
+          const alpha = 0.18 + 0.82 * t;
+          if(d >= 0.02){ ctx.fillStyle = `rgba(63,185,80,${alpha})`; }
+          else if(d <= -0.02){ ctx.fillStyle = `rgba(248,81,73,${alpha})`; }
+          else { ctx.fillStyle = '#2a3038'; }
+        }
+        ctx.fillRect(pad + j*cellW, pad + i*cellH, cellW+0.5, cellH+0.5);
+      }
+    }
+    // 坐标轴
+    function X(x){ return pad + (x-xMin)/(xMax-xMin)*plotW; }
+    function Y(y){ return pad + (yMax-y)/(yMax-yMin)*plotH; }
+    ctx.strokeStyle = '#8b949e'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad, Y(0)); ctx.lineTo(w-pad, Y(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(X(0), pad); ctx.lineTo(X(0), h-pad); ctx.stroke();
+    ctx.fillStyle = '#e6edf3'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('x', w-pad+2, Y(0)+14);
+    ctx.fillText('y', X(0)+12, pad-4);
+    // 刻度
+    const step = (xMax-xMin)/4;
+    for(let v=xMin; v<=xMax+1e-9; v+=step){
+      const iv = Math.round(v*10)/10;
+      ctx.fillText(iv, X(v), Y(0)+14);
+    }
+    return { ctx, X, Y };
+  }
+
+  function drawA(){
+    // f(x) = -x^2, d = -x^2 - y^2 + x^2 y^2
+    const g = heatmap(cvA, x => -x*x, -2.5, 2.5, -2.5, 2.5);
+    // 标反例 (1,1)
+    const { ctx, X, Y } = g;
+    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(X(1), Y(1), 6, 0, Math.PI*2); ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('反例 (1,1)', X(1)+10, Y(1)+4);
+  }
+
+  function drawB(){
+    const a = parseFloat(sliderA.value);
+    valA.textContent = a.toFixed(2);
+    heatmap(cvB, x => Math.pow(a, x), -3, 3, -3, 3);
+  }
+
+  sliderA.addEventListener('input', drawB);
+  window.addEventListener('resize', () => { drawA(); drawB(); });
+  drawA();
+  drawB();
+
+  // 上报内容高度给父页面（iframe 嵌入用）
+  function reportHeight(){
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'math-height', height: document.documentElement.scrollHeight }, '*');
+    }
+  }
+  window.addEventListener('load', reportHeight);
+  window.addEventListener('resize', reportHeight);
+  setTimeout(reportHeight, 300);
+  setTimeout(reportHeight, 800);
+})();
+</script>
+</body>
+</html>

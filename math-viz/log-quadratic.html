@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>对数换元 → 二次函数 | 数学可视化</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --blue: #58a6ff;
+    --orange: #f0883e;
+    --red: #f85149;
+    --green: #3fb950;
+    --purple: #bc8cff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    padding: 20px 16px 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 6px; }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(88, 166, 255, 0.15);
+    color: var(--blue);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .problem {
+    background: rgba(188, 140, 255, 0.06);
+    border: 1px solid rgba(188, 140, 255, 0.25);
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 0.98rem;
+  }
+  .problem .sub { color: var(--purple); font-weight: 600; }
+  .kp { margin-bottom: 14px; }
+  .kp h3 { font-size: 1rem; color: var(--blue); margin-bottom: 4px; }
+  .kp .formula {
+    background: rgba(88, 166, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-family: "Times New Roman", serif;
+    font-size: 1.05rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .kp p { color: var(--text); font-size: 0.93rem; }
+  .kp .note { color: var(--muted); font-size: 0.85rem; }
+  .highlight { color: var(--orange); font-weight: 600; }
+  .red { color: var(--red); font-weight: 600; }
+  .green { color: var(--green); font-weight: 600; }
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 4px 0 8px;
+  }
+  .slider-row label { font-size: 0.9rem; white-space: nowrap; }
+  .slider-row .val {
+    font-family: "Times New Roman", serif;
+    font-weight: 600;
+    color: var(--orange);
+    min-width: 48px;
+    text-align: center;
+  }
+  input[type=range] { flex: 1; min-width: 140px; accent-color: var(--blue); }
+  canvas {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    background: #0a0e14;
+    margin: 6px 0;
+  }
+  .panel-label {
+    font-size: 0.88rem;
+    color: var(--blue);
+    font-weight: 600;
+    margin-top: 8px;
+  }
+  .step { margin-bottom: 12px; padding-left: 4px; }
+  .step h4 { font-size: 0.95rem; color: var(--orange); margin-bottom: 4px; }
+  .step p { font-size: 0.9rem; }
+  .step .formula {
+    background: rgba(240, 136, 62, 0.08);
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin: 6px 0;
+    font-family: "Times New Roman", serif;
+    font-size: 1rem;
+    text-align: center;
+  }
+  .answer-box {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.35);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+  .legend { font-size: 0.82rem; color: var(--muted); }
+  .legend span { margin-right: 14px; }
+  .legend i { display: inline-block; width: 12px; height: 3px; margin-right: 4px; vertical-align: middle; }
+</style>
+</head>
+<body>
+  <h1>对数换元 → 二次函数</h1>
+  <div class="subtitle">第20题 · 换底公式 + 换元降维 · 高中数学</div>
+
+  <!-- 题目 -->
+  <div class="problem">
+    <span class="badge">题目</span>
+    <p style="margin-top:8px;">设常数 <b>a &gt; 0, a ≠ 1</b>，函数 f(x) = (log<sub>a</sub>x − 2)(log<sub>2</sub>x − 3)</p>
+    <p style="margin-top:6px;"><span class="sub">(1)</span> 若 f(2) &gt; f(16) 成立，求实数 a 的取值范围；</p>
+    <p style="margin-top:4px;"><span class="sub">(2)</span> 当 a = 2 时，求函数 y = f(x) − m·log<sub>2</sub>x，x∈[1,8] 的最大值（用实数 m 表示）。</p>
+  </div>
+
+  <!-- 知识点详解 -->
+  <div class="card">
+    <h2>📚 核心知识点详解</h2>
+
+    <div class="kp">
+      <h3>① 换底公式 —— 统一对数的"底"</h3>
+      <div class="formula">log<sub>a</sub>b = log<sub>c</sub>b / log<sub>c</sub>a</div>
+      <p>任何底的对数都能换算成同底。本题把 log<sub>a</sub>x 统一到底 2：</p>
+      <div class="formula">log<sub>a</sub>x = log<sub>2</sub>x / log<sub>2</sub>a = k · log<sub>2</sub>x　（令 k = 1 / log<sub>2</sub>a）</div>
+      <p class="note">好处：原本"底数 a 不同"导致的问题，被压缩成一个<b>系数 k</b>。a 一旦确定，k 就是常数，问题从"两个底的对数"变成"一个底的对数乘个系数"。</p>
+    </div>
+
+    <div class="kp">
+      <h3>② 换元降维 —— 把对数复合函数变二次函数</h3>
+      <p>令 <span class="highlight">t = log<sub>2</sub>x</span>，则 log<sub>a</sub>x = k·t，于是</p>
+      <div class="formula">f(x) = (k·t − 2)(t − 3) = k·t² − (3k+2)·t + 6</div>
+      <p>这本质是<b>关于 t 的二次函数</b>（多项式），比原来的对数复合式简单太多。</p>
+      <p class="note">⚠️ 换元必须同步换定义域：x ∈ [1,8] ⟺ t = log<sub>2</sub>x ∈ [0,3]（因为 log<sub>2</sub>1=0，log<sub>2</sub>8=3）。这是最容易丢分的一步。</p>
+    </div>
+
+    <div class="kp">
+      <h3>③ 二次函数在闭区间上的最值</h3>
+      <p>开口向上的二次函数（a&gt;0），在闭区间 [p,q] 上的<b>最大值一定在端点</b>取得——离对称轴越远，函数值越大。</p>
+      <p>第(2)小题：a=2 时 k=1，g(t) = t² − (5+m)t + 6，对称轴 t₀ = (5+m)/2。</p>
+      <p>把对称轴与区间中点 1.5 比较：</p>
+      <div class="formula">t₀ ≤ 1.5（m ≤ −2）→ 最大值在 t=3；　t₀ ≥ 1.5（m ≥ −2）→ 最大值在 t=0</div>
+    </div>
+  </div>
+
+  <!-- 可视化 -->
+  <div class="card">
+    <h2>🎬 交互可视化 <span style="font-size:0.8rem;color:var(--muted);font-weight:400;">（拖动滑块观察曲线变化）</span></h2>
+
+    <div class="slider-row">
+      <label>底数 a =</label>
+      <input type="range" id="sliderA" min="0.5" max="8" step="0.1" value="2">
+      <span class="val" id="valA">2.0</span>
+    </div>
+    <div class="slider-row">
+      <label>参数 m =</label>
+      <input type="range" id="sliderM" min="-4" max="4" step="0.1" value="0">
+      <span class="val" id="valM">0.0</span>
+    </div>
+
+    <div class="panel-label">面板 A — 原函数 f(x) = (log<sub>a</sub>x − 2)(log<sub>2</sub>x − 3)</div>
+    <canvas id="cvA" height="240"></canvas>
+    <div class="legend">
+      <span><i style="background:var(--blue);"></i>f(x) 曲线</span>
+      <span><i style="background:var(--red);"></i>x=2 与 x=16（第1小题）</span>
+    </div>
+
+    <div class="panel-label">面板 B — 换元映射 t = log<sub>2</sub>x（对数刻度）</div>
+    <canvas id="cvB" height="180"></canvas>
+    <div class="legend">
+      <span><i style="background:var(--purple);"></i>x 轴（对数刻度 1→16）</span>
+      <span><i style="background:var(--green);"></i>t 轴（0→4）</span>
+      <span><i style="background:var(--orange);"></i>区间 x∈[1,8] → t∈[0,3]</span>
+    </div>
+
+    <div class="panel-label">面板 C — 换元后 y = f(x) − m·t 的二次函数（a=2 时）</div>
+    <canvas id="cvC" height="260"></canvas>
+    <div class="legend">
+      <span><i style="background:var(--orange);"></i>g(t) 二次函数</span>
+      <span><i style="background:var(--green);"></i>区间 [0,3]</span>
+      <span><i style="background:var(--red);"></i>最大值点</span>
+    </div>
+  </div>
+
+  <!-- 解题过程 -->
+  <div class="card">
+    <h2>📝 解题过程</h2>
+
+    <div class="step">
+      <h4>第(1)小题：f(2) &gt; f(16)</h4>
+      <p>f(2) = (log<sub>a</sub>2 − 2)·(−2)，f(16) = (log<sub>a</sub>16 − 2)·1 = 4log<sub>a</sub>2 − 2。</p>
+      <p>由 f(2) &gt; f(16)：−2(log<sub>a</sub>2 − 2) &gt; 4log<sub>a</sub>2 − 2，解得 <span class="highlight">log<sub>a</sub>2 &lt; 1</span>。</p>
+      <p>分类讨论：a&gt;1 时对数递增，得 2&lt;a；0&lt;a&lt;1 时对数递减，恒成立。</p>
+      <div class="answer-box">答案(1)：a ∈ (0, 1) ∪ (2, +∞)</div>
+    </div>
+
+    <div class="step">
+      <h4>第(2)小题：a=2 时求最大值</h4>
+      <p>a=2 时 k=1，log<sub>a</sub>x = log<sub>2</sub>x = t，f(x) = t² − 5t + 6。</p>
+      <p>y = f(x) − m·log<sub>2</sub>x = t² − (5+m)t + 6，t ∈ [0,3]。</p>
+      <p>对称轴 t₀ = (5+m)/2。开口向上，最大值在离对称轴最远的端点。</p>
+      <p>当 m &lt; −2（t₀&lt;1.5）：最大值在 t=3，y<sub>max</sub> = 9 − 3(5+m) + 6 = <span class="red">−3m</span>；</p>
+      <p>当 m ≥ −2（t₀≥1.5）：最大值在 t=0，y<sub>max</sub> = <span class="red">6</span>。</p>
+      <div class="answer-box">答案(2)：y<sub>max</sub> = { 6（m ≥ −2）；−3m（m &lt; −2）}，m = −2 时两者相等均为 6</div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  function setup(canvas){
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const h = parseInt(canvas.getAttribute('height'));
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+
+  const cvA = document.getElementById('cvA');
+  const cvB = document.getElementById('cvB');
+  const cvC = document.getElementById('cvC');
+  const sliderA = document.getElementById('sliderA');
+  const sliderM = document.getElementById('sliderM');
+  const valA = document.getElementById('valA');
+  const valM = document.getElementById('valM');
+
+  function logBase(x, b){ return Math.log(x) / Math.log(b); }
+
+  function drawAll(){
+    const a = parseFloat(sliderA.value);
+    const m = parseFloat(sliderM.value);
+    valA.textContent = a.toFixed(1);
+    valM.textContent = m.toFixed(1);
+    drawA(a);
+    drawB();
+    drawC(a, m);
+  }
+
+  function drawA(a){
+    const { ctx, w, h } = setup(cvA);
+    ctx.clearRect(0,0,w,h);
+    if(Math.abs(a-1) < 0.05){
+      ctx.fillStyle = '#f85149'; ctx.font = '14px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('a = 1 时 log₁x 无意义（题目规定 a ≠ 1）', w/2, h/2);
+      return;
+    }
+    const padL = 46, padR = 16, padT = 18, padB = 30;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    // x 范围 0.5 ~ 17（线性），含 x=2, x=16
+    const xMin = 0.5, xMax = 17;
+    // 计算 y 范围
+    let yMin = 1e9, yMax = -1e9;
+    for(let i=0;i<=400;i++){
+      const x = xMin + (xMax-xMin)*i/400;
+      const f = (logBase(x,a)-2)*(logBase(x,2)-3);
+      if(isFinite(f)){ yMin=Math.min(yMin,f); yMax=Math.max(yMax,f); }
+    }
+    const padY = (yMax-yMin)*0.12 || 1;
+    yMin -= padY; yMax += padY;
+    function X(x){ return padL + (x-xMin)/(xMax-xMin)*plotW; }
+    function Y(y){ return padT + (yMax-y)/(yMax-yMin)*plotH; }
+    // 网格 + 轴
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+    ctx.fillStyle = '#8b949e'; ctx.font = '11px sans-serif'; ctx.textAlign='center';
+    const xticks = [1,2,4,8,16];
+    for(const tx of xticks){ ctx.beginPath(); ctx.moveTo(X(tx),padT); ctx.lineTo(X(tx),padT+plotH); ctx.stroke(); ctx.fillText(tx, X(tx), padT+plotH+16); }
+    // x 轴
+    ctx.strokeStyle = '#8b949e';
+    ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(w-padR, Y(0)); ctx.stroke();
+    // 曲线
+    ctx.strokeStyle = '#58a6ff'; ctx.lineWidth = 2; ctx.beginPath();
+    let first = true;
+    for(let i=0;i<=800;i++){
+      const x = xMin + (xMax-xMin)*i/800;
+      const f = (logBase(x,a)-2)*(logBase(x,2)-3);
+      if(!isFinite(f)){ first=true; continue; }
+      const px = X(x), py = Y(f);
+      if(first){ ctx.moveTo(px,py); first=false; } else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    // 关键点 x=2, x=16
+    const pts = [2, 16];
+    ctx.textAlign = 'left';
+    for(const x of pts){
+      const f = (logBase(x,a)-2)*(logBase(x,2)-3);
+      ctx.fillStyle = '#f85149';
+      ctx.beginPath(); ctx.arc(X(x), Y(f), 4, 0, Math.PI*2); ctx.fill();
+      ctx.fillText(`x=${x}`, X(x)+6, Y(f)-6);
+    }
+    ctx.textAlign='left';
+    ctx.fillStyle = '#58a6ff';
+    ctx.fillText(`f(x) = (log${sub(a)}x − 2)(log₂x − 3)`, padL+4, padT+14);
+  }
+
+  function sub(s){ return s.toString().replace(/\d/g, d => '₀₁₂₃₄₅₆₇₈₉'[parseInt(d)]); }
+
+  function drawB(){
+    const { ctx, w, h } = setup(cvB);
+    const padL = 30, padR = 16, padT = 20, mid = h/2;
+    const plotW = w - padL - padR;
+    // x 轴（对数刻度）在上半，t 轴在下半
+    const xVals = [1,2,4,8,16];
+    const tOf = x => logBase(x,2);
+    function Xp(x){ return padL + (logBase(x,2)-0)/(4-0)*plotW; }
+    ctx.clearRect(0,0,w,h);
+    // 上轴 x
+    ctx.fillStyle = '#bc8cff'; ctx.font = '11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('x 轴（对数刻度）', padL+plotW/2, padT-6);
+    ctx.strokeStyle = '#bc8cff'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(padL, mid-28); ctx.lineTo(w-padR, mid-28); ctx.stroke();
+    for(const x of xVals){
+      ctx.beginPath(); ctx.moveTo(Xp(x), mid-33); ctx.lineTo(Xp(x), mid-23); ctx.stroke();
+      ctx.fillStyle = '#bc8cff'; ctx.fillText(String(x), Xp(x), mid-40);
+    }
+    // 下轴 t
+    ctx.fillStyle = '#3fb950';
+    ctx.fillText('t 轴（t = log₂x）', padL+plotW/2, mid+52);
+    ctx.strokeStyle = '#3fb950';
+    ctx.beginPath(); ctx.moveTo(padL, mid+18); ctx.lineTo(w-padR, mid+18); ctx.stroke();
+    for(const x of xVals){
+      const t = tOf(x);
+      ctx.beginPath(); ctx.moveTo(Xp(x), mid+13); ctx.lineTo(Xp(x), mid+23); ctx.stroke();
+      ctx.fillStyle = '#3fb950'; ctx.fillText(String(t), Xp(x), mid+38);
+    }
+    // 映射箭头
+    ctx.strokeStyle = '#8b949e'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+    for(const x of xVals){
+      ctx.beginPath(); ctx.moveTo(Xp(x), mid-22); ctx.lineTo(Xp(x), mid+12); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    // 高亮区间 [1,8] -> [0,3]
+    ctx.strokeStyle = '#f0883e'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(Xp(1), mid-28); ctx.lineTo(Xp(8), mid-28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(Xp(1), mid+18); ctx.lineTo(Xp(8), mid+18); ctx.stroke();
+    ctx.fillStyle = '#f0883e'; ctx.font = '11px sans-serif';
+    ctx.fillText('x∈[1,8] ⟺ t∈[0,3]', padL + plotW*0.55, mid+62);
+  }
+
+  function drawC(a, m){
+    const { ctx, w, h } = setup(cvC);
+    ctx.clearRect(0,0,w,h);
+    if(Math.abs(a-1) < 0.05){
+      ctx.fillStyle = '#f85149'; ctx.font = '14px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('a = 1 时 k = 1/log₂a 无意义（题目规定 a ≠ 1）', w/2, h/2);
+      return;
+    }
+    const padL = 46, padR = 16, padT = 20, padB = 34;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    const tMin = -0.2, tMax = 4.2;
+    // 二次函数 g(t) = k t^2 - (3k+2) t + 6 - m t,  k = 1/log2(a)
+    const k = 1 / logBase(a,2);
+    function g(t){ return k*t*t - (3*k+2)*t + 6 - m*t; }
+    let yMin = 1e9, yMax = -1e9;
+    for(let i=0;i<=400;i++){
+      const t = tMin + (tMax-tMin)*i/400;
+      const v = g(t); yMin=Math.min(yMin,v); yMax=Math.max(yMax,v);
+    }
+    const padY = (yMax-yMin)*0.12 || 1;
+    yMin -= padY; yMax += padY;
+    function X(t){ return padL + (t-tMin)/(tMax-tMin)*plotW; }
+    function Y(v){ return padT + (yMax-v)/(yMax-yMin)*plotH; }
+    ctx.clearRect(0,0,w,h);
+    // 网格
+    ctx.strokeStyle = '#21262d'; ctx.fillStyle = '#8b949e'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    for(let t=0;t<=4;t++){ ctx.beginPath(); ctx.moveTo(X(t),padT); ctx.lineTo(X(t),padT+plotH); ctx.stroke(); ctx.fillText(t, X(t), padT+plotH+16); }
+    ctx.strokeStyle = '#8b949e';
+    ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(w-padR, Y(0)); ctx.stroke();
+    // 区间 [0,3] 高亮
+    ctx.fillStyle = 'rgba(63,185,80,0.12)';
+    ctx.fillRect(X(0), padT, X(3)-X(0), plotH);
+    // 曲线
+    ctx.strokeStyle = '#f0883e'; ctx.lineWidth = 2.5; ctx.beginPath();
+    for(let i=0;i<=800;i++){
+      const t = tMin + (tMax-tMin)*i/800;
+      const px = X(t), py = Y(g(t));
+      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    // 对称轴
+    const t0 = (3*k+2+m)/(2*k) || 0;
+    if(t0>tMin && t0<tMax){
+      ctx.strokeStyle = '#8b949e'; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(X(t0), padT); ctx.lineTo(X(t0), padT+plotH); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#8b949e'; ctx.fillText('对称轴', X(t0), padT+10);
+    }
+    // 最大值（在 [0,3] 内）
+    const g0 = g(0), g3 = g(3);
+    const maxT = (g0 >= g3) ? 0 : 3;
+    const maxV = Math.max(g0, g3);
+    ctx.fillStyle = '#f85149';
+    ctx.beginPath(); ctx.arc(X(maxT), Y(maxV), 5, 0, Math.PI*2); ctx.fill();
+    ctx.textAlign = 'left';
+    ctx.fillText(`max = ${maxV.toFixed(1)}  (t=${maxT})`, X(maxT)+8, Y(maxV)-6);
+    ctx.textAlign='left';
+    ctx.fillStyle = '#f0883e';
+    ctx.fillText(`g(t) = k·t² − (3k+2)·t + 6 − m·t ,  k=${k.toFixed(2)}`, padL+4, padT+14);
+  }
+
+  sliderA.addEventListener('input', drawAll);
+  sliderM.addEventListener('input', drawAll);
+  window.addEventListener('resize', drawAll);
+  drawAll();
+
+  // 上报内容高度给父页面（iframe 嵌入用）
+  function reportHeight(){
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'math-height', height: document.documentElement.scrollHeight }, '*');
+    }
+  }
+  window.addEventListener('load', reportHeight);
+  window.addEventListener('resize', reportHeight);
+  setTimeout(reportHeight, 300);
+  setTimeout(reportHeight, 800);
+})();
+</script>
+</body>
+</html>
