@@ -407,6 +407,27 @@
       font-weight: 300;
     }
 
+    /* 学习中心 */
+    .learn .card-icon { background: rgba(8, 145, 178, 0.1); color: #0891b2; }
+    .learn .section-tag { background: rgba(8, 145, 178, 0.08); color: #0891b2; }
+    .learn-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .learn-card .learn-go {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #0891b2;
+      transition: transform 0.3s;
+    }
+    .learn-card:hover .learn-go { transform: translateX(3px); }
+
     /* 理科知识可视化 · 物理原理演示 */
     .physics-demo {
       margin-top: 3rem;
@@ -1375,6 +1396,7 @@
   </button>
   <ul class="nav-links" id="navLinks">
     <li><a href="#meiyu">美育</a></li>
+    <li><a href="#learn">学习</a></li>
     <li><a href="#xunji">寻迹</a></li>
     <li><a href="#music">音乐</a></li>
     <li><a href="#mall">商城</a></li>
@@ -1494,6 +1516,43 @@
         </div>
         <span class="vs-time" id="vsTime">0:00 / 0:00</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 学习中心 ===== -->
+<section id="learn" class="division-section learn">
+  <div class="section-content">
+    <div class="section-header fade-up">
+      <div class="section-tag">学习中心</div>
+      <h2 class="section-title">理科知识可视化</h2>
+      <p class="section-desc">把初高中课本里的物理、数学原理，做成看得见、拖得动的交互课件，一题一图，秒懂难点。</p>
+    </div>
+    <div class="card-grid">
+      <a href="#learn-physics" class="card learn-card">
+        <div class="card-icon">⚡</div>
+        <h3>物理 · 双金属片温控</h3>
+        <p>水壶为什么开了会自动断电？拖动看双金属片受热弯曲、顶开触点。</p>
+        <span class="learn-go">进入演示 →</span>
+      </a>
+      <a href="#learn-math20" class="card learn-card">
+        <div class="card-icon">📐</div>
+        <h3>数学 · 第20题</h3>
+        <p>对数换元 → 二次函数最值，拖动底数与参数，看曲线如何变化。</p>
+        <span class="learn-go">进入演示 →</span>
+      </a>
+      <a href="#learn-math21" class="card learn-card">
+        <div class="card-icon">🔢</div>
+        <h3>数学 · 第21题</h3>
+        <p>QB函数新定义，用热力图看清满足区与反例区。</p>
+        <span class="learn-go">进入演示 →</span>
+      </a>
+      <a href="#xunji" class="card learn-card">
+        <div class="card-icon">🏮</div>
+        <h3>寻迹中国 · 家乡代言人</h3>
+        <p>央视《寻迹中国》上海站小演员培养与海选。</p>
+        <span class="learn-go">了解详情 →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -2056,7 +2115,7 @@
       </div>
     </div>
     <!-- 理科知识可视化 · 物理原理演示 -->
-    <div class="physics-demo fade-up">
+    <div class="physics-demo fade-up" id="learn-physics">
       <div class="physics-demo-frame">
         <iframe src="/kettle-quiz/kettle-embed.html" title="电热水壶：水开了为什么会自动断电" loading="lazy"></iframe>
       </div>
@@ -2069,7 +2128,7 @@
     </div>
 
     <!-- 数学可视化演示 -->
-    <div class="math-demo fade-up">
+    <div class="math-demo fade-up" id="learn-math20">
       <div class="math-demo-head">
         <span class="physics-demo-tag">理科知识可视化 · 数学</span>
         <h3>第20题 · 对数换元 → 二次函数</h3>
@@ -2080,7 +2139,7 @@
       </div>
     </div>
 
-    <div class="math-demo fade-up">
+    <div class="math-demo fade-up" id="learn-math21">
       <div class="math-demo-head">
         <span class="physics-demo-tag">理科知识可视化 · 数学</span>
         <h3>第21题 · QB函数新定义</h3>

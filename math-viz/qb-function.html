@@ -142,10 +142,14 @@
 
 <script>
 (function(){
+  const BASE_H = {};
   function setup(canvas){
+    if (BASE_H[canvas.id] === undefined) {
+      BASE_H[canvas.id] = parseInt(canvas.getAttribute('height'));
+    }
     const dpr = window.devicePixelRatio || 1;
     const w = canvas.clientWidth || canvas.parentElement.clientWidth;
-    const h = parseInt(canvas.getAttribute('height'));
+    const h = BASE_H[canvas.id];
     canvas.width = w * dpr; canvas.height = h * dpr;
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
