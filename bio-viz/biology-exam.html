@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>向明中学高一生物期中 · 逐题精讲</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --bg2: #10151d;
+    --card: #141a24;
+    --card2: #1a2230;
+    --line: #263042;
+    --text: #e6edf3;
+    --muted: #8b98a9;
+    --accent: #4fc3f7;
+    --green: #4ade80;
+    --green-bg: rgba(74,222,128,0.12);
+    --blue-bg: rgba(79,195,247,0.12);
+    --amber: #fbbf24;
+    --amber-bg: rgba(251,191,36,0.12);
+    --red: #f87171;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: radial-gradient(1200px 600px at 50% -100px, #14202e 0%, var(--bg) 60%);
+    color: var(--text);
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    line-height: 1.7;
+    padding: 0 0 60px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+  header {
+    padding: 40px 16px 24px;
+    text-align: center;
+  }
+  .exam-badge {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--accent);
+    border: 1px solid rgba(79,195,247,0.4);
+    background: var(--blue-bg);
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .stats {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .stat b { color: var(--text); font-size: 15px; }
+  .toc {
+    margin: 28px 0 8px;
+    padding: 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .toc h2 {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    gap: 8px;
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background: var(--card2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all .15s;
+  }
+  .toc a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .q {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+    scroll-margin-top: 16px;
+  }
+  .q-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .q-no {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 10px;
+    background: var(--card2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .q-type {
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 2px 10px;
+    border-radius: 999px;
+  }
+  .q-answer {
+    margin-left: auto;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-bg);
+    border: 1px solid rgba(74,222,128,0.4);
+    padding: 3px 12px;
+    border-radius: 8px;
+  }
+  .q-stem {
+    font-size: 15.5px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .q-opts {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .opt {
+    font-size: 14.5px;
+    color: var(--muted);
+    padding: 8px 12px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .opt.correct {
+    color: var(--green);
+    background: var(--green-bg);
+    border-color: rgba(74,222,128,0.4);
+    font-weight: 600;
+  }
+  .opt b { color: var(--text); }
+  .q-knowledge, .q-explain, .q-trap {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .q-knowledge {
+    background: var(--blue-bg);
+    border: 1px solid rgba(79,195,247,0.25);
+    color: #cdeaff;
+  }
+  .q-explain {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    color: #cfd8e3;
+  }
+  .q-trap {
+    background: var(--amber-bg);
+    border: 1px solid rgba(251,191,36,0.25);
+    color: #fde8b8;
+  }
+  .q-knowledge b, .q-explain b, .q-trap b {
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: .5px;
+  }
+  .q-explain .w { color: var(--green); }
+  .q-explain .e { color: var(--red); }
+  .foot {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 40px;
+  }
+  sub, sup { font-size: 75%; }
+</style>
+</head>
+<body>
+<header>
+  <div class="exam-badge">蛙田文化 · 理科可视化</div>
+  <h1>高一生物 · 逐题精讲</h1>
+  <div class="subtitle">2026 学年第一学期 向明中学期中考试 · 生物学试卷</div>
+  <div class="stats">
+    <div class="stat">题目数 <b>29</b></div>
+    <div class="stat">题型 <b>单项选择题</b></div>
+    <div class="stat">每题 <b>2 分</b></div>
+    <div class="stat">覆盖 <b>元素·化合物·细胞</b></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <h2>📋 题目目录（点击跳转）</h2>
+    <div class="toc-grid" id="toc"></div>
+  </div>
+
+  <!-- ==================== 第1题 ==================== -->
+  <div class="q" id="q1">
+    <div class="q-head">
+      <span class="q-no">1</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">2017年中秋节，一位患糖尿病的韩奶奶因食用"无糖月饼"而被"甜晕"，还好抢救及时脱离危险。部分商家广告语存在科学性错误，容易误导消费者。你认为下列描述正确的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 某品牌无糖饼干没有甜味，属于无糖食品</div>
+      <div class="opt"><b>B.</b> 某品牌口服液含有丰富的N、P、Zn等微量元素</div>
+      <div class="opt"><b>C.</b> 某地大棚菜，天然种植，不含任何化学元素，是真正的绿色食品</div>
+      <div class="opt correct"><b>D.</b> 不同食物营养物质种类、含量有差别，所以尽量做到不同食物合理搭配</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>细胞中的元素与化合物；大量元素与微量元素；合理膳食</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      <span class="e">A 错</span>："无糖"通常指不含蔗糖等，但饼干可能含淀粉（淀粉也是糖类），且"没甜味 ≠ 不含糖"。<br>
+      <span class="e">B 错</span>：N、P 属于<b>大量元素</b>，不是微量元素。<br>
+      <span class="e">C 错</span>：任何生物体都由化学元素构成，"不含任何化学元素"违背科学。<br>
+      <span class="w">D 对</span>：食物营养有差异，应合理搭配，符合科学认知。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>大量元素（C、H、O、N、P、S、K、Ca、Mg）与微量元素（Fe、Mn、Zn、Cu、B、Mo）容易记混；"无糖"≠无糖类。</div>
+  </div>
+
+  <!-- ==================== 第2题 ==================== -->
+  <div class="q" id="q2">
+    <div class="q-head">
+      <span class="q-no">2</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">实验者利用猩猩做研究，发现正常猩猩饲喂携带诺如病毒的食物后发病。再用其他正常猩猩做同样的实验，其目的是遵循实验设计的（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 控制变量原则</div>
+      <div class="opt"><b>B.</b> 完整性原则</div>
+      <div class="opt correct"><b>C.</b> 平行重复原则</div>
+      <div class="opt"><b>D.</b> 对照原则</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>实验设计的原则（平行重复、对照、单一变量/控制变量）</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      用<b>其他正常猩猩重复同样的实验</b>，是为了避免偶然性、减小实验误差、使结果更可靠，这属于<span class="w">平行重复原则</span>。对照原则是设置对照组；控制变量原则是控制无关变量保持不变。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>"平行重复"（多次重复实验）与"对照"（设对照组）是两回事，别混淆。</div>
+  </div>
+
+  <!-- ==================== 第3题 ==================== -->
+  <div class="q" id="q3">
+    <div class="q-head">
+      <span class="q-no">3</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">生物体生命活动的主要承担者、遗传信息的携带者、结构和功能的基本单位、生命活动的主要能源物质依次是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 核酸、蛋白质、葡萄糖、细胞</div>
+      <div class="opt"><b>B.</b> 核酸、蛋白质、细胞、葡萄糖</div>
+      <div class="opt"><b>C.</b> 蛋白质、核酸、细胞、脂肪</div>
+      <div class="opt correct"><b>D.</b> 蛋白质、核酸、细胞、葡萄糖</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>蛋白质、核酸的功能；细胞是生命活动的基本单位；糖类是主要能源物质</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      生命活动的主要承担者 = <span class="w">蛋白质</span>；遗传信息的携带者 = <span class="w">核酸</span>；结构和功能的基本单位 = <span class="w">细胞</span>；主要能源物质 = <span class="w">葡萄糖（糖类）</span>。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>主要能源物质是糖类，不是脂肪（脂肪是主要<b>储能</b>物质）。</div>
+  </div>
+
+  <!-- ==================== 第4题 ==================== -->
+  <div class="q" id="q4">
+    <div class="q-head">
+      <span class="q-no">4</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">下列有关细胞的叙述，正确的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 原核细胞结构简单，所以不具有多样性</div>
+      <div class="opt"><b>B.</b> 原核细胞和真核细胞不具有统一性</div>
+      <div class="opt correct"><b>C.</b> 除病毒外，生物体都是由细胞构成的</div>
+      <div class="opt"><b>D.</b> 人体每个细胞都能单独完成各项生命活动</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>细胞学说；原核细胞与真核细胞的统一性和多样性</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      <span class="e">A 错</span>：原核细胞结构简单但也有多样性（细菌、蓝藻形态各异）。<br>
+      <span class="e">B 错</span>：原核和真核有统一性（都有细胞膜、细胞质、遗传物质 DNA 等）。<br>
+      <span class="w">C 对</span>：细胞学说指出"细胞是生物体结构和功能的基本单位"，除病毒外生物都由细胞构成。<br>
+      <span class="e">D 错</span>：多细胞生物细胞已分化，单个细胞不能完成全部生命活动。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>细胞学说内容要记牢；"统一性"与"多样性"是两个不同角度。</div>
+  </div>
+
+  <!-- ==================== 第5题 ==================== -->
+  <div class="q" id="q5">
+    <div class="q-head">
+      <span class="q-no">5</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">手术后的病人可能无法进食，因此他们需要注射包括水、糖分、矿物质盐类和抗生素的点滴。给术后病人注射糖分的原因是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 避免脱水</div>
+      <div class="opt"><b>B.</b> 控制术后疼痛</div>
+      <div class="opt"><b>C.</b> 治疗术后感染</div>
+      <div class="opt correct"><b>D.</b> 提供必需营养</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>糖类（葡萄糖）是主要能源物质</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      糖类是主要能源物质，术后病人无法进食，注射糖分是为了<span class="w">提供能量/必需营养</span>。水对应"避免脱水"，矿物质盐维持渗透压，抗生素对应"治疗感染"。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>区分糖（供能）、水（补水）、无机盐（维持渗透压）、抗生素（抗感染）各自的作用。</div>
+  </div>
+
+  <!-- ==================== 第6题 ==================== -->
+  <div class="q" id="q6">
+    <div class="q-head">
+      <span class="q-no">6</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">核仁通常表现为单一或多个匀质的球形小体，是真核细胞间期细胞核中最显著的结构。核仁的大小和数目随生物的种类、细胞类型和细胞代谢状态而变化。下列细胞中，不存在核仁结构的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 人口腔上皮细胞</div>
+      <div class="opt"><b>B.</b> 酵母菌细胞</div>
+      <div class="opt"><b>C.</b> 黑藻叶肉细胞</div>
+      <div class="opt correct"><b>D.</b> 颤藻细胞</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>原核细胞与真核细胞结构区别；核仁</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      核仁存在于<b>真核细胞</b>的细胞核中。颤藻（蓝藻）是<span class="w">原核生物</span>，无成形细胞核，故无核仁。人口腔上皮细胞、酵母菌（真菌）、黑藻叶肉细胞都是真核细胞，有核仁。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>颤藻是<b>蓝藻（原核）</b>，不是真核藻类；黑藻才是真核生物。</div>
+  </div>
+
+  <!-- ==================== 第7题 ==================== -->
+  <div class="q" id="q7">
+    <div class="q-head">
+      <span class="q-no">7</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">图1为生物种类的概念图，对a、b、c所代表的生物分析正确的一项为（　）<br><i style="color:#8b98a9">（图1：三层同心嵌套椭圆，a 包含 b 包含 c）</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> a—真核生物、b—真菌、c—大肠杆菌</div>
+      <div class="opt"><b>B.</b> a—真核生物、b—植物、c—蓝藻</div>
+      <div class="opt correct"><b>C.</b> a—原核生物、b—细菌、c—乳酸菌</div>
+      <div class="opt"><b>D.</b> a—原核生物、b—真菌、c—变形虫</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>生物分类：原核生物（细菌、蓝藻）与真核生物（真菌、动植物）</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      概念图表示 a 包含 b 包含 c 的从属关系。<br>
+      <span class="w">C 对</span>：乳酸菌是细菌，细菌是原核生物 → 原核 ⊃ 细菌 ⊃ 乳酸菌，正确。<br>
+      <span class="e">A 错</span>：大肠杆菌是细菌（原核），不属于真菌。<br>
+      <span class="e">B 错</span>：蓝藻是原核，不属于植物（真核）。<br>
+      <span class="e">D 错</span>：真菌、变形虫都是真核，不属于原核。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>蓝藻是原核不是植物；真菌是真核；乳酸菌、大肠杆菌都是细菌（原核）。</div>
+  </div>
+
+  <!-- ==================== 第8题 ==================== -->
+  <div class="q" id="q8">
+    <div class="q-head">
+      <span class="q-no">8</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：A</span>
+    </div>
+    <div class="q-stem">幸福树老叶的叶脉缺绿是因为叶绿素合成受影响导致的。如果要解决这个问题，给幸福树施加的营养液中应富含（　）</div>
+    <div class="q-opts">
+      <div class="opt correct"><b>A.</b> Mg<sup>2+</sup></div>
+      <div class="opt"><b>B.</b> Na<sup>+</sup></div>
+      <div class="opt"><b>C.</b> Ca<sup>2+</sup></div>
+      <div class="opt"><b>D.</b> Cl<sup>-</sup></div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>无机盐的作用；镁（Mg）是叶绿素的组成元素</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      叶绿素的组成元素含<span class="w">镁（Mg）</span>，缺镁会导致叶绿素合成受阻、叶片缺绿。缺镁时老叶先表现出症状（镁可被再利用），所以应补充 Mg<sup>2+</sup>。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>Mg 是叶绿素成分；缺 Mg 时<b>老叶</b>先变黄（因为 Mg 是可移动元素）。</div>
+  </div>
+
+  <!-- ==================== 第9题 ==================== -->
+  <div class="q" id="q9">
+    <div class="q-head">
+      <span class="q-no">9</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">无机盐在生物体内起重要作用。下列关于无机盐的叙述，错误的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 缺钙易导致人体肌肉抽搐</div>
+      <div class="opt"><b>B.</b> 缺锌易造成人体生长发育不良</div>
+      <div class="opt"><b>C.</b> 缺铁易引起人体贫血</div>
+      <div class="opt correct"><b>D.</b> 人体内的无机盐大部分以化合状态存在</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>无机盐的存在形式（离子状态）与作用</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      无机盐在细胞内<span class="w">大多以离子状态存在</span>，不是化合状态。<br>
+      A、B、C 均为正确表述：缺钙抽搐、缺锌发育不良、缺铁贫血。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>无机盐主要以<b>离子形式</b>存在，不是以化合物形式。</div>
+  </div>
+
+  <!-- ==================== 第10题 ==================== -->
+  <div class="q" id="q10">
+    <div class="q-head">
+      <span class="q-no">10</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">下列物质中，全部由C、H、O构成的物质是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 蛋白质</div>
+      <div class="opt"><b>B.</b> 核糖核酸</div>
+      <div class="opt correct"><b>C.</b> 脂肪</div>
+      <div class="opt"><b>D.</b> 磷脂</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>各类化合物的元素组成</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      <span class="w">脂肪只含 C、H、O</span>。<br>
+      蛋白质含 C、H、O、N（有的含 S）；核糖核酸（RNA）含 C、H、O、N、P；磷脂含 C、H、O、N、P。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>磷脂含 P，核酸含 N、P，蛋白质含 N（有的含 S），只有糖类和脂肪只含 C、H、O。</div>
+  </div>
+
+  <!-- ==================== 第11题 ==================== -->
+  <div class="q" id="q11">
+    <div class="q-head">
+      <span class="q-no">11</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">植物从土壤中吸收并运输到叶肉细胞的氮和磷，主要用于合成（　）<br><i style="color:#8b98a9">①淀粉 ②葡萄糖 ③脂肪 ④磷脂 ⑤蛋白质 ⑥核酸</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> ①④⑥</div>
+      <div class="opt"><b>B.</b> ③④⑤</div>
+      <div class="opt correct"><b>C.</b> ④⑤⑥</div>
+      <div class="opt"><b>D.</b> ②④⑤</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>含氮、含磷的化合物</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      氮（N）→ 蛋白质（含 N）、核酸（含 N）；磷（P）→ 磷脂（含 P）、核酸（含 P）。<br>
+      所以选 <span class="w">④磷脂、⑤蛋白质、⑥核酸</span>。<br>
+      淀粉、葡萄糖、脂肪只含 C、H、O，不含 N、P。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>淀粉、葡萄糖、脂肪只含 C、H、O，不含 N 和 P。</div>
+  </div>
+
+  <!-- ==================== 第12题 ==================== -->
+  <div class="q" id="q12">
+    <div class="q-head">
+      <span class="q-no">12</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">分子式为 C<sub>1864</sub>H<sub>3012</sub>O<sub>576</sub>N<sub>468</sub>S<sub>21</sub> 的化合物最可能是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 核糖核酸</div>
+      <div class="opt"><b>B.</b> 磷脂</div>
+      <div class="opt correct"><b>C.</b> 蛋白质</div>
+      <div class="opt"><b>D.</b> 肝糖原</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>蛋白质的元素组成（含 S）</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      该分子式含 <span class="w">S（硫）</span>，S 是<b>蛋白质</b>的特征元素（来自含硫氨基酸，如半胱氨酸、甲硫氨酸）。核酸、磷脂含 P 不含 S；肝糖原只含 C、H、O。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>看到分子式含 S，优先想到蛋白质。</div>
+  </div>
+
+  <!-- ==================== 第13题 ==================== -->
+  <div class="q" id="q13">
+    <div class="q-head">
+      <span class="q-no">13</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">图2表示①②③④四种化合物的元素组成，相关分析错误的是（　）<br><i style="color:#8b98a9">（图2：中心 C、H、O、N 框，①含 Mg²⁺、②含 Fe²⁺、③含 PO₄³⁻、④含 I⁻）</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 植物体中的①异常可能影响光合作用</div>
+      <div class="opt"><b>B.</b> 哺乳动物体内②异常可能会影响氧气运输</div>
+      <div class="opt"><b>C.</b> ③可能是核酸，④可能是甲状腺激素</div>
+      <div class="opt correct"><b>D.</b> 细胞中通常含有大量无机盐</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>无机盐的作用：Mg→叶绿素、Fe→血红蛋白、P→核酸/磷脂、I→甲状腺激素</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      ①含 Mg（叶绿素成分）、②含 Fe（血红蛋白成分）、③含 P（核酸/磷脂）、④含 I（甲状腺激素成分）。<br>
+      A、B、C 均正确。<br>
+      <span class="e">D 错</span>：无机盐在细胞中含量<b>很少</b>（约 1%~1.5%），不是"大量"。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>无机盐含量少但作用大；要记牢各元素对应的化合物。</div>
+  </div>
+
+  <!-- ==================== 第14题 ==================== -->
+  <div class="q" id="q14">
+    <div class="q-head">
+      <span class="q-no">14</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">从人类的进化史推演，胃肠道系统已经适应了高纤维食物的摄入，而现代人偏好于高脂肪高糖分的不良饮食习惯是造成肥胖症流行的原因之一。下列相关叙述错误的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 纤维素在人体内很难被消化</div>
+      <div class="opt"><b>B.</b> 细胞中糖类分子是由C、H、O三种元素组成</div>
+      <div class="opt correct"><b>C.</b> 脂肪分子中氧的含量远远多于糖类</div>
+      <div class="opt"><b>D.</b> 多糖、核酸等生物大分子均以碳链为基本骨架</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>糖类和脂质的元素组成；脂肪含氢多、含氧少</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      <span class="e">C 错</span>：脂肪分子中<b>氢的含量多、氧的含量少</b>（与糖类相比），所以同质量脂肪氧化放能更多。题目说"氧含量远多于糖类"反了。<br>
+      A 对：人体缺乏纤维素酶，纤维素难消化；B 对：糖类由 C、H、O 组成；D 对：生物大分子以碳链为骨架。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>脂肪是"氢多氧少"，不要记反。</div>
+  </div>
+
+  <!-- ==================== 第15题 ==================== -->
+  <div class="q" id="q15">
+    <div class="q-head">
+      <span class="q-no">15</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">科学家在加利福尼亚州东部的莫诺湖里发现了一种被称作GFAJ－1的独特细菌，这种细菌能利用剧毒化合物——砒霜中的砷来代替磷元素构筑生命分子，进行一些关键的生化反应。根据上述材料进行预测，下列说法错误的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> GFAJ－1细菌体内含量较多的六种元素可能是碳、氢、氧、氮、砷、硫</div>
+      <div class="opt"><b>B.</b> 砷对多数生物有毒可能是因为砷能够替代磷参与生化反应，制造混乱</div>
+      <div class="opt correct"><b>C.</b> 砷元素存在于GFAJ－1细菌细胞膜、糖类、脂肪等物质中</div>
+      <div class="opt"><b>D.</b> 该发现使人类对生命的认识发生重大改变，拓宽了在极端环境寻找生命的思路</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>元素组成；糖类和脂肪不含 P</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      砷是<b>代替磷（P）</b>的，所以砷存在于含 P 的物质（如磷脂、核酸）中。<span class="e">糖类和脂肪只含 C、H、O，不含 P，所以不含砷</span>。故 C 错。<br>
+      A、B、D 均为合理推测。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>糖类、脂肪不含 P，所以也不含"代替磷的砷"。</div>
+  </div>
+
+  <!-- ==================== 第16题 ==================== -->
+  <div class="q" id="q16">
+    <div class="q-head">
+      <span class="q-no">16</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：A</span>
+    </div>
+    <div class="q-stem">每年5月11日是世界防治肥胖日，相关数据显示，我国青少年肥胖率接近20%。小胖墩越来越常见，有的学生甚至无法正常上体育课，进而形成恶性循环。"小胖墩们"体内含量最多的化合物是（　）</div>
+    <div class="q-opts">
+      <div class="opt correct"><b>A.</b> 水</div>
+      <div class="opt"><b>B.</b> 脂肪</div>
+      <div class="opt"><b>C.</b> 糖类</div>
+      <div class="opt"><b>D.</b> 蛋白质</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>细胞中含量最多的化合物</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      活细胞中含量最多的化合物是<span class="w">水</span>（占鲜重约 60%~90%）。含量最多的<b>有机</b>化合物是蛋白质。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>含量最多的化合物 = 水；含量最多的有机物 = 蛋白质。两个概念别混。</div>
+  </div>
+
+  <!-- ==================== 第17题 ==================== -->
+  <div class="q" id="q17">
+    <div class="q-head">
+      <span class="q-no">17</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">某同学用图3所示的形式对生物体内的常见糖类进行分类，下列各项中的糖与图3中的①、②、③处对应正确的是（　）<br><i style="color:#8b98a9">（图3：两椭圆相交，①动物特有、②共有、③植物特有）</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> ①乳糖、②淀粉、③蔗糖</div>
+      <div class="opt"><b>B.</b> ①乳糖、②糖原、③纤维素</div>
+      <div class="opt"><b>C.</b> ①淀粉、②葡萄糖、③蔗糖</div>
+      <div class="opt correct"><b>D.</b> ①糖原、②葡萄糖、③纤维素</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>糖类的种类和分布（动物 vs 植物）</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      ① 动物特有 = <span class="w">糖原</span>（乳糖也是动物特有）；② 动植物共有 = <span class="w">葡萄糖</span>；③ 植物特有 = <span class="w">纤维素</span>。<br>
+      A 错：②淀粉是植物特有；B 错：②糖原是动物特有；C 错：①淀粉是植物特有。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>糖原（动物）、淀粉/纤维素（植物）、葡萄糖（共有）。</div>
+  </div>
+
+  <!-- ==================== 第18题 ==================== -->
+  <div class="q" id="q18">
+    <div class="q-head">
+      <span class="q-no">18</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：B</span>
+    </div>
+    <div class="q-stem">植物细胞和动物细胞中糖类的储存形式依次是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 乳糖和糖原</div>
+      <div class="opt correct"><b>B.</b> 淀粉和糖原</div>
+      <div class="opt"><b>C.</b> 麦芽糖和乳糖</div>
+      <div class="opt"><b>D.</b> 葡萄糖和乳糖</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>糖类的储存形式</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      植物储存糖类 = <span class="w">淀粉</span>；动物储存糖类 = <span class="w">糖原</span>。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>植物→淀粉，动物→糖原，一对一对记。</div>
+  </div>
+
+  <!-- ==================== 第19题 ==================== -->
+  <div class="q" id="q19">
+    <div class="q-head">
+      <span class="q-no">19</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">下列关于脂质的说法中不正确的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 脂肪、磷脂、固醇都属于脂质</div>
+      <div class="opt"><b>B.</b> 磷脂分子有亲水部分有疏水部分</div>
+      <div class="opt correct"><b>C.</b> 脂肪有亲水头部和疏水尾部</div>
+      <div class="opt"><b>D.</b> 胆固醇是组成细胞质膜结构的重要成分</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>脂质的种类；磷脂分子的结构</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      有"亲水头部 + 疏水尾部"结构的是<span class="w">磷脂</span>，不是脂肪。<br>
+      脂肪由甘油和 3 分子脂肪酸构成（甘油三酯），没有"亲水头、疏水尾"的说法。<br>
+      A、B、D 均正确（胆固醇是动物细胞膜的重要成分）。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>亲水头 + 疏水尾是<b>磷脂</b>的结构特点，别安到脂肪头上。</div>
+  </div>
+
+  <!-- ==================== 第20题 ==================== -->
+  <div class="q" id="q20">
+    <div class="q-head">
+      <span class="q-no">20</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：A</span>
+    </div>
+    <div class="q-stem">图4表示淀粉的组成方式，"〇"表示组成淀粉的结构单体。则"〇"表示的物质是（　）<br><i style="color:#8b98a9">（图4：10 个空心圆串联成的长链）</i></div>
+    <div class="q-opts">
+      <div class="opt correct"><b>A.</b> 葡萄糖</div>
+      <div class="opt"><b>B.</b> 脂肪</div>
+      <div class="opt"><b>C.</b> 核苷酸</div>
+      <div class="opt"><b>D.</b> 氨基酸</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>多糖（淀粉）的基本单位</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      淀粉是多糖，其基本单位（结构单体）是<span class="w">葡萄糖</span>。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>淀粉、纤维素、糖原的基本单位都是葡萄糖。</div>
+  </div>
+
+  <!-- ==================== 第21题 ==================== -->
+  <div class="q" id="q21">
+    <div class="q-head">
+      <span class="q-no">21</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：B</span>
+    </div>
+    <div class="q-stem">图5所示组成人体蛋白质的氨基酸有20多种，这些氨基酸的差异主要体现在（　）<br><i style="color:#8b98a9">（图5：氨基酸结构通式，①氨基 ②R基 ③氢 ④羧基）</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> ①</div>
+      <div class="opt correct"><b>B.</b> ②</div>
+      <div class="opt"><b>C.</b> ③</div>
+      <div class="opt"><b>D.</b> ④</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>氨基酸结构通式；R 基决定氨基酸种类</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      每种氨基酸都有一个中心碳原子，连接氨基、羧基、氢和一个<span class="w">R 基（侧链基团）</span>。20 多种氨基酸的差异就在于 R 基（②）不同。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>R 基决定氨基酸的种类和性质；氨基、羧基、氢是共有的。</div>
+  </div>
+
+  <!-- ==================== 第22题 ==================== -->
+  <div class="q" id="q22">
+    <div class="q-head">
+      <span class="q-no">22</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：B</span>
+    </div>
+    <div class="q-stem">下列能正确表示脱氧核苷酸结构的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 碱基连在糖的错误碳位上</div>
+      <div class="opt correct"><b>B.</b> 磷酸连5'位碳，碱基连1'位碳</div>
+      <div class="opt"><b>C.</b> 碱基直接与磷酸相连</div>
+      <div class="opt"><b>D.</b> 磷酸直接与碱基相连</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>脱氧核苷酸的组成与连接方式</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      脱氧核苷酸 = 磷酸 + 脱氧核糖 + 含氮碱基。其中<span class="w">碱基连在脱氧核糖的 1 号碳</span>上，<span class="w">磷酸连在 5 号碳</span>上。<br>
+      B 正确（磷酸在 5' 位、碱基在 1' 位）。A 碱基连接碳位错；C、D 是碱基与磷酸直接相连，错误。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>碱基连 1 号碳、磷酸连 5 号碳，两者都连在<b>五碳糖</b>上，不是碱基和磷酸直接相连。</div>
+  </div>
+
+  <!-- ==================== 第23题 ==================== -->
+  <div class="q" id="q23">
+    <div class="q-head">
+      <span class="q-no">23</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：B</span>
+    </div>
+    <div class="q-stem">下列与图6所示生物结构最为相似的是（　）<br><i style="color:#8b98a9">（图6：细菌结构——荚膜、细胞壁、质膜、拟核、鞭毛）</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 新冠病毒</div>
+      <div class="opt correct"><b>B.</b> 肺炎双球菌</div>
+      <div class="opt"><b>C.</b> 酵母菌</div>
+      <div class="opt"><b>D.</b> 水绵</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>原核生物（细菌）的结构</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      图6 是细菌（有荚膜、细胞壁、质膜、拟核、鞭毛），属于原核生物。<span class="w">肺炎双球菌是细菌（原核）</span>，与之最相似。<br>
+      新冠病毒是病毒（无细胞结构）；酵母菌是真菌（真核）；水绵是藻类（真核）。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>肺炎双球菌是<b>细菌（原核）</b>，名字带"菌"但不是真菌。</div>
+  </div>
+
+  <!-- ==================== 第24题 ==================== -->
+  <div class="q" id="q24">
+    <div class="q-head">
+      <span class="q-no">24</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">组成DNA结构的基本成分是（　）<br><i style="color:#8b98a9">①核糖 ②脱氧核糖 ③磷酸 ④腺嘌呤、鸟嘌呤、胞嘧啶 ⑤胸腺嘧啶 ⑥尿嘧啶</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> ①③④⑤</div>
+      <div class="opt"><b>B.</b> ①②④⑥</div>
+      <div class="opt correct"><b>C.</b> ②③④⑤</div>
+      <div class="opt"><b>D.</b> ②③④⑥</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>DNA 的化学组成</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      DNA 基本单位脱氧核苷酸 = <span class="w">脱氧核糖（②）+ 磷酸（③）+ 含氮碱基（腺嘌呤、鸟嘌呤、胞嘧啶、胸腺嘧啶 ④⑤）</span>。<br>
+      核糖（①）和尿嘧啶（⑥）是 RNA 的成分。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>DNA 含脱氧核糖 + 胸腺嘧啶（T）；RNA 含核糖 + 尿嘧啶（U）。</div>
+  </div>
+
+  <!-- ==================== 第25题 ==================== -->
+  <div class="q" id="q25">
+    <div class="q-head">
+      <span class="q-no">25</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">草履虫、变形虫和细菌都是单细胞生物。尽管它们的大小和性状各不相同，但它们都有相似的结构，即都具有（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 细胞膜、细胞质、细胞核、液泡</div>
+      <div class="opt"><b>B.</b> 细胞壁、细胞膜、细胞质、细胞核</div>
+      <div class="opt"><b>C.</b> 细胞膜、细胞质、细胞核、染色体</div>
+      <div class="opt correct"><b>D.</b> 细胞膜、细胞质、储存遗传物质的场所</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>原核细胞与真核细胞的共同点</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      草履虫、变形虫是真核单细胞生物；细菌是原核单细胞生物。三者共有：<span class="w">细胞膜、细胞质、储存遗传物质的场所</span>（真核是细胞核，原核是拟核）。<br>
+      A、B、C 都包含"细胞核"，而细菌无成形细胞核，故错误。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>细菌无成形细胞核（有拟核）；表述用"储存遗传物质的场所"才同时涵盖细胞核和拟核。</div>
+  </div>
+
+  <!-- ==================== 第26题 ==================== -->
+  <div class="q" id="q26">
+    <div class="q-head">
+      <span class="q-no">26</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">异体器官移植手术往往很难成功，最大的障碍就是异体细胞的排斥，这主要是由于细胞膜具识别作用，原因是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 细胞膜具有选择透过性</div>
+      <div class="opt"><b>B.</b> 细胞膜具有一定的流动性</div>
+      <div class="opt"><b>C.</b> 细胞膜是细胞系统的边界</div>
+      <div class="opt correct"><b>D.</b> 细胞膜外表面的糖蛋白</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>细胞膜的功能；糖蛋白（糖被）的识别作用</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      细胞膜外表面的<span class="w">糖蛋白（糖被）</span>具有<b>识别</b>功能，参与细胞间的信息交流。异体器官移植时的排斥反应，就是糖蛋白识别"异己"细胞引起的。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>细胞膜三种功能要分清：控制物质进出（选择透过）、信息交流（糖蛋白识别）、边界作用。</div>
+  </div>
+
+  <!-- ==================== 第27题 ==================== -->
+  <div class="q" id="q27">
+    <div class="q-head">
+      <span class="q-no">27</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">科研上鉴别死细胞和活细胞，常用"染色排除法"。例如，用台盼蓝染色，死的细胞会被染成蓝色，而活的细胞则不着色，从而判断细胞是否死亡。所利用的是细胞膜的哪种功能（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 保护细胞内部结构功能</div>
+      <div class="opt"><b>B.</b> 吸收功能</div>
+      <div class="opt correct"><b>C.</b> 控制物质进出功能</div>
+      <div class="opt"><b>D.</b> 免疫功能</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>细胞膜控制物质进出的功能</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      活细胞的细胞膜能<span class="w">控制物质进出</span>，台盼蓝不能进入活细胞（不着色）；死细胞的细胞膜失去控制能力，台盼蓝进入后被染成蓝色。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>台盼蓝染色法依据的是"控制物质进出"功能，不是识别、保护功能。</div>
+  </div>
+
+  <!-- ==================== 第28题 ==================== -->
+  <div class="q" id="q28">
+    <div class="q-head">
+      <span class="q-no">28</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：D</span>
+    </div>
+    <div class="q-stem">下表中动物细胞的部分结构与其功能配对错误的是（　）</div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> 内质网 → 蛋白质的加工、运输及脂质代谢</div>
+      <div class="opt"><b>B.</b> 高尔基体 → 与细胞分泌物的形成有关，与植物细胞壁的形成有关</div>
+      <div class="opt"><b>C.</b> 溶酶体 → 能消化衰老、损伤的细胞器，杀死侵入细胞的病毒病菌</div>
+      <div class="opt correct"><b>D.</b> 中心体 → 与高等动植物细胞有丝分裂和染色体分离密切相关</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>细胞器的功能；中心体的分布</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      中心体只存在于<b>动物细胞和低等植物细胞</b>，<span class="e">高等植物细胞没有中心体</span>。所以 D 说"与高等动植物细胞有丝分裂相关"错误（高等植物无中心体）。<br>
+      A、B、C 的功能描述均正确。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>高等植物细胞<b>没有中心体</b>，这是常考易错点。</div>
+  </div>
+
+  <!-- ==================== 第29题 ==================== -->
+  <div class="q" id="q29">
+    <div class="q-head">
+      <span class="q-no">29</span>
+      <span class="q-type">选择题</span>
+      <span class="q-answer">答案：C</span>
+    </div>
+    <div class="q-stem">与分泌蛋白的合成、加工、转运有关的细胞器是（　）<br><i style="color:#8b98a9">①内质网 ②高尔基体 ③线粒体 ④叶绿体 ⑤核糖体 ⑥溶酶体</i></div>
+    <div class="q-opts">
+      <div class="opt"><b>A.</b> ①②③④</div>
+      <div class="opt"><b>B.</b> ②③④⑤</div>
+      <div class="opt correct"><b>C.</b> ①②③⑤</div>
+      <div class="opt"><b>D.</b> ①③⑤⑥</div>
+    </div>
+    <div class="q-knowledge"><b>📌 考点</b>分泌蛋白的合成、加工和分泌过程</div>
+    <div class="q-explain">
+      <b>💡 详解</b>
+      分泌蛋白的合成与分泌涉及：<span class="w">核糖体⑤（合成）→ 内质网①（初步加工）→ 高尔基体②（进一步加工、包装、转运）→ 细胞膜</span>，整个过程由<span class="w">线粒体③（供能）</span>提供能量。<br>
+      叶绿体④（光合作用）和溶酶体⑥无关。
+    </div>
+    <div class="q-trap"><b>⚠️ 易错点</b>分泌蛋白路径：核糖体→内质网→高尔基体→细胞膜；线粒体只"供能"，不直接参与加工。</div>
+  </div>
+
+  <div class="foot">蛙田文化 · 理科可视化 | 供学习参考，如有疑问欢迎反馈</div>
+</div>
+
+<script>
+  // 生成目录
+  const toc = document.getElementById('toc');
+  for (let i = 1; i <= 29; i++) {
+    const a = document.createElement('a');
+    a.href = '#q' + i;
+    a.textContent = i;
+    toc.appendChild(a);
+  }
+</script>
+</body>
+</html>
