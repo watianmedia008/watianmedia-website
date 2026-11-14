@@ -62,22 +62,36 @@
     background: #fbf7ee; border-left: 3px solid var(--gold);
     border-radius: 8px; font-size: 15px; color: #3a332a;
   }
-  .scene .card {
-    margin: 12px 14px 16px; padding: 14px 16px;
+
+  /* 黑板板书：题目 / 解法 */
+  .board {
+    margin: 12px 14px 0; padding: 12px 14px 13px;
     background: var(--board); color: var(--board-ink);
-    border-radius: 10px; font-size: 16px; text-align: center;
-    line-height: 1.9;
+    border-radius: 10px; font-size: 15px;
+    line-height: 1.95;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.05);
   }
-  .scene .card .small { font-size: 13px; color: #bcd2c2; }
-  .scene .card b { color: #ffd879; }
-  .scene .card ul { list-style: none; text-align: left; }
-  .scene .card li { margin: 4px 0; }
+  .board.sol { margin-bottom: 16px; }
+  .board .btag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    color: #fff; background: var(--gold);
+    padding: 2px 10px; border-radius: 999px;
+    margin-bottom: 7px; letter-spacing: 1px;
+  }
+  .board.sol .btag { background: #3f6d57; }
+  .board .blines { text-align: left; }
+  .board b { color: #ffd879; }
+  .board .ans {
+    display: block; margin-top: 7px; padding-top: 7px;
+    border-top: 1px dashed rgba(255,255,255,.25);
+    color: #ffd879; font-weight: 700;
+  }
+  .board .warn { color: #ffb0a8; }
 
   /* 竖式分数：分子上、分母下、中间横线 */
   .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 3px; line-height: 1.15; }
   .frac .num { padding: 0 5px; border-bottom: 1.5px solid currentColor; }
   .frac .den { padding: 0 5px; }
-  .frac.big { font-size: 1.05rem; }
 
   footer {
     text-align: center; padding: 22px 16px; color: #6b6a5f; font-size: 13px;
@@ -107,23 +121,42 @@
     <img src="lion-assets/scene-02.jpg" alt="第20(1)代入" loading="lazy">
     <span class="step">第 2 幕 · 第20(1) 直接代入</span>
     <div class="bubble">第一题，两个对数相乘，看着吓人。但第(1)问只让你比 f(2) 和 f(16)——别想复杂，直接代入算！</div>
-    <div class="card">f(2) = −2log<sub>a</sub>2 + 4<br>f(16) = 4log<sub>a</sub>2 − 2</div>
+    <div class="board">
+      <span class="btag">题目</span>
+      <div class="blines">设常数 a &gt; 0, a ≠ 1，函数<br><b>f(x) = (log<sub>a</sub>x − 2)(log<sub>2</sub>x − 3)</b><br>(1) 若 f(2) &gt; f(16) 成立，求 a 的取值范围。</div>
+    </div>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">代入 x=2：log<sub>2</sub>2 = 1<br>f(2) = (log<sub>a</sub>2 − 2)(1 − 3) = <b>−2log<sub>a</sub>2 + 4</b><br>代入 x=16：log<sub>2</sub>16 = 4<br>f(16) = (4log<sub>a</sub>2 − 2)(4 − 3) = <b>4log<sub>a</sub>2 − 2</b></div>
+    </div>
   </section>
 
   <!-- 幕3 第20(1)结论 -->
   <section class="scene">
     <img src="lion-assets/scene-03.jpg" alt="第20(1)结论" loading="lazy">
     <span class="step">第 3 幕 · 第20(1) 结论</span>
-    <div class="bubble">要 f(2) &gt; f(16)，一移项：log<sub>a</sub>2 &lt; 1。a&gt;1 时 a&gt;2；0&lt;a&lt;1 时恒成立。</div>
-    <div class="card">答案：<b>a ∈ (0,1) ∪ (2,+∞)</b></div>
+    <div class="bubble">要 f(2) &gt; f(16)，一移项，就变成比 log<sub>a</sub>2 和 1 谁大。</div>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">f(2) &gt; f(16) ⟹ 6 &gt; 6log<sub>a</sub>2 ⟹ <b>log<sub>a</sub>2 &lt; 1</b><br>· 底 a &gt; 1：对数递增 ⟹ <b>a &gt; 2</b><br>· 底 0 &lt; a &lt; 1：对数递减 ⟹ <b>恒成立</b></div>
+      <span class="ans">答案(1)：a ∈ (0,1) ∪ (2,+∞)</span>
+    </div>
   </section>
 
   <!-- 幕4 第20(2)换元 -->
   <section class="scene">
     <img src="lion-assets/scene-04.jpg" alt="第20(2)换元" loading="lazy">
     <span class="step">第 4 幕 · 第20(2) 换元</span>
-    <div class="bubble">第(2)问才是重头戏。a=2，y 里又是 x 又是 m，看着乱。看见 log₂x 就换元！注意——换元必须换定义域，这是扣分重灾区！</div>
-    <div class="card">令 t = log<sub>2</sub>x<br>x ∈ [1,8] ⟹ t ∈ [0,3]</div>
+    <div class="bubble">第(2)问才是重头戏。a=2，y 里又是 x 又是 m，看着乱。看见 log<sub>2</sub>x 就换元！注意——换元必须换定义域，这是扣分重灾区！</div>
+    <div class="board">
+      <span class="btag">题目</span>
+      <div class="blines">(2) 当 a = 2 时，求函数 <b>y = f(x) − m·log<sub>2</sub>x</b>，x ∈ [1,8] 的最大值（用实数 m 表示）。</div>
+    </div>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">令 <b>t = log<sub>2</sub>x</b><br>x ∈ [1,8] ⟹ <b>t ∈ [0,3]</b><br>f(x) = (t − 2)(t − 3)</div>
+      <span class="ans warn">⚠️ 换元必须同步换定义域！</span>
+    </div>
   </section>
 
   <!-- 幕5 第20(2)比端点 -->
@@ -131,10 +164,10 @@
     <img src="lion-assets/scene-05.jpg" alt="第20(2)比端点" loading="lazy">
     <span class="step">第 5 幕 · 第20(2) 比端点</span>
     <div class="bubble">换完 y = t² − (5+m)t + 6。二次函数最值没学过？博士教你比端点——闭区间上，最值就在端点。</div>
-    <div class="card">
-      t=0 → y=6　·　t=3 → y=−3m<br>
-      <span class="small">分界 m=−2：</span><br>
-      m≥−2 取 <b>6</b>　·　m&lt;−2 取 <b>−3m</b>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">y = (t−2)(t−3) − m·t = <b>t² − (5+m)t + 6</b><br>开口向上，最高点在两端：<br>· t=0（x=1）→ y = <b>6</b><br>· t=3（x=8）→ y = <b>−3m</b><br>比大小：6 ≥ −3m ⟺ m ≥ −2</div>
+      <span class="ans">答案(2)：m ≥ −2 时 y<sub>max</sub>=6；m &lt; −2 时 y<sub>max</sub>=−3m</span>
     </div>
   </section>
 
@@ -143,7 +176,10 @@
     <img src="lion-assets/scene-06.jpg" alt="第21新定义" loading="lazy">
     <span class="step">第 6 幕 · 第21题 新定义</span>
     <div class="bubble">第二题，新定义题，看着最吓人，其实就一句话。</div>
-    <div class="card">对任意 x, y：<br><b>f(x) + f(y) ≥ f(xy)</b></div>
+    <div class="board">
+      <span class="btag">题目</span>
+      <div class="blines">若定义域内<b>任意</b> x, y 都有<br><b>f(x) + f(y) ≥ f(xy)</b><br>则称 f(x) 为 <b>QB 函数</b>。</div>
+    </div>
   </section>
 
   <!-- 幕7 第21(1)反例 -->
@@ -151,23 +187,46 @@
     <img src="lion-assets/scene-07.jpg" alt="第21(1)反例" loading="lazy">
     <span class="step">第 7 幕 · 第21(1) 找反例</span>
     <div class="bubble">判断 f(x)=−x² 是不是 QB。别硬证，找反例！x=y=1。</div>
-    <div class="card">f(1)+f(1) = −2　·　f(1) = −1<br>−2 ≥ −1 ？<b>假</b> ⟹ 不是 QB</div>
+    <div class="board">
+      <span class="btag">题目</span>
+      <div class="blines">(1) 判断 f(x) = −x<sup>2</sup> 是否是 QB 函数，并说明理由。</div>
+    </div>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">取 x = y = 1：<br>f(1)+f(1) = −2　·　f(1) = −1<br>−2 ≥ −1 ？<b>假</b> ⟹ 不是 QB</div>
+    </div>
   </section>
 
   <!-- 幕8 第21(2)对数 -->
   <section class="scene">
     <img src="lion-assets/scene-08.jpg" alt="第21(2)对数" loading="lazy">
     <span class="step">第 8 幕 · 第21(2) 对数单调性</span>
-    <div class="bubble">g(x) = log<span class="frac"><span class="num">1</span><span class="den">2</span></span>(ax)，套定义约掉，剩下 log<span class="frac"><span class="num">1</span><span class="den">2</span></span>a ≥ 0。底数 <span class="frac"><span class="num">1</span><span class="den">2</span></span> &lt; 1，对数递减。</div>
-    <div class="card">答案：<b>0 &lt; a ≤ 1</b></div>
+    <div class="bubble">套定义约掉，剩下个对数不等式。底数小于 1，对数递减，方向要反过来。</div>
+    <div class="board">
+      <span class="btag">题目</span>
+      <div class="blines">(2) D = (0,+∞)，若 <b>g(x) = log<span class="frac"><span class="num">1</span><span class="den">2</span></span>(ax)</b> 是 QB 函数，求 a 的取值范围。</div>
+    </div>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">代入定义约掉得：log<span class="frac"><span class="num">1</span><span class="den">2</span></span>a ≥ 0<br>底数 <span class="frac"><span class="num">1</span><span class="den">2</span></span> &lt; 1，对数递减 ⟹ a ≤ 1<br>又 a &gt; 0</div>
+      <span class="ans">答案(2)：0 &lt; a ≤ 1</span>
+    </div>
   </section>
 
   <!-- 幕9 第21(3)充要 -->
   <section class="scene">
     <img src="lion-assets/scene-09.jpg" alt="第21(3)充要" loading="lazy">
     <span class="step">第 9 幕 · 第21(3) 充要条件</span>
-    <div class="bubble">h(x)=aˣ 是 QB，当且仅当 a=1。充分性显然；必要性反证排除 a&gt;1 和 0&lt;a&lt;1。</div>
-    <div class="card">h(x) = aˣ 是 QB ⟺ <b>a = 1</b></div>
+    <div class="bubble">最后一问，充要条件。充分性直接代，必要性反证——排除掉 a&gt;1 和 0&lt;a&lt;1，就只剩 a=1。</div>
+    <div class="board">
+      <span class="btag">题目</span>
+      <div class="blines">(3) 已知 h(x) = a<sup>x</sup>（a &gt; 0），证明：「h(x) 是 QB 函数」的充要条件是「a = 1」。</div>
+    </div>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">充分性：a=1 时 h(x)=1，1+1 ≥ 1 ✓<br>必要性：反证排除 a&gt;1 和 0&lt;a&lt;1</div>
+      <span class="ans">h(x) = a<sup>x</sup> 是 QB ⟺ a = 1</span>
+    </div>
   </section>
 
   <!-- 幕10 总结 -->
@@ -175,13 +234,14 @@
     <img src="lion-assets/scene-10.jpg" alt="狮子博士总结" loading="lazy">
     <span class="step">第 10 幕 · 四条干货</span>
     <div class="bubble">今天四条干货，收好：</div>
-    <div class="card">
-      <ul>
-        <li>① 换元必须换定义域</li>
-        <li>② 比端点求最值</li>
-        <li>③ 新定义题按定义走，别套旧结论</li>
-        <li>④ 判断「不是」用反例，证明「充要」用反证</li>
-      </ul>
+    <div class="board sol">
+      <span class="btag">解法</span>
+      <div class="blines">
+        ① 换元必须换定义域<br>
+        ② 比端点求最值<br>
+        ③ 新定义题按定义走，别套旧结论<br>
+        ④ 判断「不是」用反例，证明「充要」用反证
+      </div>
     </div>
   </section>
 
