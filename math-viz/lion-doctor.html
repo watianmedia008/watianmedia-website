@@ -93,6 +93,11 @@
   .frac .num { padding: 0 5px; border-bottom: 1.5px solid currentColor; }
   .frac .den { padding: 0 5px; }
 
+  /* 函数图像 */
+  .board .graph { display: flex; justify-content: center; margin-top: 10px; }
+  .board .graph svg { width: 100%; max-width: 300px; height: auto; display: block; }
+  .graph text { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+
   footer {
     text-align: center; padding: 22px 16px; color: #6b6a5f; font-size: 13px;
   }
@@ -167,6 +172,23 @@
     <div class="board sol">
       <span class="btag">解法</span>
       <div class="blines">y = (t−2)(t−3) − m·t = <b>t² − (5+m)t + 6</b><br>开口向上，最高点在两端：<br>· t=0（x=1）→ y = <b>6</b><br>· t=3（x=8）→ y = <b>−3m</b><br>比大小：6 ≥ −3m ⟺ m ≥ −2</div>
+      <div class="graph"><svg viewBox="0 0 440 430">
+        <line x1="150" y1="24" x2="150" y2="330" stroke="#cfe0c9" stroke-width="3"/>
+        <line x1="40" y1="320" x2="430" y2="320" stroke="#cfe0c9" stroke-width="3"/>
+        <path d="M150,104 Q270,206 390,104" fill="none" stroke="#ffd879" stroke-width="5"/>
+        <circle cx="150" cy="104" r="9" fill="#ff6b6b"/>
+        <circle cx="390" cy="104" r="9" fill="#ff6b6b"/>
+        <circle cx="270" cy="185" r="6" fill="#ffd879"/>
+        <line x1="150" y1="344" x2="390" y2="344" stroke="#ffd879" stroke-width="7"/>
+        <text x="105" y="92" fill="#fff" font-size="27">A(0,6)</text>
+        <text x="432" y="92" fill="#fff" font-size="27" text-anchor="end">B(3,−3m)</text>
+        <text x="270" y="168" fill="#ffd879" font-size="23" text-anchor="middle">顶点</text>
+        <text x="270" y="392" fill="#ffd879" font-size="25" text-anchor="middle">闭区间 [0,3] · 最值在端点</text>
+        <text x="150" y="365" fill="#cfe0c9" font-size="23" text-anchor="middle">0</text>
+        <text x="390" y="365" fill="#cfe0c9" font-size="23" text-anchor="middle">3</text>
+        <text x="432" y="312" fill="#cfe0c9" font-size="25">t</text>
+        <text x="162" y="42" fill="#cfe0c9" font-size="25">y</text>
+      </svg></div>
       <span class="ans">答案(2)：m ≥ −2 时 y<sub>max</sub>=6；m &lt; −2 时 y<sub>max</sub>=−3m</span>
     </div>
   </section>
@@ -209,6 +231,16 @@
     <div class="board sol">
       <span class="btag">解法</span>
       <div class="blines">代入定义约掉得：log<span class="frac"><span class="num">1</span><span class="den">2</span></span>a ≥ 0<br>底数 <span class="frac"><span class="num">1</span><span class="den">2</span></span> &lt; 1，对数递减 ⟹ a ≤ 1<br>又 a &gt; 0</div>
+      <div class="graph"><svg viewBox="0 0 440 430">
+        <line x1="150" y1="24" x2="150" y2="330" stroke="#cfe0c9" stroke-width="3"/>
+        <line x1="40" y1="320" x2="430" y2="320" stroke="#cfe0c9" stroke-width="3"/>
+        <path d="M60,60 Q210,300 430,380" fill="none" stroke="#ffd879" stroke-width="5"/>
+        <circle cx="238" cy="320" r="9" fill="#ff6b6b"/>
+        <text x="215" y="352" fill="#fff" font-size="26">(1,0)</text>
+        <text x="270" y="120" fill="#ffd879" font-size="25">底½&lt;1 递减</text>
+        <text x="432" y="312" fill="#cfe0c9" font-size="25">x</text>
+        <text x="162" y="42" fill="#cfe0c9" font-size="25">y</text>
+      </svg></div>
       <span class="ans">答案(2)：0 &lt; a ≤ 1</span>
     </div>
   </section>
@@ -225,6 +257,19 @@
     <div class="board sol">
       <span class="btag">解法</span>
       <div class="blines">充分性：a=1 时 h(x)=1，1+1 ≥ 1 ✓<br>必要性：反证排除 a&gt;1 和 0&lt;a&lt;1</div>
+      <div class="graph"><svg viewBox="0 0 440 430">
+        <line x1="150" y1="24" x2="150" y2="330" stroke="#cfe0c9" stroke-width="3"/>
+        <line x1="40" y1="320" x2="430" y2="320" stroke="#cfe0c9" stroke-width="3"/>
+        <line x1="40" y1="228" x2="430" y2="228" stroke="#ffd879" stroke-width="4" stroke-dasharray="10 6"/>
+        <path d="M120,300 Q200,180 390,70" fill="none" stroke="#7ec8a0" stroke-width="5"/>
+        <path d="M120,120 Q220,260 390,330" fill="none" stroke="#ff9e7d" stroke-width="5"/>
+        <text x="150" y="212" fill="#ffd879" font-size="25">a=1</text>
+        <text x="300" y="120" fill="#7ec8a0" font-size="25">a&gt;1</text>
+        <text x="300" y="395" fill="#ff9e7d" font-size="25">0&lt;a&lt;1</text>
+        <text x="270" y="60" fill="#fff" font-size="24" text-anchor="middle">仅 a=1 满足 QB</text>
+        <text x="432" y="312" fill="#cfe0c9" font-size="25">x</text>
+        <text x="162" y="42" fill="#cfe0c9" font-size="25">y</text>
+      </svg></div>
       <span class="ans">h(x) = a<sup>x</sup> 是 QB ⟺ a = 1</span>
     </div>
   </section>
