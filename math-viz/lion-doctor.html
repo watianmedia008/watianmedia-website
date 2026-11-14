@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>狮子博士拆题 · 对数与QB函数</title>
+<style>
+  :root {
+    --bg: #f6f1e7;
+    --ink: #2b2620;
+    --board: #1e3d2e;
+    --board-ink: #f3e9d0;
+    --gold: #c9941c;
+    --brown: #a8642e;
+    --card: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    line-height: 1.65;
+  }
+  .wrap { max-width: 430px; margin: 0 auto; padding: 0 0 28px; }
+
+  header {
+    background: linear-gradient(160deg, #1e3d2e 0%, #143024 100%);
+    color: var(--board-ink);
+    padding: 26px 20px 22px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: ""; position: absolute; right: -40px; top: -40px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,148,28,.25), transparent 70%);
+  }
+  header h1 { font-size: 22px; letter-spacing: 1px; font-weight: 700; }
+  header .tag { font-size: 13px; color: #d8c894; margin-top: 6px; }
+  header .slogan { font-size: 12px; color: #9fb8a6; margin-top: 10px; }
+
+  .scene {
+    margin: 14px 12px;
+    background: var(--card);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(30,61,46,.10);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .scene.on { opacity: 1; transform: translateY(0); }
+  .scene img { display: block; width: 100%; height: auto; }
+  .scene .step {
+    display: inline-block; font-size: 12px; color: #fff; background: var(--gold);
+    padding: 3px 10px; border-radius: 999px; margin: 12px 14px 0;
+  }
+  .scene .bubble {
+    margin: 10px 14px 0; padding: 12px 14px;
+    background: #fbf7ee; border-left: 3px solid var(--gold);
+    border-radius: 8px; font-size: 15px; color: #3a332a;
+  }
+  .scene .card {
+    margin: 12px 14px 16px; padding: 14px 16px;
+    background: var(--board); color: var(--board-ink);
+    border-radius: 10px; font-size: 16px; text-align: center;
+    line-height: 1.9;
+  }
+  .scene .card .small { font-size: 13px; color: #bcd2c2; }
+  .scene .card b { color: #ffd879; }
+  .scene .card ul { list-style: none; text-align: left; }
+  .scene .card li { margin: 4px 0; }
+
+  /* 竖式分数：分子上、分母下、中间横线 */
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 3px; line-height: 1.15; }
+  .frac .num { padding: 0 5px; border-bottom: 1.5px solid currentColor; }
+  .frac .den { padding: 0 5px; }
+  .frac.big { font-size: 1.05rem; }
+
+  footer {
+    text-align: center; padding: 22px 16px; color: #6b6a5f; font-size: 13px;
+  }
+  footer .slogan { color: var(--brown); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  footer .cta { margin-top: 8px; color: #8a7a55; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>狮子博士拆题</h1>
+    <div class="tag">对数函数 · QB函数新定义</div>
+    <div class="slogan">题目越花哨，内核越简单</div>
+  </header>
+
+  <!-- 幕1 开场 -->
+  <section class="scene">
+    <img src="lion-assets/scene-01.png" alt="狮子博士开场" loading="lazy">
+    <span class="step">第 1 幕 · 开场</span>
+    <div class="bubble">今天两道题，一个比一个阴。第一道藏了个换元陷阱，第二道直接甩个新定义——QB函数，听着跟QQ会员似的。别慌，跟博士走，拆给你看。</div>
+  </section>
+
+  <!-- 幕2 第20(1)代入 -->
+  <section class="scene">
+    <img src="lion-assets/scene-02.png" alt="第20(1)代入" loading="lazy">
+    <span class="step">第 2 幕 · 第20(1) 直接代入</span>
+    <div class="bubble">第一题，两个对数相乘，看着吓人。但第(1)问只让你比 f(2) 和 f(16)——别想复杂，直接代入算！</div>
+    <div class="card">f(2) = −2log<sub>a</sub>2 + 4<br>f(16) = 4log<sub>a</sub>2 − 2</div>
+  </section>
+
+  <!-- 幕3 第20(1)结论 -->
+  <section class="scene">
+    <img src="lion-assets/scene-03.png" alt="第20(1)结论" loading="lazy">
+    <span class="step">第 3 幕 · 第20(1) 结论</span>
+    <div class="bubble">要 f(2) &gt; f(16)，一移项：log<sub>a</sub>2 &lt; 1。a&gt;1 时 a&gt;2；0&lt;a&lt;1 时恒成立。</div>
+    <div class="card">答案：<b>a ∈ (0,1) ∪ (2,+∞)</b></div>
+  </section>
+
+  <!-- 幕4 第20(2)换元 -->
+  <section class="scene">
+    <img src="lion-assets/scene-04.png" alt="第20(2)换元" loading="lazy">
+    <span class="step">第 4 幕 · 第20(2) 换元</span>
+    <div class="bubble">第(2)问才是重头戏。a=2，y 里又是 x 又是 m，看着乱。看见 log₂x 就换元！注意——换元必须换定义域，这是扣分重灾区！</div>
+    <div class="card">令 t = log<sub>2</sub>x<br>x ∈ [1,8] ⟹ t ∈ [0,3]</div>
+  </section>
+
+  <!-- 幕5 第20(2)比端点 -->
+  <section class="scene">
+    <img src="lion-assets/scene-05.png" alt="第20(2)比端点" loading="lazy">
+    <span class="step">第 5 幕 · 第20(2) 比端点</span>
+    <div class="bubble">换完 y = t² − (5+m)t + 6。二次函数最值没学过？博士教你比端点——闭区间上，最值就在端点。</div>
+    <div class="card">
+      t=0 → y=6　·　t=3 → y=−3m<br>
+      <span class="small">分界 m=−2：</span><br>
+      m≥−2 取 <b>6</b>　·　m&lt;−2 取 <b>−3m</b>
+    </div>
+  </section>
+
+  <!-- 幕6 第21定义 -->
+  <section class="scene">
+    <img src="lion-assets/scene-06.png" alt="第21新定义" loading="lazy">
+    <span class="step">第 6 幕 · 第21题 新定义</span>
+    <div class="bubble">第二题，新定义题，看着最吓人，其实就一句话。</div>
+    <div class="card">对任意 x, y：<br><b>f(x) + f(y) ≥ f(xy)</b></div>
+  </section>
+
+  <!-- 幕7 第21(1)反例 -->
+  <section class="scene">
+    <img src="lion-assets/scene-07.png" alt="第21(1)反例" loading="lazy">
+    <span class="step">第 7 幕 · 第21(1) 找反例</span>
+    <div class="bubble">判断 f(x)=−x² 是不是 QB。别硬证，找反例！x=y=1。</div>
+    <div class="card">f(1)+f(1) = −2　·　f(1) = −1<br>−2 ≥ −1 ？<b>假</b> ⟹ 不是 QB</div>
+  </section>
+
+  <!-- 幕8 第21(2)对数 -->
+  <section class="scene">
+    <img src="lion-assets/scene-08.png" alt="第21(2)对数" loading="lazy">
+    <span class="step">第 8 幕 · 第21(2) 对数单调性</span>
+    <div class="bubble">g(x) = log<span class="frac"><span class="num">1</span><span class="den">2</span></span>(ax)，套定义约掉，剩下 log<span class="frac"><span class="num">1</span><span class="den">2</span></span>a ≥ 0。底数 <span class="frac"><span class="num">1</span><span class="den">2</span></span> &lt; 1，对数递减。</div>
+    <div class="card">答案：<b>0 &lt; a ≤ 1</b></div>
+  </section>
+
+  <!-- 幕9 第21(3)充要 -->
+  <section class="scene">
+    <img src="lion-assets/scene-09.png" alt="第21(3)充要" loading="lazy">
+    <span class="step">第 9 幕 · 第21(3) 充要条件</span>
+    <div class="bubble">h(x)=aˣ 是 QB，当且仅当 a=1。充分性显然；必要性反证排除 a&gt;1 和 0&lt;a&lt;1。</div>
+    <div class="card">h(x) = aˣ 是 QB ⟺ <b>a = 1</b></div>
+  </section>
+
+  <!-- 幕10 总结 -->
+  <section class="scene">
+    <img src="lion-assets/scene-10.png" alt="狮子博士总结" loading="lazy">
+    <span class="step">第 10 幕 · 四条干货</span>
+    <div class="bubble">今天四条干货，收好：</div>
+    <div class="card">
+      <ul>
+        <li>① 换元必须换定义域</li>
+        <li>② 比端点求最值</li>
+        <li>③ 新定义题按定义走，别套旧结论</li>
+        <li>④ 判断「不是」用反例，证明「充要」用反证</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="slogan">题目越花哨，内核越简单</div>
+    <div>狮子博士 Dr. Leo · 下集想看哪题，评论区喊博士！</div>
+    <div class="cta">蛙田文化 · AI 数学漫剧</div>
+  </footer>
+
+</div>
+
+<script>
+  // 滚动淡入
+  var scenes = document.querySelectorAll('.scene');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    scenes.forEach(function(s) { io.observe(s); });
+  } else {
+    scenes.forEach(function(s) { s.classList.add('on'); });
+  }
+</script>
+</body>
+</html>
