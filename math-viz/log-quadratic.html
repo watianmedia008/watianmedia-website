@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>对数换元 → 二次函数 | 数学可视化</title>
+<title>对数函数求最值 | 数学可视化</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -132,8 +132,8 @@
 </style>
 </head>
 <body>
-  <h1>对数换元 → 二次函数</h1>
-  <div class="subtitle">第20题 · 换底公式 + 换元降维 · 高中数学</div>
+  <h1>对数函数求最值</h1>
+  <div class="subtitle">第20题 · 代入计算 + 比大小就能解 · 高中数学</div>
 
   <!-- 题目 -->
   <div class="problem">
@@ -145,30 +145,29 @@
 
   <!-- 知识点详解 -->
   <div class="card">
-    <h2>📚 核心知识点详解</h2>
+    <h2>📚 三步看懂这道题</h2>
 
     <div class="kp">
-      <h3>① 换底公式 —— 统一对数的"底"</h3>
-      <div class="formula">log<sub>a</sub>b = log<sub>c</sub>b / log<sub>c</sub>a</div>
-      <p>任何底的对数都能换算成同底。本题把 log<sub>a</sub>x 统一到底 2：</p>
-      <div class="formula">log<sub>a</sub>x = log<sub>2</sub>x / log<sub>2</sub>a = k · log<sub>2</sub>x　（令 k = 1 / log<sub>2</sub>a）</div>
-      <p class="note">好处：原本"底数 a 不同"导致的问题，被压缩成一个<b>系数 k</b>。a 一旦确定，k 就是常数，问题从"两个底的对数"变成"一个底的对数乘个系数"。</p>
+      <h3>① 先弄清题目在问什么</h3>
+      <p>f(x) = (log<sub>a</sub>x − 2)(log<sub>2</sub>x − 3)，里面有两个对数：一个底是 a，一个底是 2。</p>
+      <p>第(1)问只考 x=2 和 x=16 两个点，第(2)问先让 a=2 再求最大值。<b>两个小问分开看，别混在一起。</b></p>
     </div>
 
     <div class="kp">
-      <h3>② 换元降维 —— 把对数复合函数变二次函数</h3>
-      <p>令 <span class="highlight">t = log<sub>2</sub>x</span>，则 log<sub>a</sub>x = k·t，于是</p>
-      <div class="formula">f(x) = (k·t − 2)(t − 3) = k·t² − (3k+2)·t + 6</div>
-      <p>这本质是<b>关于 t 的二次函数</b>（多项式），比原来的对数复合式简单太多。</p>
-      <p class="note">⚠️ 换元必须同步换定义域：x ∈ [1,8] ⟺ t = log<sub>2</sub>x ∈ [0,3]（因为 log<sub>2</sub>1=0，log<sub>2</sub>8=3）。这是最容易丢分的一步。</p>
+      <h3>② 第(1)问：老老实实代入算，别想复杂</h3>
+      <p>问 f(2) 和 f(16) 谁大，那就把 x=2、x=16 代进去各算一遍。</p>
+      <p>只用到三个最基本的对数运算：</p>
+      <div class="formula">log<sub>2</sub>2 = 1　　　log<sub>2</sub>16 = 4　　　log<sub>a</sub>16 = log<sub>a</sub>2⁴ = 4·log<sub>a</sub>2</div>
+      <p class="note">💡 前两个就是问"2 的几次方"：2¹ = 2、2⁴ = 16。第三个是"幂的对数 = 指数 × 对数"。</p>
     </div>
 
     <div class="kp">
-      <h3>③ 二次函数在闭区间上的最值</h3>
-      <p>开口向上的二次函数（a&gt;0），在闭区间 [p,q] 上的<b>最大值一定在端点</b>取得——离对称轴越远，函数值越大。</p>
-      <p>第(2)小题：a=2 时 k=1，g(t) = t² − (5+m)t + 6，对称轴 t₀ = (5+m)/2。</p>
-      <p>把对称轴与区间中点 1.5 比较：</p>
-      <div class="formula">t₀ ≤ 1.5（m ≤ −2）→ 最大值在 t=3；　t₀ ≥ 1.5（m ≥ −2）→ 最大值在 t=0</div>
+      <h3>③ 第(2)问：给 log<sub>2</sub>x 起个短名字 t</h3>
+      <p>log<sub>2</sub>x 每次写太长，干脆叫它 <span class="highlight">t</span>，式子就变成普通的二次式：</p>
+      <div class="formula">y = (t − 2)(t − 3) − m·t = t² − (5+m)·t + 6</div>
+      <p>注意 t 的范围也跟着变：x 从 1 到 8，t 就从 log<sub>2</sub>1 = 0 到 log<sub>2</sub>8 = 3，所以 <b>t ∈ [0, 3]</b>。</p>
+      <p class="note">⚠️ 这一步最容易忘：x 换了范围，t 也得跟着换范围。</p>
+      <p>展开后 t² 前面是正号（+1），所以这是<b>开口向上的抛物线，最高点一定在两端</b>。下面直接算两端比大小就行。</p>
     </div>
   </div>
 
@@ -194,7 +193,7 @@
       <span><i style="background:var(--red);"></i>x=2 与 x=16（第1小题）</span>
     </div>
 
-    <div class="panel-label">面板 B — 换元映射 t = log<sub>2</sub>x（对数刻度）</div>
+    <div class="panel-label">面板 B — t = log<sub>2</sub>x 的对应关系（对数刻度）</div>
     <canvas id="cvB" height="180"></canvas>
     <div class="legend">
       <span><i style="background:var(--purple);"></i>x 轴（对数刻度 1→16）</span>
@@ -202,7 +201,7 @@
       <span><i style="background:var(--orange);"></i>区间 x∈[1,8] → t∈[0,3]</span>
     </div>
 
-    <div class="panel-label">面板 C — 换元后 y = f(x) − m·t 的二次函数（a=2 时）</div>
+    <div class="panel-label">面板 C — 把 log<sub>2</sub>x 看成 t 后，y 的二次函数图像（a=2 时）</div>
     <canvas id="cvC" height="260"></canvas>
     <div class="legend">
       <span><i style="background:var(--orange);"></i>g(t) 二次函数</span>
@@ -217,20 +216,29 @@
 
     <div class="step">
       <h4>第(1)小题：f(2) &gt; f(16)</h4>
-      <p>f(2) = (log<sub>a</sub>2 − 2)·(−2)，f(16) = (log<sub>a</sub>16 − 2)·1 = 4log<sub>a</sub>2 − 2。</p>
-      <p>由 f(2) &gt; f(16)：−2(log<sub>a</sub>2 − 2) &gt; 4log<sub>a</sub>2 − 2，解得 <span class="highlight">log<sub>a</sub>2 &lt; 1</span>。</p>
-      <p>分类讨论：a&gt;1 时对数递增，得 2&lt;a；0&lt;a&lt;1 时对数递减，恒成立。</p>
+      <p><b>第一步</b>：算 f(2)。log<sub>2</sub>2 = 1，所以</p>
+      <div class="formula">f(2) = (log<sub>a</sub>2 − 2)(1 − 3) = (log<sub>a</sub>2 − 2)·(−2) = −2log<sub>a</sub>2 + 4</div>
+      <p><b>第二步</b>：算 f(16)。log<sub>2</sub>16 = 4，log<sub>a</sub>16 = 4log<sub>a</sub>2，所以</p>
+      <div class="formula">f(16) = (4log<sub>a</sub>2 − 2)(4 − 3) = 4log<sub>a</sub>2 − 2</div>
+      <p><b>第三步</b>：比大小。f(2) &gt; f(16) 就是</p>
+      <div class="formula">−2log<sub>a</sub>2 + 4 &gt; 4log<sub>a</sub>2 − 2　⟹　6 &gt; 6log<sub>a</sub>2　⟹　log<sub>a</sub>2 &lt; 1</div>
+      <p><b>第四步</b>：解 log<sub>a</sub>2 &lt; 1。分两种情况：</p>
+      <p>· 底 a &gt; 1：对数随 x 增大而增大，log<sub>a</sub>2 &lt; log<sub>a</sub>a = 1 ⟺ 2 &lt; a，即 <b>a &gt; 2</b>；</p>
+      <p>· 底 0 &lt; a &lt; 1：对数随 x 增大而减小，2 &gt; a 恒成立，即 <b>0 &lt; a &lt; 1 全部成立</b>。</p>
       <div class="answer-box">答案(1)：a ∈ (0, 1) ∪ (2, +∞)</div>
     </div>
 
     <div class="step">
       <h4>第(2)小题：a=2 时求最大值</h4>
-      <p>a=2 时 k=1，log<sub>a</sub>x = log<sub>2</sub>x = t，f(x) = t² − 5t + 6。</p>
-      <p>y = f(x) − m·log<sub>2</sub>x = t² − (5+m)t + 6，t ∈ [0,3]。</p>
-      <p>对称轴 t₀ = (5+m)/2。开口向上，最大值在离对称轴最远的端点。</p>
-      <p>当 m &lt; −2（t₀&lt;1.5）：最大值在 t=3，y<sub>max</sub> = 9 − 3(5+m) + 6 = <span class="red">−3m</span>；</p>
-      <p>当 m ≥ −2（t₀≥1.5）：最大值在 t=0，y<sub>max</sub> = <span class="red">6</span>。</p>
-      <div class="answer-box">答案(2)：y<sub>max</sub> = { 6（m ≥ −2）；−3m（m &lt; −2）}，m = −2 时两者相等均为 6</div>
+      <p>a=2 时 log<sub>a</sub>x = log<sub>2</sub>x = t，f(x) = (t − 2)(t − 3)。所以</p>
+      <div class="formula">y = (t − 2)(t − 3) − m·t = t² − 5t + 6 − m·t = t² − (5+m)·t + 6，　t ∈ [0, 3]</div>
+      <p>这是开口向上的抛物线（t² 前是 +1），<b>最高点在两端</b>，所以只算两个端点：</p>
+      <p><b>左端 t=0</b>（对应 x=1）：y = 0 − 0 + 6 = <span class="red">6</span></p>
+      <p><b>右端 t=3</b>（对应 x=8）：y = 9 − 3(5+m) + 6 = <span class="red">−3m</span></p>
+      <p><b>比大小</b>：</p>
+      <p>· 若 6 ≥ −3m，即 m ≥ −2，最大值 = <b>6</b>（在 x=1 处取到）；</p>
+      <p>· 若 6 &lt; −3m，即 m &lt; −2，最大值 = <b>−3m</b>（在 x=8 处取到）。</p>
+      <div class="answer-box">答案(2)：m ≥ −2 时 y<sub>max</sub> = 6；m &lt; −2 时 y<sub>max</sub> = −3m（m=−2 时两者都是 6）</div>
     </div>
   </div>
 

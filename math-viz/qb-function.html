@@ -124,18 +124,29 @@
 
     <div class="step">
       <h4>第(2)小题：g(x) = log<sub>½</sub>(ax) 求 a</h4>
-      <p>g(x) + g(y) = 2log<sub>½</sub>a + log<sub>½</sub>(xy)，g(xy) = log<sub>½</sub>a + log<sub>½</sub>(xy)。</p>
-      <p>代入不等式得 log<sub>½</sub>a ≥ 0。因底 ½ &lt; 1 对数递减，故 0 &lt; a ≤ 1。</p>
+      <p><b>第一步</b>：用对数法则 log(MN) = logM + logN，把 g 拆开：</p>
+      <div class="formula">g(x) = log<sub>½</sub>(ax) = log<sub>½</sub>a + log<sub>½</sub>x</div>
+      <p><b>第二步</b>：算出 g(x) + g(y) 和 g(xy)：</p>
+      <div class="formula">g(x) + g(y) = 2log<sub>½</sub>a + log<sub>½</sub>(xy)　　g(xy) = log<sub>½</sub>a + log<sub>½</sub>(xy)</div>
+      <p><b>第三步</b>：代入 QB 不等式，两边消掉 log<sub>½</sub>(xy)：</p>
+      <div class="formula">2log<sub>½</sub>a + log<sub>½</sub>(xy) ≥ log<sub>½</sub>a + log<sub>½</sub>(xy)　⟹　log<sub>½</sub>a ≥ 0</div>
+      <p><b>第四步</b>：解 log<sub>½</sub>a ≥ 0。底 ½ 比 1 小，对数随 x 增大而减小，所以 log<sub>½</sub>a ≥ 0 = log<sub>½</sub>1 ⟺ a ≤ 1，又 a &gt; 0（真数 ax 必须大于 0），故 <b>0 &lt; a ≤ 1</b>。</p>
       <div class="answer-box">答案(2)：a ∈ (0, 1]</div>
     </div>
 
     <div class="step">
       <h4>第(3)小题：证明 h(x) = aˣ 是 QB 函数 ⇔ a = 1</h4>
-      <p><b>充分性</b>：a = 1 时 h(x) = 1，则 1 + 1 ≥ 1 恒成立，是 QB 函数。</p>
-      <p><b>必要性</b>（反证）：</p>
-      <p>· 若 a &gt; 1：取 x = y = n（n 足够大），则 2aⁿ &lt; a<sup>n²</sup>（因 a&gt;1 时 a<sup>n²−n</sup>→∞），矛盾；</p>
-      <p>· 若 0 &lt; a &lt; 1：取 x = −1，y = n（n 足够大），则 a⁻¹ + aⁿ &lt; a<sup>−n</sup>（因 aⁿ→0，a⁻¹ 固定），矛盾。</p>
-      <p>故 a ≠ 1 时都不是 QB 函数，只能是 a = 1。</p>
+      <p class="note">⏰ 这是本卷压轴题（5 分），用到了「反证法」和「取一个足够大的数」的想法。如果卡住，先把前两问的分拿稳，这问看懂思路即可。</p>
+      <p>「充要条件」要证两个方向：</p>
+      <p><b>方向一（充分性）：a = 1 时是不是 QB 函数？</b></p>
+      <p>a = 1 时 h(x) = 1ˣ = 1（1 的任何次方都等于 1），于是</p>
+      <div class="formula">h(x) + h(y) = 1 + 1 = 2 ≥ 1 = h(xy)</div>
+      <p>恒成立，所以 h(x) = 1 是 QB 函数。✓</p>
+      <p><b>方向二（必要性）：是 QB 函数的话，a 只能是 1 吗？</b></p>
+      <p>用反证：假设 a ≠ 1（即 a &gt; 1 或 0 &lt; a &lt; 1），想办法找一个 (x, y) 让不等式不成立，就能否定它。</p>
+      <p>· 若 <b>a &gt; 1</b>：取 x = y = n（n 是一个很大的数）。左边 h(n)+h(n) = 2aⁿ，右边 h(n²) = a<sup>n²</sup>。因为 a &gt; 1，n² 比 n 大得多，a<sup>n²</sup> 会远远超过 2aⁿ，所以 2aⁿ &lt; a<sup>n²</sup>，不等式不成立，矛盾。</p>
+      <p>· 若 <b>0 &lt; a &lt; 1</b>：取 x = −1，y = n。左边 h(−1)+h(n) = a⁻¹ + aⁿ = 1/a + aⁿ（aⁿ 越来越小、接近 0），右边 h(−n) = a<sup>−n</sup> = 1/aⁿ（n 越大这个数越大）。当 n 足够大时，右边远超左边，不等式不成立，矛盾。</p>
+      <p>两种情况都矛盾，说明假设「a ≠ 1」是错的，所以只能是 <b>a = 1</b>。✓</p>
       <div class="answer-box">答案(3)：充要条件是 a = 1</div>
     </div>
   </div>
