@@ -144,6 +144,10 @@
     margin: 8px 0 4px;
   }
   .sol-block .note { color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 3px; line-height: 1.15; }
+  .frac .num { padding: 0 5px; border-bottom: 1.5px solid currentColor; }
+  .frac .den { padding: 0 5px; }
+  .frac.big { font-size: 1.05rem; }
   .legend { font-size: 0.82rem; color: var(--muted); }
   .legend span { margin-right: 14px; }
   .legend i { display: inline-block; width: 12px; height: 3px; margin-right: 4px; vertical-align: middle; }
@@ -265,10 +269,10 @@
       <div class="sol-block">
         <span class="sol-tag std">⭐ 解法二：对称轴 vs 区间中点（标准技巧）</span>
         <p>同一个 y = t² − (5+m)t + 6，开口向上，<b>离对称轴越远的端点越大</b>。</p>
-        <p>对称轴 t₀ = (5+m)/2，区间 [0,3] 的中点 = 3/2：</p>
-        <p>· t₀ ≤ 3/2（即 (5+m)/2 ≤ 3/2 ⟹ m ≤ −2）：对称轴靠左 → 右端 t=3 离得远 → 最大 = −3m；</p>
-        <p>· t₀ ≥ 3/2（即 (5+m)/2 ≥ 3/2 ⟹ m ≥ −2）：对称轴靠右 → 左端 t=0 离得远 → 最大 = 6。</p>
-        <p class="note">⚠️ 需记住「开口向上 + 闭区间 → 离对称轴越远越大」这条结论；比较 t₀ 和 3/2 时别把 m 范围写反。适合已熟练二次函数图像的同学。</p>
+        <p>对称轴 t₀ = <span class="frac"><span class="num">5+m</span><span class="den">2</span></span>，区间 [0,3] 的中点 = <span class="frac"><span class="num">3</span><span class="den">2</span></span>：</p>
+        <p>· t₀ ≤ <span class="frac"><span class="num">3</span><span class="den">2</span></span>（即 <span class="frac"><span class="num">5+m</span><span class="den">2</span></span> ≤ <span class="frac"><span class="num">3</span><span class="den">2</span></span> ⟹ m ≤ −2）：对称轴靠左 → 右端 t=3 离得远 → 最大 = −3m；</p>
+        <p>· t₀ ≥ <span class="frac"><span class="num">3</span><span class="den">2</span></span>（即 <span class="frac"><span class="num">5+m</span><span class="den">2</span></span> ≥ <span class="frac"><span class="num">3</span><span class="den">2</span></span> ⟹ m ≥ −2）：对称轴靠右 → 左端 t=0 离得远 → 最大 = 6。</p>
+        <p class="note">⚠️ 需记住「开口向上 + 闭区间 → 离对称轴越远越大」这条结论；比较 t₀ 和 <span class="frac"><span class="num">3</span><span class="den">2</span></span> 时别把 m 范围写反。适合已熟练二次函数图像的同学。</p>
       </div>
 
       <div class="sol-block">
