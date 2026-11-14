@@ -46,6 +46,11 @@
   .step p { font-size: 0.9rem; }
   .step .formula { background: rgba(240, 136, 62, 0.08); border-radius: 8px; padding: 6px 12px; margin: 6px 0; font-family: "Times New Roman", serif; font-size: 1rem; text-align: center; }
   .answer-box { background: rgba(63, 185, 80, 0.1); border: 1px solid rgba(63, 185, 80, 0.35); border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-weight: 600; }
+  .sol-tag { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin: 4px 0 6px; line-height: 1.4; }
+  .sol-tag.easy { background: rgba(63,185,80,0.16); color: var(--green); border: 1px solid rgba(63,185,80,0.45); }
+  .sol-tag.std  { background: rgba(240,136,62,0.16); color: var(--orange); border: 1px solid rgba(240,136,62,0.45); }
+  .sol-tag.alt  { background: rgba(88,166,255,0.16); color: var(--blue); border: 1px solid rgba(88,166,255,0.45); }
+  .sol-block { border-left: 3px solid rgba(88,166,255,0.30); padding: 2px 0 2px 12px; margin: 8px 0 4px; }
 </style>
 </head>
 <body>
@@ -113,17 +118,21 @@
   </div>
 
   <div class="card">
-    <h2>📝 解题过程</h2>
+    <h2>📝 解题过程 · 分步拆解</h2>
 
     <div class="step">
       <h4>第(1)小题：f(x) = −x² 是否 QB 函数？</h4>
+      <span class="sol-tag easy">💚 最简单：取特殊值找反例</span>
+      <p><b>策略</b>：判断「不是 QB 函数」，最省事的办法是<b>找一组 x、y 让不等式不成立</b>。优先试 x = y = 1（好算）。</p>
       <p>需验证 −x² − y² ≥ −(xy)² 是否恒成立，即 x² + y² ≤ x²y²。</p>
       <p>取 <span class="highlight">x = y = 1</span>：左 = 1 + 1 = 2，右 = 1，2 ≤ 1 不成立。</p>
+      <p class="note">⚠️ 易错点：别去硬证「x² + y² ≤ x²y² 对所有 x,y 成立」——它根本不成立，直接举一个反例就够。</p>
       <div class="answer-box">答案(1)：f(x) = −x² 不是 QB 函数（反例 x = y = 1）</div>
     </div>
 
     <div class="step">
       <h4>第(2)小题：g(x) = log<sub>½</sub>(ax) 求 a</h4>
+      <span class="sol-tag easy">💚 最简单：对数法则直接拆（这问就这么解）</span>
       <p><b>第一步</b>：用对数法则 log(MN) = logM + logN，把 g 拆开：</p>
       <div class="formula">g(x) = log<sub>½</sub>(ax) = log<sub>½</sub>a + log<sub>½</sub>x</div>
       <p><b>第二步</b>：算出 g(x) + g(y) 和 g(xy)：</p>
@@ -131,6 +140,7 @@
       <p><b>第三步</b>：代入 QB 不等式，两边消掉 log<sub>½</sub>(xy)：</p>
       <div class="formula">2log<sub>½</sub>a + log<sub>½</sub>(xy) ≥ log<sub>½</sub>a + log<sub>½</sub>(xy)　⟹　log<sub>½</sub>a ≥ 0</div>
       <p><b>第四步</b>：解 log<sub>½</sub>a ≥ 0。底 ½ 比 1 小，对数随 x 增大而减小，所以 log<sub>½</sub>a ≥ 0 = log<sub>½</sub>1 ⟺ a ≤ 1，又 a &gt; 0（真数 ax 必须大于 0），故 <b>0 &lt; a ≤ 1</b>。</p>
+      <p class="note">⚠️ 易错点：底 ½ &lt; 1，解 log<sub>½</sub>a ≥ 0 时不等号要反向，得 a ≤ 1，别写成 a ≥ 1。</p>
       <div class="answer-box">答案(2)：a ∈ (0, 1]</div>
     </div>
 
@@ -138,15 +148,19 @@
       <h4>第(3)小题：证明 h(x) = aˣ 是 QB 函数 ⇔ a = 1</h4>
       <p class="note">⏰ 这是本卷压轴题（5 分），用到了「反证法」和「取一个足够大的数」的想法。如果卡住，先把前两问的分拿稳，这问看懂思路即可。</p>
       <p>「充要条件」要证两个方向：</p>
-      <p><b>方向一（充分性）：a = 1 时是不是 QB 函数？</b></p>
-      <p>a = 1 时 h(x) = 1ˣ = 1（1 的任何次方都等于 1），于是</p>
-      <div class="formula">h(x) + h(y) = 1 + 1 = 2 ≥ 1 = h(xy)</div>
-      <p>恒成立，所以 h(x) = 1 是 QB 函数。✓</p>
-      <p><b>方向二（必要性）：是 QB 函数的话，a 只能是 1 吗？</b></p>
-      <p>用反证：假设 a ≠ 1（即 a &gt; 1 或 0 &lt; a &lt; 1），想办法找一个 (x, y) 让不等式不成立，就能否定它。</p>
-      <p>· 若 <b>a &gt; 1</b>：取 x = y = n（n 是一个很大的数）。左边 h(n)+h(n) = 2aⁿ，右边 h(n²) = a<sup>n²</sup>。因为 a &gt; 1，n² 比 n 大得多，a<sup>n²</sup> 会远远超过 2aⁿ，所以 2aⁿ &lt; a<sup>n²</sup>，不等式不成立，矛盾。</p>
-      <p>· 若 <b>0 &lt; a &lt; 1</b>：取 x = −1，y = n。左边 h(−1)+h(n) = a⁻¹ + aⁿ = 1/a + aⁿ（aⁿ 越来越小、接近 0），右边 h(−n) = a<sup>−n</sup> = 1/aⁿ（n 越大这个数越大）。当 n 足够大时，右边远超左边，不等式不成立，矛盾。</p>
-      <p>两种情况都矛盾，说明假设「a ≠ 1」是错的，所以只能是 <b>a = 1</b>。✓</p>
+      <div class="sol-block">
+        <span class="sol-tag easy">方向一 · 充分性：a = 1 直接验证</span>
+        <p>a = 1 时 h(x) = 1ˣ = 1（1 的任何次方都等于 1），于是</p>
+        <div class="formula">h(x) + h(y) = 1 + 1 = 2 ≥ 1 = h(xy)</div>
+        <p>恒成立，所以 h(x) = 1 是 QB 函数。✓</p>
+      </div>
+      <div class="sol-block">
+        <span class="sol-tag alt">方向二 · 必要性：反证法（a ≠ 1 会矛盾）</span>
+        <p>用反证：假设 a ≠ 1（即 a &gt; 1 或 0 &lt; a &lt; 1），想办法找一个 (x, y) 让不等式不成立，就能否定它。</p>
+        <p>· 若 <b>a &gt; 1</b>：取 x = y = n（n 是一个很大的数）。左边 h(n)+h(n) = 2aⁿ，右边 h(n²) = a<sup>n²</sup>。因为 a &gt; 1，n² 比 n 大得多，a<sup>n²</sup> 会远远超过 2aⁿ，所以 2aⁿ &lt; a<sup>n²</sup>，不等式不成立，矛盾。</p>
+        <p>· 若 <b>0 &lt; a &lt; 1</b>：取 x = −1，y = n。左边 h(−1)+h(n) = a⁻¹ + aⁿ = 1/a + aⁿ（aⁿ 越来越小、接近 0），右边 h(−n) = a<sup>−n</sup> = 1/aⁿ（n 越大这个数越大）。当 n 足够大时，右边远超左边，不等式不成立，矛盾。</p>
+        <p>两种情况都矛盾，说明假设「a ≠ 1」是错的，所以只能是 <b>a = 1</b>。✓</p>
+      </div>
       <div class="answer-box">答案(3)：充要条件是 a = 1</div>
     </div>
   </div>
