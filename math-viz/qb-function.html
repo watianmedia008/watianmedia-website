@@ -51,6 +51,9 @@
   .sol-tag.std  { background: rgba(240,136,62,0.16); color: var(--orange); border: 1px solid rgba(240,136,62,0.45); }
   .sol-tag.alt  { background: rgba(88,166,255,0.16); color: var(--blue); border: 1px solid rgba(88,166,255,0.45); }
   .sol-block { border-left: 3px solid rgba(88,166,255,0.30); padding: 2px 0 2px 12px; margin: 8px 0 4px; }
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 3px; line-height: 1.15; }
+  .frac .num { padding: 0 5px; border-bottom: 1.5px solid currentColor; }
+  .frac .den { padding: 0 5px; }
 </style>
 </head>
 <body>
@@ -158,7 +161,7 @@
         <span class="sol-tag alt">方向二 · 必要性：反证法（a ≠ 1 会矛盾）</span>
         <p>用反证：假设 a ≠ 1（即 a &gt; 1 或 0 &lt; a &lt; 1），想办法找一个 (x, y) 让不等式不成立，就能否定它。</p>
         <p>· 若 <b>a &gt; 1</b>：取 x = y = n（n 是一个很大的数）。左边 h(n)+h(n) = 2aⁿ，右边 h(n²) = a<sup>n²</sup>。因为 a &gt; 1，n² 比 n 大得多，a<sup>n²</sup> 会远远超过 2aⁿ，所以 2aⁿ &lt; a<sup>n²</sup>，不等式不成立，矛盾。</p>
-        <p>· 若 <b>0 &lt; a &lt; 1</b>：取 x = −1，y = n。左边 h(−1)+h(n) = a⁻¹ + aⁿ = 1/a + aⁿ（aⁿ 越来越小、接近 0），右边 h(−n) = a<sup>−n</sup> = 1/aⁿ（n 越大这个数越大）。当 n 足够大时，右边远超左边，不等式不成立，矛盾。</p>
+        <p>· 若 <b>0 &lt; a &lt; 1</b>：取 x = −1，y = n。左边 h(−1)+h(n) = a⁻¹ + aⁿ = <span class="frac"><span class="num">1</span><span class="den">a</span></span> + aⁿ（aⁿ 越来越小、接近 0），右边 h(−n) = a<sup>−n</sup> = <span class="frac"><span class="num">1</span><span class="den">aⁿ</span></span>（n 越大这个数越大）。当 n 足够大时，右边远超左边，不等式不成立，矛盾。</p>
         <p>两种情况都矛盾，说明假设「a ≠ 1」是错的，所以只能是 <b>a = 1</b>。✓</p>
       </div>
       <div class="answer-box">答案(3)：充要条件是 a = 1</div>
